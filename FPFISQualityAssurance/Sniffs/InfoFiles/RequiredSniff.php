@@ -57,12 +57,12 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSn
         $contents = file_get_contents($phpcsFile->getFilename());
         $info     = Drupal_Sniffs_InfoFiles_ClassFilesSniff::drupalParseInfoFormat($contents);
 
-        if (isset($info['php']) === false) {
+        if (!isset($info['php']) || empty($info['php'])) {
             $error = '"php" property is missing in the info file';
             $phpcsFile->addError($error, $stackPtr, 'PHP');
         }
 
-        if (isset($info['multisite_version']) === false) {
+        if (!isset($info['multisite_version']) || empty($info['multisite_version'])) {
             $error = '"multisite_version" property is missing in the info file';
             $phpcsFile->addError($error, $stackPtr, 'Multisite version');
         } else if ($info['multisite_version'] === '2.2'
