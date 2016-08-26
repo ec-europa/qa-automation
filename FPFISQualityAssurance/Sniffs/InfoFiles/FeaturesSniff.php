@@ -55,8 +55,8 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSn
 
         $contents = file_get_contents($phpcsFile->getFilename());
         $info     = Drupal_Sniffs_InfoFiles_ClassFilesSniff::drupalParseInfoFormat($contents);
-        if (isset($info['features']['features_api']) === true
-            && $info['features']['features_api'] = "api:1"
+        if (isset($info['features']['features_api'])
+            && $info['features']['features_api'] === "api:1"
         ) {
             $warning = 'We highly recommend upgrading features to "api:2"';
             $phpcsFile->addWarning($warning, $stackPtr, 'Features API');
