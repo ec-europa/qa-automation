@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<ruleset name="FPFISQualityAssurance">
+ <description>Quality assurance checks for FPFIS.</description>
+</ruleset>
