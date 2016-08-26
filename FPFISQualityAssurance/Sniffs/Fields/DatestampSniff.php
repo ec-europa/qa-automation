@@ -69,7 +69,7 @@ class FPFISQualityAssurance_Sniffs_Fields_DatestampSniff implements PHP_CodeSnif
                 if ($type = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $fieldBaseArrayStart, $fieldBaseArrayEnd, false, "'type'")) {
                     // If field type is not datestamp.
                     if (($isDatestamp = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($type + 1), ($type + 5), false))
-                      && $tokens[$isDatestamp]['content'] !== "'datestamp'") {
+                      && ($tokens[$isDatestamp]['content'] === "'datetime'" || $tokens[$isDatestamp]['content'] === "'date'")) {
                         // Set error.
                         $error = 'Field ' . $tokens[$fieldName]['content'] . ' is of type ' . $tokens[$isDatestamp]['content'] . '; needs to be \'datestamp\'';
                         $fix = $phpcsFile->addFixableError($error, $isDatestamp, 'DatestampFields');
