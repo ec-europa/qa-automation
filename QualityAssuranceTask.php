@@ -551,6 +551,7 @@ class QualityAssuranceTask extends \Task
         // Execute phpcs on the module folder.
         echo "\nCheck coding standards: ";
         $phpcs = shell_exec('./bin/phpcs --standard=phpcs-ruleset.xml ' .
+          '--extensions=php,inc,module,install,info,test,profile,theme,css,js ' . 
           $this->distBuildDir . '/' . $dirname);
         // Print result.
         if (!empty(trim($phpcs))) {
