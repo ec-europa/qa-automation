@@ -29,6 +29,7 @@ class FPFISQualityAssurance_Sniffs_Permissions_ForbiddenSniff implements PHP_Cod
     {
         return array(
           T_CONSTANT_ENCAPSED_STRING,
+          T_VARIABLE,
         );
 
     }//end register()
@@ -64,7 +65,6 @@ class FPFISQualityAssurance_Sniffs_Permissions_ForbiddenSniff implements PHP_Cod
           'access devel information',
           'execute php code'
         );
-
         // Find the variable.
         if ($token['content'] == '$permissions') {
             // Find the permission name.
