@@ -42,6 +42,18 @@ class QualityAssuranceTask extends \Task
     protected $passbuild = true;
 
     /**
+     * The setter for the attribute "autoSelect".
+     *
+     * @param boolean $boolean wether or not to run the entire codebase.
+     *
+     * @return void
+     */
+    public function setAutoSelect($boolean)
+    {
+        $this->autoSelect = $boolean;
+    }
+
+    /**
      * The setter for the attribute "projectBaseDir".
      *
      * @param string $string The location of the project base folder.
@@ -135,14 +147,15 @@ class QualityAssuranceTask extends \Task
         }
         // Stop for selection of module.
         echo SELF::NOCOLOR . "\n";
-        $qa_selection = readline(
-          'Select features, modules and/or themes to QA (seperate with space): '
-        );
-        if ($qa_selection != "0") {
-            $qa_selection = explode(' ', $qa_selection);
-            $qa_selection = array_intersect_key($options, array_flip($qa_selection));
-        } else {
-            $qa_selection = $options;
+        $qa_selection = $options;
+        if (!$this->autoSelect) {
+            $qa_selection = readline(
+              'Select features, modules and/or themes to QA (seperate with space): '
+            );
+            if ($qa_selection != "0") {
+                $qa_selection = explode(' ', $qa_selection);
+                $qa_selection = array_intersect_key($options, array_flip($qa_selection));
+            }
         }
         echo "\n";
         // Start the QA on selected features, modules and/or themes.
