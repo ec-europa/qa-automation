@@ -147,19 +147,19 @@ class QualityAssuranceTask extends \Task
         }
         // Stop for selection of module.
         echo SELF::NOCOLOR . "\n";
-        $qa_selection = $options;
+        $selected = $options;
         if (!$this->autoSelect) {
             $qa_selection = readline(
               'Select features, modules and/or themes to QA (seperate with space): '
             );
             if ($qa_selection != "0") {
                 $qa_selection = explode(' ', $qa_selection);
-                $qa_selection = array_intersect_key($options, array_flip($qa_selection));
+                $selected = array_intersect_key($options, array_flip($qa_selection));
             }
         }
         echo "\n";
         // Start the QA on selected features, modules and/or themes.
-        $this->startQa($qa_selection);
+        $this->startQa($selected);
         if (!$this->passbuild) {
             throw new \BuildException(
               'Build failed because the code did not pass quality assurance 
