@@ -294,10 +294,14 @@ class QualityAssuranceTask extends \Task
         $standards = $this->projectBaseDir . '/vendor/drupal/coder/coder_sniffer/';
         // Execute phpcs on the module folder.
         echo "\nCheck coding standards: ";
-        $phpcs = shell_exec('./bin/phpcs --standard=phpcs.xml ' .
-          $this->distBuildDir . '/' . $dirname);
+        ob_start();
+        passthru('./bin/phpcs --standard=phpcs.xml ' .
+          $this->distBuildDir . '/' . $dirname,
+          $error);
+        $phpcs = ob_get_contents();
+        ob_end_clean();
         // Print result.
-        if (!empty(trim($phpcs))) {
+        if ($error) {
             echo "\n" . $phpcs;
             $this->passbuild = false;
         } else {
