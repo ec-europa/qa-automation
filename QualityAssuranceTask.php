@@ -166,6 +166,7 @@ class QualityAssuranceTask extends \Task
                     checks.'
             );
         }
+        chdir($this->projectBaseDir);
     }
     /**
      * Function to start the quality assurance checks.
@@ -291,7 +292,6 @@ class QualityAssuranceTask extends \Task
         chdir($this->projectBaseDir);
         // Set directories.
         $dirname = $pathinfo['dirname'];
-        $standards = $this->projectBaseDir . '/vendor/drupal/coder/coder_sniffer/';
         // Execute phpcs on the module folder.
         echo "\nCheck coding standards: ";
         ob_start();
@@ -307,6 +307,7 @@ class QualityAssuranceTask extends \Task
         } else {
             echo SELF::GREEN . "no violations.";
         }
+        chdir($this->distBuildDir);
     }
 
     /**
