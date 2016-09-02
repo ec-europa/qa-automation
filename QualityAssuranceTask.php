@@ -307,8 +307,6 @@ class QualityAssuranceTask extends \Task
         } else {
             echo SELF::GREEN . "no violations.";
         }
-
-        chdir($this->distBuildDir);
     }
 
     /**
