@@ -202,8 +202,6 @@ class QualityAssuranceTask extends \Task
     {
         // Find file in lib folder
         $filename = $pathinfo['filename'];
-        $dirname = $pathinfo['dirname'];
-        $filepath = $dirname . '/' . $filename . '.install';
         $updates = 0;
         // Find our install file in the lib folder
         $finder = new Finder();
@@ -215,11 +213,12 @@ class QualityAssuranceTask extends \Task
         if ($file = $iterator->current()) {
 
             // Get a diff of current branch and master for the install in lib folder.
+            $filepath = $file->getRealPath();
             $wrapper = new GitWrapper();
             $git = $wrapper->workingCopy($this->libDir);
             $branches = $git->getBranches();
             $head = $branches->head();
-            $diff = $git->diff('master', $head, $file->getRealPath());
+            $diff = $git->diff('master', $head, $filepath);
 
             // Find new hook update functions in diff.
             $regex = '~' . $filename . '_update_7\d{3}~';
@@ -245,7 +244,7 @@ class QualityAssuranceTask extends \Task
             foreach ($matches[0] as $key => $match) {
                 list($before) = str_split($contents, $match[1]);
                 $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
-                echo SELF::NOCOLOR . "\n  ./" . $basename . ':' . $line_number . ':' . $match[0];
+                echo SELF::NOCOLOR . "\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
             }
         }
     }
