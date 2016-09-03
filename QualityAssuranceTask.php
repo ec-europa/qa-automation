@@ -377,21 +377,12 @@ class QualityAssuranceTask extends \Task
           'projects' => 'modules or themes',
           'libraries' => 'libraries'
         );
-        $diff = '';
-        $finder = new Finder();
-        $finder->files()
-          ->name('site.make')
-          ->in($this->resourcesDir);
-        $iterator = $finder->getIterator();
-        $iterator->rewind();
-        if ($file = $iterator->current()) {
-            // Get a diff of current branch and master.
-            $wrapper = new GitWrapper();
-            $git = $wrapper->workingCopy($this->resourcesDir);
-            $branches = $git->getBranches();
-            $head = $branches->head();
-            $diff = $git->diff('master', $head, $file->getRealPath());
-        }
+        // Get a diff of current branch and master.
+        $wrapper = new GitWrapper();
+        $git = $wrapper->workingCopy($this->resourcesDir);
+        $branches = $git->getBranches();
+        $head = $branches->head();
+        $diff = $git->diff('master', $head, $this->resourcesDir . '/site.make');
 
         // Find new projects or libraries.
         foreach ($searches as $search => $subject) {
