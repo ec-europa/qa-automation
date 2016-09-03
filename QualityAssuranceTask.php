@@ -188,6 +188,10 @@ class QualityAssuranceTask extends \Task
             $this->_checkCodingStandards($pathinfo);
             echo "\n";
         }
+        echo "\n";
+        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
+        echo $this->resourcesDir . "/site.make\n";
+        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
         $this->_checkGitDiffSiteMake();
     }
 
@@ -373,25 +377,21 @@ class QualityAssuranceTask extends \Task
           'projects' => 'modules or themes',
           'libraries' => 'libraries'
         );
-        $finder  = new Finder();
+        $diff = '';
+        $finder = new Finder();
         $finder->files()
           ->name('site.make')
           ->in($this->resourcesDir);
-        foreach ($finder as $file) {
-            $filepathname = $file->getPathname;
-            var_dump($filepathname);
+        $iterator = $finder->getIterator();
+        $iterator->rewind();
+        if ($file = $iterator->current()) {
+            // Get a diff of current branch and master.
+            $wrapper = new GitWrapper();
+            $git = $wrapper->workingCopy($this->resourcesDir);
+            $branches = $git->getBranches();
+            $head = $branches->head();
+            $diff = $git->diff('master', $head, $file->getRealPath());
         }
-        // Get a diff of current branch and master.
-        $wrapper = new GitWrapper();
-        $git = $wrapper->workingCopy($this->resourcesDir);
-        $branches = $git->getBranches();
-        $head = $branches->head();
-        $diff =  $git->diff('master', $head, $filepathname);
-
-        echo "\n";
-        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-        echo str_replace($this->projectBaseDir, '.', $this->resourcesDir) . "/site.make\n";
-        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
 
         // Find new projects or libraries.
         foreach ($searches as $search => $subject) {
