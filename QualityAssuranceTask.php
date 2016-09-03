@@ -203,17 +203,17 @@ class QualityAssuranceTask extends \Task
         // Find file in lib folder
         $filename = $pathinfo['filename'];
         $dirname = $pathinfo['dirname'];
-        $basename = $filename . '.install';
+        $filepath = $dirname . '/' . $filename . '.install';
         // Get a diff of current branch and master.
         $wrapper = new GitWrapper();
         $git = $wrapper->workingCopy($this->libDir);
         $branches = $git->getBranches();
         $head = $branches->head();
-        $diff =  $git->diff('master', $head, $filepathname);
+        $diff =  $git->diff('master', $head, $filepath);
 
         // Find new hook update functions in diff.
         $regex = '~' . $filename . '_update_7\d{3}~';
-        $contents = file_get_contents($dirname . '/' . $basename);
+        $contents = is_file($filepath) ? file_get_contents($filepath) : '';
         preg_match_all($regex, $diff , $matches);
         $updates = $matches[0];
         $count = count($updates);
@@ -226,7 +226,7 @@ class QualityAssuranceTask extends \Task
             if ($count === 1) {
                 echo SELF::YELLOW . "1 update found.";
             } else {
-                echo SELF::RED . $count . ' updates found.' . SELF::NOCOLOR;
+                echo SELF::RED . $count . " updates found.";
                 $this->passbuild = false;
             }
             // Print the found hooks with file and line number.
@@ -234,7 +234,7 @@ class QualityAssuranceTask extends \Task
             foreach ($matches[0] as $key => $match) {
                 list($before) = str_split($contents, $match[1]);
                 $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
-                echo SELF::NOCOLOR . "\n  ./" . $basename . ':' . $line_number . ':' . $match[0];
+                echo SELF::NOCOLOR . "\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
             }
         }
     }
