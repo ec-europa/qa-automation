@@ -202,13 +202,8 @@ class QualityAssuranceTask extends \Task
     {
         // Find file in lib folder
         $filename = $pathinfo['filename'];
-        $finder  = new Finder();
-        $finder->files()
-          ->name($filename . '.install')
-          ->in($this->libDir);
-        foreach ($finder as $file) {
-            $filepathname = $file->getPathname;
-        }
+        $dirname = $pathinfo['dirname'];
+        $basename = $filename . '.install';
         // Get a diff of current branch and master.
         $wrapper = new GitWrapper();
         $git = $wrapper->workingCopy($this->libDir);
@@ -218,18 +213,29 @@ class QualityAssuranceTask extends \Task
 
         // Find new hook update functions in diff.
         $regex = '~' . $filename . '_update_7\d{3}~';
-        preg_match_all($regex, $diff, $matches);
+        $contents = file_get_contents($dirname . '/' . $basename);
+        preg_match_all($regex, $diff , $matches);
         $updates = $matches[0];
+        $count = count($updates);
 
         // Print result.
         echo SELF::CYAN . "\nCheck for new updates in branch: ";
         if (empty($updates)) {
             echo SELF::GREEN . "none found." . SELF::NOCOLOR;
-        } elseif (count($updates) === 1) {
-            echo SELF::YELLOW . $updates[0];
         } else {
-            echo SELF::RED . "multiple found!" . SELF::NOCOLOR;
-            $this->passbuild = false;
+            if ($count === 1) {
+                echo SELF::YELLOW . "1 update found.";
+            } else {
+                echo SELF::RED . $count . ' updates found.' . SELF::NOCOLOR;
+                $this->passbuild = false;
+            }
+            // Print the found hooks with file and line number.
+            preg_match_all('~' . implode('|', $updates) . '~', $contents, $matches, PREG_OFFSET_CAPTURE);
+            foreach ($matches[0] as $key => $match) {
+                list($before) = str_split($contents, $match[1]);
+                $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
+                echo SELF::NOCOLOR . "\n  ./" . $basename . ':' . $line_number . ':' . $match[0];
+            }
         }
     }
 
@@ -263,15 +269,6 @@ class QualityAssuranceTask extends \Task
         } else {
             echo SELF::GREEN . "none found." . SELF::NOCOLOR;
         }
-//      // Display codingstandardsignore.
-//      $search_pattern = '(?<=codingStandardsIgnoreStart).*(\n|.)*(?=codingStandardsIgnoreEnd)';
-//      if (exec("grep -IPrinoz '{$search_pattern}' {$dirname}", $results)) {
-//        foreach ($results as $result) {
-//          echo "\n  ." . str_replace($dirname, '', $result);
-//        }
-//      } else {
-//        echo SELF::GREEN . "none found.";
-//      }
     }
 
     /**
