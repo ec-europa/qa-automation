@@ -204,6 +204,7 @@ class QualityAssuranceTask extends \Task
         $filename = $pathinfo['filename'];
         $dirname = $pathinfo['dirname'];
         $filepath = $dirname . '/' . $filename . '.install';
+        $relative_path = str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filepath);
         // Get a diff of current branch and master.
         $wrapper = new GitWrapper();
         $git = $wrapper->workingCopy($this->libDir);
@@ -234,7 +235,7 @@ class QualityAssuranceTask extends \Task
             foreach ($matches[0] as $key => $match) {
                 list($before) = str_split($contents, $match[1]);
                 $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
-                echo SELF::NOCOLOR . "\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
+                echo SELF::NOCOLOR . "\n  ./" . $basename . ':' . $line_number . ':' . $match[0];
             }
         }
     }
@@ -369,6 +370,7 @@ class QualityAssuranceTask extends \Task
           ->in($this->resourcesDir);
         foreach ($finder as $file) {
             $filepathname = $file->getPathname;
+            var_dump($filepathname);
         }
         // Get a diff of current branch and master.
         $wrapper = new GitWrapper();
