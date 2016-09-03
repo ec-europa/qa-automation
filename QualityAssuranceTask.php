@@ -263,15 +263,6 @@ class QualityAssuranceTask extends \Task
         } else {
             echo SELF::GREEN . "none found." . SELF::NOCOLOR;
         }
-//      // Display codingstandardsignore.
-//      $search_pattern = '(?<=codingStandardsIgnoreStart).*(\n|.)*(?=codingStandardsIgnoreEnd)';
-//      if (exec("grep -IPrinoz '{$search_pattern}' {$dirname}", $results)) {
-//        foreach ($results as $result) {
-//          echo "\n  ." . str_replace($dirname, '', $result);
-//        }
-//      } else {
-//        echo SELF::GREEN . "none found.";
-//      }
     }
 
     /**
@@ -342,15 +333,32 @@ class QualityAssuranceTask extends \Task
         // Find cron implementation.
         $dirname = $pathinfo['dirname'];
         $filename = $pathinfo['filename'];
+        $search_pattern = '~' . $filename . '_cron~';
         echo SELF::CYAN . "\nCheck for cron implementations: ";
-        $search_pattern = $filename . '_cron';
-        if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
-            echo SELF::YELLOW . "hook found." . SELF::NOCOLOR;
-            foreach ($results as $result) {
-                echo "\n  ." . str_replace($dirname, '', $result);
+        $found = array();
+        $linesfound = array();
+        $finder  = new Finder();
+        $finder->files()->in($dirname);
+        foreach ($finder as $file) {
+            $filepathname = $file->getRealPath();
+            $filename = basename($filepathname);
+            $filecontents = file($filepathname);
+            if ($linesfound = preg_grep($search_pattern, $filecontents)) {
+                foreach ($linesfound as $line => $text) {
+                    preg_match($search_pattern, $text, $hook);
+                    $found[] = SELF::NOCOLOR . '  ./' . $filename . ':' . $line .
+                      ':' . $hook[0];
+                }
             }
-        } else {
+        };
+        if (empty($found)) {
             echo SELF::GREEN . "none found.";
+        }
+        else {
+            echo SELF::YELLOW . "hook found. \n";
+            foreach ($found as $item) {
+                echo $item;
+            }
         }
     }
 
