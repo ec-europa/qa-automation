@@ -31,8 +31,10 @@ class QualityAssuranceTask extends \Task
     const MAGENTA = "\e[0;35m";
     const CYAN = "\e[0;36m";
     const NOCOLOR = "\e[0m";
-    const SEPERATOR =
+    const SEPERATOR_DOUBLE =
       "======================================================================\n";
+    const SEPERATOR_SINGLE =
+      "\n----------------------------------------------------------------------";
 
     /**
      * The task attributes.
@@ -122,8 +124,6 @@ class QualityAssuranceTask extends \Task
      */
     public function main()
     {
-        // Change to the build directory.
-        chdir($this->distBuildDir);
         // Find all info files in our build folder.
         $finder = new Finder();
         $finder->files()
@@ -135,17 +135,13 @@ class QualityAssuranceTask extends \Task
         $options = array();
         echo SELF::MAGENTA . "     0) Select all\n";
         foreach ($finder as $file) {
-            $filepath = $file->getRelativePathname();
             $filepathname = $file->getRealPath();
-            $extension = pathinfo($filepathname, PATHINFO_EXTENSION);
             $filename = basename($filepathname);
-            if ($extension == "info") {
-                echo "     " . $i . ") " . $filename, PHP_EOL;
-                $options[$i] = $filepath;
-                $i++;
-            }
+            echo "     " . $i . ") " . $filename, PHP_EOL;
+            $options[$i] = $filepathname;
+            $i++;
         }
-        // Stop for selection of module.
+        // Stop for selection of module if autoselect is disabled.
         echo SELF::NOCOLOR . "\n";
         $selected = $options;
         if (!$this->autoSelect) {
@@ -162,11 +158,9 @@ class QualityAssuranceTask extends \Task
         $this->startQa($selected);
         if (!$this->passbuild) {
             throw new \BuildException(
-              'Build failed because the code did not pass quality assurance 
-                    checks.'
+              'Build failed because the code did not pass quality assurance checks.'
             );
         }
-        chdir($this->projectBaseDir);
     }
     /**
      * Function to start the quality assurance checks.
@@ -182,15 +176,15 @@ class QualityAssuranceTask extends \Task
             $file = file_get_contents($filepathname);
             $parsed = $this->_drupalParseInfoFormat($file);
             $pathinfo = pathinfo($filepathname);
-            $isFeature = isset($parsed['features']['features_api']) ? true : false;
             // Print header of module, feature or theme.
             echo "\n";
-            echo SELF::NOCOLOR . SELF::SEPERATOR;
-            echo $this->distBuildDir . "/" . $pathinfo['dirname'] . "\n";
-            echo SELF::NOCOLOR . SELF::SEPERATOR;
+            echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
+            echo $pathinfo['dirname'] . "\n";
+            echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
             $this->_checkCron($pathinfo);
             $this->_checkGitDiffUpdateHook($pathinfo);
             $this->_checkBypassCodingStandards($pathinfo);
+            $this->_checkTodos($pathinfo);
             $this->_checkCodingStandards($pathinfo);
             echo "\n";
         }
@@ -228,7 +222,7 @@ class QualityAssuranceTask extends \Task
         $updates = $matches[0];
 
         // Print result.
-        echo SELF::NOCOLOR . "\nNew updates found in this branch: ";
+        echo SELF::CYAN . "\nCheck for new updates in branch: ";
         if (empty($updates)) {
             echo SELF::GREEN . "none found." . SELF::NOCOLOR;
         } elseif (count($updates) === 1) {
@@ -250,20 +244,21 @@ class QualityAssuranceTask extends \Task
     {
         // Find codingStandardsIgnore tags.
         $dirname = $pathinfo['dirname'];
-        echo SELF::NOCOLOR . "\nCheck for coding standard ignores: ";
+        echo SELF::CYAN . "\nCheck for coding standard ignores: ";
         $search_for = array(
           '@codingStandardsIgnoreStart',
           '@codingStandardsIgnoreFile',
           '@codingStandardsIgnoreLine'
         );
         $search_pattern = implode('|', $search_for);
-        if (exec("grep -IPrinoz '{$search_pattern}' {$dirname}", $results)) {
+        if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
             $plural = count($results) > 1 ? 's' : '';
             echo SELF::YELLOW .
               count($results) . " ignore" . $plural . " found." .
               SELF::NOCOLOR;
             foreach ($results as $result) {
-                echo "\n  ." . str_replace($dirname, '', $result);
+                $lines = explode(':', str_replace($dirname, '', $result));
+                echo "\n  ." . implode(':', array_map('trim', $lines));
             }
         } else {
             echo SELF::GREEN . "none found." . SELF::NOCOLOR;
@@ -280,6 +275,36 @@ class QualityAssuranceTask extends \Task
     }
 
     /**
+     * Grab all todo's from the file.
+     *
+     * @param array $pathinfo The pathinfo of the info file.
+     *
+     * @return void
+     */
+    private function _checkTodos($pathinfo)
+    {
+        // Find todo tags.
+        $dirname = $pathinfo['dirname'];
+        echo SELF::CYAN . "\nCheck for todo's for this release: ";
+        $search_for = array(
+          '@todo: .*?MULTISITE-[0-9]{5}.*?'
+        );
+        $search_pattern = implode('|', $search_for);
+        if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
+            $plural = count($results) > 1 ? '\'s' : '';
+            echo SELF::YELLOW .
+              count($results) . " todo" . $plural . " found." .
+              SELF::NOCOLOR;
+            foreach ($results as $result) {
+                $lines = explode(':', str_replace($dirname, '', $result));
+                echo "\n  ." . implode(':', array_map('trim', $lines));
+            }
+        } else {
+            echo SELF::GREEN . "none found." . SELF::NOCOLOR;
+        }
+    }
+
+    /**
      * Perform a PHPCS on the specified folder.
      *
      * @param array $pathinfo The pathinfo of the info file.
@@ -288,26 +313,21 @@ class QualityAssuranceTask extends \Task
      */
     private function _checkCodingStandards($pathinfo)
     {
-        // Change directory to project root to run phpcs from.
-        chdir($this->projectBaseDir);
         // Set directories.
         $dirname = $pathinfo['dirname'];
         // Execute phpcs on the module folder.
-        echo "\nCheck coding standards: ";
+        echo SELF::CYAN . "\nCheck for coding standards: " . SELF::NOCOLOR;
         ob_start();
-        passthru('./bin/phpcs --standard=phpcs.xml ' .
-          $this->distBuildDir . '/' . $dirname,
-          $error);
+        passthru('./bin/phpcs --standard=phpcs.xml ' . $dirname, $error);
         $phpcs = ob_get_contents();
         ob_end_clean();
         // Print result.
         if ($error) {
-            echo "\n" . $phpcs;
+            echo $phpcs;
             $this->passbuild = false;
         } else {
             echo SELF::GREEN . "no violations.";
         }
-        chdir($this->distBuildDir);
     }
 
     /**
@@ -322,9 +342,9 @@ class QualityAssuranceTask extends \Task
         // Find cron implementation.
         $dirname = $pathinfo['dirname'];
         $filename = $pathinfo['filename'];
-        echo SELF::NOCOLOR . "\nCheck for cron implementations: ";
+        echo SELF::CYAN . "\nCheck for cron implementations: ";
         $search_pattern = $filename . '_cron';
-        if (exec("grep -IPrin '{$search_pattern}' {$dirname}", $results)) {
+        if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
             echo SELF::YELLOW . "hook found." . SELF::NOCOLOR;
             foreach ($results as $result) {
                 echo "\n  ." . str_replace($dirname, '', $result);
@@ -361,10 +381,9 @@ class QualityAssuranceTask extends \Task
         $diff =  $git->diff('master', $head, $filepathname);
 
         echo "\n";
-        echo SELF::NOCOLOR . SELF::SEPERATOR;
-        echo SELF::NOCOLOR .
-          str_replace($this->projectBaseDir, '.', $this->resourcesDir) . "/site.make\n";
-        echo SELF::NOCOLOR . SELF::SEPERATOR;
+        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
+        echo str_replace($this->projectBaseDir, '.', $this->resourcesDir) . "/site.make\n";
+        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
 
         // Find new projects or libraries.
         foreach ($searches as $search => $subject) {
@@ -373,7 +392,7 @@ class QualityAssuranceTask extends \Task
             $additions = array_unique($matches[1]);
 
             // Print result.
-            echo SELF::NOCOLOR . 'New ' . $subject . ' found: ';
+            echo SELF::CYAN . 'New ' . $subject . ' found: ';
             if (empty($additions)) {
                 echo SELF::GREEN . "none found.\n";
             } else {
