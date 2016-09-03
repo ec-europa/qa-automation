@@ -204,20 +204,30 @@ class QualityAssuranceTask extends \Task
         $filename = $pathinfo['filename'];
         $dirname = $pathinfo['dirname'];
         $filepath = $dirname . '/' . $filename . '.install';
-        $relative_path = str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filepath);
-        // Get a diff of current branch and master.
-        $wrapper = new GitWrapper();
-        $git = $wrapper->workingCopy($this->libDir);
-        $branches = $git->getBranches();
-        $head = $branches->head();
-        $diff =  $git->diff('master', $head, $relative_path);
+        $updates = 0;
+        // Find our install file in the lib folder
+        $finder = new Finder();
+        $finder->files()
+          ->name($filename . '.install')
+          ->in($this->libDir);
+        $iterator = $finder->getIterator();
+        $iterator->rewind();
+        if ($file = $iterator->current()) {
 
-        // Find new hook update functions in diff.
-        $regex = '~' . $filename . '_update_7\d{3}~';
-        $contents = is_file($filepath) ? file_get_contents($filepath) : '';
-        preg_match_all($regex, $diff , $matches);
-        $updates = $matches[0];
-        $count = count($updates);
+            // Get a diff of current branch and master for the install in lib folder.
+            $wrapper = new GitWrapper();
+            $git = $wrapper->workingCopy($this->libDir);
+            $branches = $git->getBranches();
+            $head = $branches->head();
+            $diff = $git->diff('master', $head, $file->getRealPath());
+
+            // Find new hook update functions in diff.
+            $regex = '~' . $filename . '_update_7\d{3}~';
+            $contents = is_file($filepath) ? file_get_contents($filepath) : '';
+            preg_match_all($regex, $diff, $matches);
+            $updates = $matches[0];
+            $count = count($updates);
+        }
 
         // Print result.
         echo SELF::CYAN . "\nCheck for new updates in branch: ";
