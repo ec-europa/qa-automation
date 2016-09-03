@@ -210,7 +210,7 @@ class QualityAssuranceTask extends \Task
         $git = $wrapper->workingCopy($this->libDir);
         $branches = $git->getBranches();
         $head = $branches->head();
-        $diff =  $git->diff('master', $head, $filepath);
+        $diff =  $git->diff('master', $head, $relative_path);
 
         // Find new hook update functions in diff.
         $regex = '~' . $filename . '_update_7\d{3}~';
