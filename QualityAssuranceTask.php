@@ -382,7 +382,7 @@ class QualityAssuranceTask extends \Task
         $git = $wrapper->workingCopy($this->resourcesDir);
         $branches = $git->getBranches();
         $head = $branches->head();
-        $diff = $git->diff('master', $head, $this->resourcesDir . '/site.make');
+        $diff = $git->diff('master', $head, $this->resourcesDir . '/site.make.example');
 
         // Find new projects or libraries.
         foreach ($searches as $search => $subject) {
