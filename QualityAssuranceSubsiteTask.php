@@ -26,10 +26,9 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask
         foreach ($selected as $filepathname) {
             $pathinfo = pathinfo($filepathname);
             // Print header of module, feature or theme.
-            echo "\n";
-            echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
+            echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
             echo $pathinfo['dirname'] . "\n";
-            echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
+            echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
             $this->checkCron($pathinfo);
             $this->checkGitDiffUpdateHook($pathinfo);
             $this->checkBypassCodingStandards($pathinfo);
@@ -38,9 +37,9 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask
             echo "\n";
         }
         echo "\n";
-        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-        echo $this->resourcesDir . "/site.make\n";
-        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
+        echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+        echo $this->makeFile . "\n";
+        echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
         $this->checkGitDiffSiteMake($this->makeFile . '.example');
     }
 }

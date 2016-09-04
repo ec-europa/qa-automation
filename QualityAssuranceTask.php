@@ -24,20 +24,22 @@ class QualityAssuranceTask extends \Task
     /**
      * Used for printing colors.
      */
-    const BLUE = "\e[0;34m";
-    const CYAN = "\e[0;36m";
-    const GREEN = "\e[0;32m";
-    const MAGENTA = "\e[0;35m";
-    const NOCOLOR = "\e[0m";
-    const RED = "\e[1;31m";
-    const YELLOW  = "\e[0;33m";
+    const COLORS = array(
+        'blue' => "\e[0;34m",
+        'cyan' => "\e[0;36m",
+        'green' => "\e[0;32m",
+        'magenta' => "\e[0;35m",
+        'nocolor' => "\e[0m",
+        'red' => "\e[1;31m",
+        'yellow'  => "\e[0;33m"
+    );
     /**
      * Used for printing seperators.
      */
-    const SEPERATOR_DOUBLE =
-      "======================================================================\n";
-    const SEPERATOR_SINGLE =
-      "\n----------------------------------------------------------------------";
+    const SEPERATOR = array(
+      'double' => "======================================================================\n",
+      'single' => "\n----------------------------------------------------------------------"
+    );
 
     /**
      * The task attributes.
@@ -137,7 +139,7 @@ class QualityAssuranceTask extends \Task
         // Loop over files and extract the info files.
         $i = 1;
         $options = array();
-        echo SELF::MAGENTA . "     0) Select all\n";
+        echo SELF::COLORS['magenta'] . "     0) Select all\n";
         foreach ($finder as $file) {
             $filepathname = $file->getRealPath();
             $filename = basename($filepathname);
@@ -146,7 +148,7 @@ class QualityAssuranceTask extends \Task
             $i++;
         }
         // Stop for selection of module if autoselect is disabled.
-        echo SELF::NOCOLOR . "\n";
+        echo SELF::COLORS['nocolor'] . "\n";
         $selected = $options;
         if (!$this->autoSelect) {
             $qa_selection = readline(
@@ -158,8 +160,18 @@ class QualityAssuranceTask extends \Task
             }
         }
         echo "\n";
+
+        // Start output buffering.
+        ob_start();
         // Start the QA on selected features, modules and/or themes.
         $this->startQa($selected);
+        // Get contents of output.
+        $content = str_replace(SELF::COLORS, '', ob_get_contents());
+        // Write contents to file.
+        file_put_contents('report.txt', $content);
+
+        ob_end_flush();
+        // If an error was discovered, fail the build.
         if (!$this->passbuild) {
             throw new \BuildException(
               'Build failed because the code did not pass quality assurance checks.'
@@ -205,14 +217,14 @@ class QualityAssuranceTask extends \Task
         }
 
         // Print result.
-        echo SELF::CYAN . "\nCheck for new updates in branch: ";
+        echo SELF::COLORS['cyan'] . "\nCheck for new updates in branch: ";
         if (empty($updates)) {
-            echo SELF::GREEN . "none found." . SELF::NOCOLOR;
+            echo SELF::COLORS['green'] . "none found." . SELF::COLORS['nocolor'];
         } else {
             if ($count === 1) {
-                echo SELF::YELLOW . "1 update found.";
+                echo SELF::COLORS['yellow'] . "1 update found.";
             } else {
-                echo SELF::RED . $count . " updates found.";
+                echo SELF::COLORS['red'] . $count . " updates found.";
                 $this->passbuild = false;
             }
             // Print the found hooks with file and line number.
@@ -220,7 +232,7 @@ class QualityAssuranceTask extends \Task
             foreach ($matches[0] as $key => $match) {
                 list($before) = str_split($contents, $match[1]);
                 $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
-                echo SELF::NOCOLOR . "\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
+                echo SELF::COLORS['nocolor'] . "\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
             }
         }
     }
@@ -236,7 +248,7 @@ class QualityAssuranceTask extends \Task
     {
         // Find codingStandardsIgnore tags.
         $dirname = $pathinfo['dirname'];
-        echo SELF::CYAN . "\nCheck for coding standard ignores: ";
+        echo SELF::COLORS['cyan'] . "\nCheck for coding standard ignores: ";
         $search_for = array(
           '@codingStandardsIgnoreStart',
           '@codingStandardsIgnoreFile',
@@ -245,15 +257,15 @@ class QualityAssuranceTask extends \Task
         $search_pattern = implode('|', $search_for);
         if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
             $plural = count($results) > 1 ? 's' : '';
-            echo SELF::YELLOW .
+            echo SELF::COLORS['yellow'] .
               count($results) . " ignore" . $plural . " found." .
-              SELF::NOCOLOR;
+              SELF::COLORS['nocolor'];
             foreach ($results as $result) {
                 $lines = explode(':', str_replace($dirname, '', $result));
                 echo "\n  ." . implode(':', array_map('trim', $lines));
             }
         } else {
-            echo SELF::GREEN . "none found." . SELF::NOCOLOR;
+            echo SELF::COLORS['green'] . "none found." . SELF::COLORS['nocolor'];
         }
     }
 
@@ -268,22 +280,22 @@ class QualityAssuranceTask extends \Task
     {
         // Find todo tags.
         $dirname = $pathinfo['dirname'];
-        echo SELF::CYAN . "\nCheck for todo's for this release: ";
+        echo SELF::COLORS['cyan'] . "\nCheck for todo's for this release: ";
         $search_for = array(
           '@todo: .*?MULTISITE-[0-9]{5}.*?'
         );
         $search_pattern = implode('|', $search_for);
         if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
             $plural = count($results) > 1 ? '\'s' : '';
-            echo SELF::YELLOW .
+            echo SELF::COLORS['yellow'] .
               count($results) . " todo" . $plural . " found." .
-              SELF::NOCOLOR;
+              SELF::COLORS['nocolor'];
             foreach ($results as $result) {
                 $lines = explode(':', str_replace($dirname, '', $result));
                 echo "\n  ." . implode(':', array_map('trim', $lines));
             }
         } else {
-            echo SELF::GREEN . "none found." . SELF::NOCOLOR;
+            echo SELF::COLORS['green'] . "none found." . SELF::COLORS['nocolor'];
         }
     }
 
@@ -299,7 +311,7 @@ class QualityAssuranceTask extends \Task
         // Set directories.
         $dirname = $pathinfo['dirname'];
         // Execute phpcs on the module folder.
-        echo SELF::CYAN . "\nCheck for coding standards: " . SELF::NOCOLOR;
+        echo SELF::COLORS['cyan'] . "\nCheck for coding standards: " . SELF::COLORS['nocolor'];
         ob_start();
         passthru('./bin/phpcs --standard=phpcs.xml ' . $dirname, $error);
         $phpcs = ob_get_contents();
@@ -309,7 +321,7 @@ class QualityAssuranceTask extends \Task
             echo $phpcs;
             $this->passbuild = false;
         } else {
-            echo SELF::GREEN . "no violations.";
+            echo SELF::COLORS['green'] . "no violations.";
         }
     }
 
@@ -325,15 +337,15 @@ class QualityAssuranceTask extends \Task
         // Find cron implementation.
         $dirname = $pathinfo['dirname'];
         $filename = $pathinfo['filename'];
-        echo SELF::CYAN . "\nCheck for cron implementations: ";
+        echo SELF::COLORS['cyan'] . "Check for cron implementations: ";
         $search_pattern = $filename . '_cron';
         if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
-            echo SELF::YELLOW . "hook found." . SELF::NOCOLOR;
+            echo SELF::COLORS['yellow'] . "hook found." . SELF::COLORS['nocolor'];
             foreach ($results as $result) {
                 echo "\n  ." . str_replace($dirname, '', $result);
             }
         } else {
-            echo SELF::GREEN . "none found.";
+            echo SELF::COLORS['green'] . "none found.";
         }
     }
 
@@ -365,11 +377,11 @@ class QualityAssuranceTask extends \Task
             $additions = array_unique($matches[1]);
 
             // Print result.
-            echo SELF::CYAN . 'New ' . $subject . ' found: ';
+            echo SELF::COLORS['cyan'] . 'New ' . $subject . ' found: ';
             if (empty($additions)) {
-                echo SELF::GREEN . "none found.\n";
+                echo SELF::COLORS['green'] . "none found.\n";
             } else {
-                echo SELF::YELLOW . implode(', ', $additions) . ".\n";
+                echo SELF::COLORS['yellow'] . implode(', ', $additions) . ".\n";
             }
         }
     }

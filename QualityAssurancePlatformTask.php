@@ -39,7 +39,7 @@ class QualityAssurancePlatformTask extends QualityAssuranceTask
         }
         echo "\n";
         echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-        echo $this->resourcesDir . "/site.make\n";
+        echo $this->makeFile;
         echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
         $this->checkGitDiffSiteMake($this->makeFile);
     }
