@@ -24,13 +24,16 @@ class QualityAssuranceTask extends \Task
     /**
      * Used for printing colors.
      */
-    const RED = "\e[1;31m";
-    const GREEN = "\e[0;32m";
-    const YELLOW  = "\e[0;33m";
     const BLUE = "\e[0;34m";
-    const MAGENTA = "\e[0;35m";
     const CYAN = "\e[0;36m";
+    const GREEN = "\e[0;32m";
+    const MAGENTA = "\e[0;35m";
     const NOCOLOR = "\e[0m";
+    const RED = "\e[1;31m";
+    const YELLOW  = "\e[0;33m";
+    /**
+     * Used for printing seperators.
+     */
     const SEPERATOR_DOUBLE =
       "======================================================================\n";
     const SEPERATOR_SINGLE =
@@ -39,8 +42,6 @@ class QualityAssuranceTask extends \Task
     /**
      * The task attributes.
      */
-    protected $directory = null;
-    protected $failbuild = true;
     protected $passbuild = true;
 
     /**
@@ -53,6 +54,18 @@ class QualityAssuranceTask extends \Task
     public function setAutoSelect($boolean)
     {
         $this->autoSelect = $boolean;
+    }
+
+    /**
+     * The setter for the attribute "makeFile".
+     *
+     * @param string $string The location of the make file.
+     *
+     * @return void
+     */
+    public function setMakeFile($string)
+    {
+        $this->makeFile = $string;
     }
 
     /**
@@ -105,16 +118,6 @@ class QualityAssuranceTask extends \Task
     }
 
     /**
-     * The init method: Do init steps.
-     *
-     * @return void
-     */
-    public function init()
-    {
-        // nothing to do here
-    }
-
-    /**
      * The main entry point method.
      *
      * @return void
@@ -162,38 +165,6 @@ class QualityAssuranceTask extends \Task
             );
         }
     }
-    /**
-     * Function to start the quality assurance checks.
-     *
-     * @param array $options Array containing the filepathnames.
-     *
-     * @return void
-     */
-    public function startQa($options)
-    {
-        foreach ($options as $filepathname) {
-            // Set variables.
-            $file = file_get_contents($filepathname);
-            $parsed = $this->_drupalParseInfoFormat($file);
-            $pathinfo = pathinfo($filepathname);
-            // Print header of module, feature or theme.
-            echo "\n";
-            echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-            echo $pathinfo['dirname'] . "\n";
-            echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-            $this->_checkCron($pathinfo);
-            $this->_checkGitDiffUpdateHook($pathinfo);
-            $this->_checkBypassCodingStandards($pathinfo);
-            $this->_checkTodos($pathinfo);
-            $this->_checkCodingStandards($pathinfo);
-            echo "\n";
-        }
-        echo "\n";
-        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-        echo $this->resourcesDir . "/site.make\n";
-        echo SELF::MAGENTA . SELF::SEPERATOR_DOUBLE;
-        $this->_checkGitDiffSiteMake();
-    }
 
     /**
      * Check for new update hook(s).
@@ -202,7 +173,7 @@ class QualityAssuranceTask extends \Task
      *
      * @return void
      */
-    private function _checkGitDiffUpdateHook($pathinfo)
+    public function checkGitDiffUpdateHook($pathinfo)
     {
         // Find file in lib folder
         $filename = $pathinfo['filename'];
@@ -260,7 +231,7 @@ class QualityAssuranceTask extends \Task
      *
      * @return void
      */
-    private function _checkBypassCodingStandards($pathinfo)
+    public function checkBypassCodingStandards($pathinfo)
     {
         // Find codingStandardsIgnore tags.
         $dirname = $pathinfo['dirname'];
@@ -292,7 +263,7 @@ class QualityAssuranceTask extends \Task
      *
      * @return void
      */
-    private function _checkTodos($pathinfo)
+    public function checkTodos($pathinfo)
     {
         // Find todo tags.
         $dirname = $pathinfo['dirname'];
@@ -322,7 +293,7 @@ class QualityAssuranceTask extends \Task
      *
      * @return void
      */
-    private function _checkCodingStandards($pathinfo)
+    public function checkCodingStandards($pathinfo)
     {
         // Set directories.
         $dirname = $pathinfo['dirname'];
@@ -348,7 +319,7 @@ class QualityAssuranceTask extends \Task
      *
      * @return void
      */
-    private function _checkCron($pathinfo)
+    public function checkCron($pathinfo)
     {
         // Find cron implementation.
         $dirname = $pathinfo['dirname'];
@@ -370,7 +341,7 @@ class QualityAssuranceTask extends \Task
      *
      * @return void
      */
-    private function _checkGitDiffSiteMake()
+    public function checkGitDiffSiteMake()
     {
         // Find site.make in resources folder
         $searches = array(
@@ -382,7 +353,7 @@ class QualityAssuranceTask extends \Task
         $git = $wrapper->workingCopy($this->resourcesDir);
         $branches = $git->getBranches();
         $head = $branches->head();
-        $diff = $git->diff('master', $head, $this->resourcesDir . '/site.make.example');
+        $diff = $git->diff('master', $head, $this->makeFile . '.example');
 
         // Find new projects or libraries.
         foreach ($searches as $search => $subject) {
@@ -398,67 +369,5 @@ class QualityAssuranceTask extends \Task
                 echo SELF::YELLOW . implode(', ', $additions) . ".\n";
             }
         }
-    }
-
-    /**
-     * Parses data in Drupal's .info format.
-     *
-     * @param string $data A string to parse.
-     *
-     * @return array $info The info array.
-     *
-     * @link https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_parse_info_format/7.x
-     */
-    private function _drupalParseInfoFormat($data)
-    {
-        $info = array();
-
-        if (preg_match_all(
-          '@^\s*((?:[^=;\[\]]|\[[^\[\]]*\])+?)\s*=\s*(?:("(?:[^"]|(?<=\\\\)")*")|(
-            \'(?:[^\']|(?<=\\\\)\')*\')|([^\r\n]*?))\s*$@msx',
-          $data,
-          $matches,
-          PREG_SET_ORDER
-        )) {
-            foreach ($matches as $match) {
-                // Fetch the key and value string.
-                $i = 0;
-                foreach (array('key', 'value1', 'value2', 'value3') as $var) {
-                    $$var = isset($match[++$i]) ? $match[$i] : '';
-                }
-                $value = stripslashes(substr($value1, 1, -1)) .
-                  stripslashes(substr($value2, 1, -1)) .
-                  $value3;
-
-                // Parse array syntax.
-                $keys = preg_split('/\]?\[/', rtrim($key, ']'));
-                $last = array_pop($keys);
-                $parent = &$info;
-
-                // Create nested arrays.
-                foreach ($keys as $key) {
-                    if ($key == '') {
-                        $key = count($parent);
-                    }
-                    if (!isset($parent[$key]) || !is_array($parent[$key])) {
-                        $parent[$key] = array();
-                    }
-                    $parent = &$parent[$key];
-                }
-
-                // Handle PHP constants.
-                if (preg_match('/^\w+$/i', $value) && defined($value)) {
-                    $value = constant($value);
-                }
-
-                // Insert actual value.
-                if ($last == '') {
-                    $last = count($parent);
-                }
-                $parent[$last] = $value;
-            }
-        }
-
-        return $info;
     }
 }
