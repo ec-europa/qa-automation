@@ -1,18 +1,18 @@
 <?php
 
 /**
- * File for automated Quality Assurance checks for subsites.
+ * File for automated Quality Assurance checks for the platform.
  *
  * @file
- * Contains NextEuropa\Phing\QualityAssuranceSubsiteTask.
+ * Contains NextEuropa\Phing\QualityAssurancePlatformTask.
  */
 
 namespace NextEuropa\Phing;
 
 /**
- * Quality assurance task class for subsites.
+ * Quality assurance task class for the platform.
  */
-class QualityAssuranceSubsiteTask extends QualityAssuranceTask
+class QualityAssurancePlatformTask extends QualityAssuranceTask
 {
     /**
      * Function to start the quality assurance checks.
