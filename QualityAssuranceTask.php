@@ -339,9 +339,11 @@ class QualityAssuranceTask extends \Task
     /**
      * Check for new or removed module(s).
      *
+     * @param string $makefile The makefile to check.
+     *
      * @return void
      */
-    public function checkGitDiffSiteMake()
+    public function checkGitDiffSiteMake($makefile)
     {
         // Find site.make in resources folder
         $searches = array(
@@ -353,7 +355,7 @@ class QualityAssuranceTask extends \Task
         $git = $wrapper->workingCopy($this->resourcesDir);
         $branches = $git->getBranches();
         $head = $branches->head();
-        $diff = $git->diff('master', $head, $this->makeFile . '.example');
+        $diff = $git->diff('master', $head, $makefile);
 
         // Find new projects or libraries.
         foreach ($searches as $search => $subject) {
