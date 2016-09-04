@@ -132,7 +132,8 @@ class QualityAssuranceTask extends \Task
         $finder->files()
           ->name('*.info')
           ->in($this->distBuildDir)
-          ->exclude(array('contrib', 'contributed'));
+          ->exclude(array('contrib', 'contributed'))
+          ->sortByName();
         // Loop over files and extract the info files.
         $i = 1;
         $options = array();
