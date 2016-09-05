@@ -51,7 +51,7 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedLinkSniff implements PHP_C
         $token  = $tokens[$stackPtr];
 
         // Skip t() functions because there we allow link tags.
-        if ($token['content'] == 't' && $tokens[$stackPtr + 1]['type'] == 'T_OPEN_PARENTHESIS') {
+        if (($token['content'] == 't' || $token['content'] == '$t') && $tokens[$stackPtr + 1]['type'] == 'T_OPEN_PARENTHESIS') {
             return ($tokens[$stackPtr + 1]['parenthesis_closer'] + 1);
         }
 

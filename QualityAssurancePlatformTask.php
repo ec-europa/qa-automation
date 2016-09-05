@@ -40,6 +40,6 @@ class QualityAssurancePlatformTask extends QualityAssuranceTask
         echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
         echo $this->makeFile . "\n";
         echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
-        $this->checkGitDiffSiteMake($this->makeFile . '.example');
+        $this->checkGitDiffSiteMake($this->makeFile);
     }
 }
