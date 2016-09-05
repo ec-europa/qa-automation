@@ -29,6 +29,7 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedLinkSniff implements PHP_C
     {
         return array(
           T_CONSTANT_ENCAPSED_STRING,
+          T_STRING,
         );
 
     }//end register()
@@ -48,8 +49,15 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedLinkSniff implements PHP_C
         // Get our tokens.
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
+
+        // Skip t() functions because there we allow link tags.
+        if ($token['content'] == 't' && $tokens[$stackPtr + 1]['type'] == 'T_OPEN_PARENTHESIS') {
+            return ($tokens[$stackPtr + 1]['parenthesis_closer'] + 1);
+        }
+
         // Link regular expression.
         $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+
         // If link is found.
         if(preg_match("/$regexp/siU", $token['content'], $matches)) {
             $error = 'Hardcoded link not allowed, use l() function instead.';

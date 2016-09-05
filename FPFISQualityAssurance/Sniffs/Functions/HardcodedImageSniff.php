@@ -54,8 +54,10 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedImageSniff implements PHP_
         // Get our tokens.
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
+
         // Image regular expression.
         $regexp = '<img.*?src\s*=.*?>';
+
         // If image is found.
         if(preg_match("/$regexp/", $token['content'], $matches)) {
             $error = 'Hardcoded image not allowed in template file, use theme(\'image\') function instead.';
