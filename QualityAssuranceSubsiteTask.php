@@ -23,23 +23,46 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask
      */
     public function startQa($selected)
     {
+        // Start output buffering.
+        ob_start();
+        $content = '';
+
         foreach ($selected as $filepathname) {
             $pathinfo = pathinfo($filepathname);
             // Print header of module, feature or theme.
             echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
-            echo $pathinfo['dirname'] . "\n";
+            echo $pathinfo['dirname'] . PHP_EOL;
             echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
             $this->checkCron($pathinfo);
             $this->checkGitDiffUpdateHook($pathinfo);
             $this->checkBypassCodingStandards($pathinfo);
             $this->checkTodos($pathinfo);
             $this->checkCodingStandards($pathinfo);
-            echo "\n";
+            echo PHP_EOL;
+
+            // Get contents of output.
+            $content .= str_replace(SELF::COLORS, '', ob_get_contents());
+
+            // Flush contents of output.
+            ob_flush();
+            flush();
         }
-        echo "\n";
-        echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
-        echo $this->makeFile . "\n";
-        echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
-        $this->checkGitDiffSiteMake($this->makeFile . '.example');
+
+        if (is_file($this->makeFile)) {
+            echo PHP_EOL;
+            echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+            echo $this->makeFile . PHP_EOL;
+            echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+            $this->checkGitDiffSiteMake($this->makeFile . '.example');
+
+            // Get contents of output.
+            $content .= str_replace(SELF::COLORS, '', ob_get_contents());
+        }
+
+        // Write contents to file.
+        file_put_contents('report.txt', $content);
+
+        // Stop output buffering.
+        ob_end_flush();
     }
 }
