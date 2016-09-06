@@ -53,7 +53,7 @@ class QualityAssurancePlatformTask extends QualityAssuranceTask
             echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
             echo $this->makeFile . PHP_EOL;
             echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
-            $this->checkGitDiffSiteMake($this->makeFile . '.example');
+            $this->checkGitDiffSiteMake($this->makeFile);
 
             // Get contents of output.
             $content .= str_replace(SELF::COLORS, '', ob_get_contents());
