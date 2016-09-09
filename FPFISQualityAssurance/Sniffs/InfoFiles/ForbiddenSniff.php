@@ -54,7 +54,7 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeS
         $tokens = $phpcsFile->getTokens();
 
         $contents = file_get_contents($phpcsFile->getFilename());
-        $info     = Drupal_Sniffs_InfoFiles_ClassFilesSniff::drupalParseInfoFormat($contents);
+        $info     = FPFISQualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
         if (isset($info['dependencies']) && in_array('php', $info['dependencies'])) {
             $error = 'dependency on "php"  has to be removed';
             $phpcsFile->addError($error, $stackPtr, 'Dependency on php');

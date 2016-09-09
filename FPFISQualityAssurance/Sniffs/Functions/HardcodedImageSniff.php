@@ -29,6 +29,7 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedImageSniff implements PHP_
     {
         return array(
           T_CONSTANT_ENCAPSED_STRING,
+          T_INLINE_HTML
         );
 
     }//end register()

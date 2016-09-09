@@ -30,6 +30,7 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedLinkSniff implements PHP_C
         return array(
           T_CONSTANT_ENCAPSED_STRING,
           T_STRING,
+          T_INLINE_HTML
         );
 
     }//end register()
@@ -56,7 +57,7 @@ class FPFISQualityAssurance_Sniffs_Functions_HardcodedLinkSniff implements PHP_C
         }
 
         // Link regular expression.
-        $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+        $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>";
 
         // If link is found.
         if(preg_match("/$regexp/siU", $token['content'], $matches)) {

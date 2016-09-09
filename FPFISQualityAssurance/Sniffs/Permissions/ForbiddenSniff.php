@@ -60,7 +60,7 @@ class FPFISQualityAssurance_Sniffs_Permissions_ForbiddenSniff implements PHP_Cod
           'administer software updates',
           'administer features',
           'manage features',
-          'administer ckeditor lite',
+          'administer ckeditor_lite',
           'administer jquery update',
           'access devel information',
           'execute php code'

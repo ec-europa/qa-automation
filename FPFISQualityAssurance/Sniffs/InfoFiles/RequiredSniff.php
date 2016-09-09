@@ -55,7 +55,7 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSn
         $tokens = $phpcsFile->getTokens();
 
         $contents = file_get_contents($phpcsFile->getFilename());
-        $info     = Drupal_Sniffs_InfoFiles_ClassFilesSniff::drupalParseInfoFormat($contents);
+        $info     = FPFISQualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
 
         if (!isset($info['php']) || empty($info['php'])) {
             $error = '"php" property is missing in the info file';
