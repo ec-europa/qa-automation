@@ -11,9 +11,9 @@ When an exception is allowed you always have to mention the ticket OR the except
 overview in the wiki where we can find the reasoning for making the exception. Common
 exceptions will be taken up in the wiki and if possible in the phpcs-ruleset.xml.
 
-## Examples of CodingStandardsIgnore comments:
+## 1. Examples of CodingStandardsIgnore comments:
 
-### @CodingStandardsIgnoreLine
+### 1.1 @CodingStandardsIgnoreLine
 
 This example shows valid usage of parse_url instead of drupal_parse_url because the
 Drupal wrapped function only takes one argument and thus doesn't allow the type to be
@@ -26,7 +26,7 @@ set. To skip coding standard checks we use the single line comment tag.
   }
 ```
 
-### @CodingStandardsIgnoreStart - @CodingStandardsIgnoreEnd
+### 1.2 @CodingStandardsIgnoreStart - @CodingStandardsIgnoreEnd
 
 This example shows a piece of code where the QA team could allow for an exception.
 This example is purely fictional and does not represent a valid exception.
@@ -40,7 +40,7 @@ function empty_hook_uninstall() {
 // @CodingStandardsIgnoreEnd
 ```
 
-### @CodingStandardsIgnoreFile
+### 1.3 @CodingStandardsIgnoreFile
 This example shows usage where we skip coding standards checks for the entire file.
 This example is purely fictional and does not represent a valid exception.
 ```php
