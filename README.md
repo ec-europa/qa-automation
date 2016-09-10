@@ -17,11 +17,11 @@ there are other checks that can't be added with PHPCS these will be added to the
 class.
 
 ### 1.1 Current reporting tools and code checks
-1. [Cronjob](docs/cron.md): Check codebase for cronjob and verify it is running at
+1. [Cronjobs](docs/cron.md): Check codebase for cronjob and verify it is running at
 requested interval.
-2. [@CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
+2. [CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
 checks with permission of the QA team.
-3. [@todo](docs/todo.md): Request postponement of code refractoring untill the next
+3. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
 release.
 
 

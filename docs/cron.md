@@ -17,4 +17,7 @@ function mymodule_cron() {
 ```
 
 This way the QA team can verify your cron is running at the requested intervals.
-The command for checking this is: `crontab -l | grep <projectname>`
+The command for checking this is:
+```
+crontab -l | grep <projectname>
+```
