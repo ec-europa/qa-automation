@@ -4,7 +4,7 @@ classes that execute the quality assurance tests. And 2 folders that contain the
 respective PHPCS sniffs. One for security sniffs and one for quality assurance
 sniffs.
 
-## ./QualityAssuranceTasks.php
+## 1. ./QualityAssuranceTasks.php
 
 This class will be run with the mjolnir target from the quality-assurance target.
 When the build property qa.autoselect is set to 0 you have the option to run the
@@ -16,7 +16,13 @@ inside of the class will be used for the QA team solely as a reporting tool. But
 there are other checks that can't be added with PHPCS these will be added to the
 class.
 
-## ./QualityAssurance/
+### 1.1 Current reporting tools and code checks
+1. [@CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
+checks with permission of the QA team.
+2. [@todo](docs/todo.md): Request postponement of code refractoring untill the next
+release.
+
+## 2. ./QualityAssurance/
 
 This folder contains the code sniffs developed by the FPFIS QA team. Current included
 checks are:
@@ -30,7 +36,7 @@ checks are:
 - check for hardcoded image tags
 - check for hardcoded link tags
 
-## ./DrupalSecure/
+## 3. ./DrupalSecure/
 
 This folder contains the code sniffs of an old [drupal sandbox] (https://www.drupal.org/sandbox/coltrane/1921926).
 These should be thouroughly checked because they might be out of date. We can select
