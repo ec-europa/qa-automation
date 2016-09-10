@@ -1,4 +1,4 @@
-# CodingStandardsIgnore
+# @CodingStandardsIgnore
 
 Because there are exceptions that can not be submitted to the phpcs-ruleset.xml we
 allow on occasion the use of CodingStandardsIgnore comments.
