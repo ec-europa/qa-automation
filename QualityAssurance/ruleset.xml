@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="FPFISQualityAssurance">
+<ruleset name="QualityAssurance">
  <description>Quality assurance checks for FPFIS.</description>
  <!-- All Drupal code files must be UTF-8 encoded and we treat them as such. -->
  <arg name="encoding" value="utf-8"/>

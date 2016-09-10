@@ -1,6 +1,6 @@
 <?php
 
-class FPFISQualityAssurance_Sniffs_Fields_Locked_LockedUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_InfoFiles_Forbidden_ForbiddenUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,7 +14,7 @@ class FPFISQualityAssurance_Sniffs_Fields_Locked_LockedUnitTest extends CoderSni
     public function getErrorList($testFile)
     {
         return array(
-            22 => 1,
+            1 => 3
         );
 
     }//end getErrorList()
@@ -47,7 +47,7 @@ class FPFISQualityAssurance_Sniffs_Fields_Locked_LockedUnitTest extends CoderSni
      */
     public function getTestFiles() {
         return array(
-          'Locked.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
+          'Forbidden.info' => '',
         );
     }// end getTestFiles()
 

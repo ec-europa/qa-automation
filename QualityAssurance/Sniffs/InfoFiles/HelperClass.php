@@ -1,6 +1,6 @@
 <?php
 /**
- * FPFISQualityAssurance_Sniffs_InfoFiles_HelperClass.
+ * QualityAssurance_Sniffs_InfoFiles_HelperClass.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class FPFISQualityAssurance_Sniffs_InfoFiles_HelperClass
+class QualityAssurance_Sniffs_InfoFiles_HelperClass
 {
     /**
      * Parses a Drupal info file. Copied from Drupal core drupal_parse_info_format().

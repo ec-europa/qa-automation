@@ -1,6 +1,6 @@
 <?php
 
-class FPFISQualityAssurance_Sniffs_Permissions_Forbidden_ForbiddenUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Functions_HardcodedLink_HardcodedLinkUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,14 +14,7 @@ class FPFISQualityAssurance_Sniffs_Permissions_Forbidden_ForbiddenUnitTest exten
     public function getErrorList($testFile)
     {
         return array(
-            14 => 1,
-            23 => 1,
-            32 => 1,
-            39 => 1,
-            48 => 1,
-            55 => 1,
-            62 => 1,
-            71 => 1,
+            57 => 1
         );
 
     }//end getErrorList()
@@ -54,9 +47,10 @@ class FPFISQualityAssurance_Sniffs_Permissions_Forbidden_ForbiddenUnitTest exten
      */
     public function getTestFiles() {
         return array(
-          'Forbidden.features.user_permission.inc' => '',
+          'HardcodedLink.tpl.php' => '',
         );
     }// end getTestFiles()
+
 
 
 }//end class

@@ -1,6 +1,6 @@
 <?php
 /**
- * FPFISQualityAssurance_Sniffs_Functions_HardcodedImageSniff.
+ * QualityAssurance_Sniffs_Functions_HardcodedImageSniff.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class FPFISQualityAssurance_Sniffs_Functions_HardcodedImageSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_Functions_HardcodedImageSniff implements PHP_CodeSniffer_Sniff
 {
 
 

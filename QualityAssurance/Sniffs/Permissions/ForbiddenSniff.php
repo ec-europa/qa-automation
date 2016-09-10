@@ -1,6 +1,6 @@
 <?php
 /**
- * FPFISQualityAssurance_Sniffs_Permissions_ForbiddenSniff.
+ * QualityAssurance_Sniffs_Permissions_ForbiddenSniff.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class FPFISQualityAssurance_Sniffs_Permissions_ForbiddenSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_Permissions_ForbiddenSniff implements PHP_CodeSniffer_Sniff
 {
 
 

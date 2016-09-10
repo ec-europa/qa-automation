@@ -1,6 +1,6 @@
 <?php
 /**
- * FPFISQualityAssurance_Sniffs_Functions_DrupalWrappersSniff.
+ * QualityAssurance_Sniffs_Functions_DrupalWrappersSniff.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class FPFISQualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Sniffs_PHP_ForbiddenFunctionsSniff
+class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Sniffs_PHP_ForbiddenFunctionsSniff
 {
 
     /**

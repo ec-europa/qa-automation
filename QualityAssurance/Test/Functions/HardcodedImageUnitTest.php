@@ -1,6 +1,6 @@
 <?php
 
-class FPFISQualityAssurance_Sniffs_Functions_HardcodedImage_HardcodedImageUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Functions_HardcodedImage_HardcodedImageUnitTest extends CoderSniffUnitTest
 {
 
     /**

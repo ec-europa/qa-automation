@@ -1,6 +1,6 @@
 <?php
 /**
- * FPFISQualityAssurance_Sniffs_InfoFiles_FeaturesSniff.
+ * QualityAssurance_Sniffs_InfoFiles_FeaturesSniff.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class FPFISQualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer_Sniff
 {
 
 
@@ -54,7 +54,7 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSn
         $tokens = $phpcsFile->getTokens();
 
         $contents = file_get_contents($phpcsFile->getFilename());
-        $info     = FPFISQualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
+        $info     = QualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
         if (isset($info['features']['features_api'])
             && in_array('api:1', $info['features']['features_api'])
         ) {

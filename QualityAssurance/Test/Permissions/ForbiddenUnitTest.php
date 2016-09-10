@@ -1,6 +1,6 @@
 <?php
 
-class FPFISQualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Permissions_Forbidden_ForbiddenUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,30 +14,14 @@ class FPFISQualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTe
     public function getErrorList($testFile)
     {
         return array(
-            13 => 1,
             14 => 1,
-            15 => 1,
-            16 => 1,
-            17 => 1,
-            18 => 1,
-            19 => 1,
-            20 => 1,
-            21 => 1,
-            22 => 1,
             23 => 1,
-            24 => 1,
-            25 => 1,
-            26 => 1,
-            27 => 1,
-            28 => 1,
-            29 => 1,
-            30 => 1,
-            31 => 1,
             32 => 1,
-            33 => 1,
-            34 => 1,
-            35 => 1,
-            36 => 1,
+            39 => 1,
+            48 => 1,
+            55 => 1,
+            62 => 1,
+            71 => 1,
         );
 
     }//end getErrorList()
@@ -70,7 +54,7 @@ class FPFISQualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTe
      */
     public function getTestFiles() {
         return array(
-            'DrupalWrappers.inc' => 'DrupalWrappers.fixed.inc',
+          'Forbidden.features.user_permission.inc' => '',
         );
     }// end getTestFiles()
 

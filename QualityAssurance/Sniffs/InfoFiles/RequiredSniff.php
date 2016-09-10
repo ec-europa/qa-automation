@@ -1,6 +1,6 @@
 <?php
 /**
- * FPFISQualityAssurance_Sniffs_InfoFiles_ForbiddenSniff.
+ * Drupal_Sniffs_InfoFiles_RequiredSniff.
  *
  * PHP version 5
  *
@@ -10,13 +10,14 @@
  */
 
 /**
- * "menu", "php" dependencies and "taxonomy tags" are forbidden in Drupal info files.
+ * "php" and "multisite_version" required properties in Drupal info files. Also
+ * checks the "php" minimum requirement for Multisite 2.2.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class FPFISQualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer_Sniff
 {
 
 
@@ -54,21 +55,23 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeS
         $tokens = $phpcsFile->getTokens();
 
         $contents = file_get_contents($phpcsFile->getFilename());
-        $info     = FPFISQualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
-        if (isset($info['dependencies']) && in_array('php', $info['dependencies'])) {
-            $error = 'dependency on "php"  has to be removed';
-            $phpcsFile->addError($error, $stackPtr, 'Dependency on php');
+        $info     = QualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
+
+        if (!isset($info['php']) || empty($info['php'])) {
+            $error = '"php" property is missing in the info file';
+            $phpcsFile->addError($error, $stackPtr, 'PHP');
         }
 
-        if (isset($info['dependencies']) && in_array('menu', $info['dependencies'])) {
-            $error = 'dependency on "menu"  has to be removed';
-            $phpcsFile->addError($error, $stackPtr, 'Dependency on menu');
-        }
-
-        if (isset($info['features']['taxonomy'])
-            && in_array('tags', $info['features']['taxonomy'])) {
-                $error = 'taxonomy "tags" property has to be removed';
-                $phpcsFile->addError($error, $stackPtr, 'Taxonomy tags property');
+        if (!isset($info['multisite_version']) || empty($info['multisite_version'])) {
+            $error = '"multisite_version" property is missing in the info file';
+            $phpcsFile->addError($error, $stackPtr, 'Multisite version');
+        } else if ($info['multisite_version'] === '2.2'
+            && isset($info['php']) === true
+            && $info['php'] <= '5.2'
+        ) {
+            $error = 'Multisite version 2.2 minimal requirement is PHP 5.2';
+            $ptr   = Drupal_Sniffs_InfoFiles_ClassFilesSniff::getPtr('php', $info['php'], $phpcsFile);
+            $phpcsFile->addError($error, $ptr, 'Multisite PHP version');
         }
 
         return $end;

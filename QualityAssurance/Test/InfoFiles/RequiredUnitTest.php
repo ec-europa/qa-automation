@@ -1,6 +1,6 @@
 <?php
 
-class FPFISQualityAssurance_Sniffs_InfoFiles_Features_FeaturesUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_InfoFiles_Required_RequiredUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,7 +14,7 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_Features_FeaturesUnitTest extends C
     public function getErrorList($testFile)
     {
         return array(
-            
+            1 => 2
         );
 
     }//end getErrorList()
@@ -31,7 +31,7 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_Features_FeaturesUnitTest extends C
     public function getWarningList($testFile)
     {
         return array(
-          1 => 1,
+
         );
 
     }//end getWarningList()
@@ -47,7 +47,7 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_Features_FeaturesUnitTest extends C
      */
     public function getTestFiles() {
         return array(
-          'Features.info' => '',
+          'Required.info' => '',
         );
     }// end getTestFiles()
 

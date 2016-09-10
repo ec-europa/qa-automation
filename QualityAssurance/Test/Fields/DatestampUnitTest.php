@@ -1,6 +1,6 @@
 <?php
 
-class FPFISQualityAssurance_Sniffs_InfoFiles_Forbidden_ForbiddenUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Fields_Datestamp_DatestampUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,7 +14,8 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_Forbidden_ForbiddenUnitTest extends
     public function getErrorList($testFile)
     {
         return array(
-            1 => 3
+            41 => 1,
+            71 => 1,
         );
 
     }//end getErrorList()
@@ -47,9 +48,10 @@ class FPFISQualityAssurance_Sniffs_InfoFiles_Forbidden_ForbiddenUnitTest extends
      */
     public function getTestFiles() {
         return array(
-          'Forbidden.info' => '',
+          'Datestamp.features.field_base.inc' => 'Datestamp.fixed.features.field_base.inc',
         );
     }// end getTestFiles()
+
 
 
 }//end class
