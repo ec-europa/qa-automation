@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="FPFISQualityAssurance/Test/phpunit-bootstrap.php" colors="true">
+<phpunit bootstrap="FPFISQualityAssurance/Tests/phpunit-bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="FPFIS PHPCS Test Suite">
       <directory>QualityAssurance/Tests</directory>
