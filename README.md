@@ -19,9 +19,10 @@ class.
 ### 1.1 Current reporting tools and code checks
 1. [Cronjobs](docs/cron.md): Check codebase for cronjob and verify it is running at
 requested interval.
-2. [CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
+2. [Database updates](docs/updb.md): Scanning pull request for hook_update_N's.
+3. [CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
 checks with permission of the QA team.
-3. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
+4. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
 release.
 
 
