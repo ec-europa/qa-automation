@@ -3,7 +3,7 @@
 <phpunit bootstrap="FPFISQualityAssurance/Test/phpunit-bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="FPFIS PHPCS Test Suite">
-      <directory>FPFISQualityAssurance/Test</directory>
+      <directory>QualityAssurance/Tests</directory>
     </testsuite>
   </testsuites>
   <!-- Filter for coverage reports. -->
