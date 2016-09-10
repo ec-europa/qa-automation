@@ -17,10 +17,13 @@ there are other checks that can't be added with PHPCS these will be added to the
 class.
 
 ### 1.1 Current reporting tools and code checks
-1. [@CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
+1. [Cronjob](docs/cron.md): Check codebase for cronjob and verify it is running at
+requested interval.
+2. [@CodingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
 checks with permission of the QA team.
-2. [@todo](docs/todo.md): Request postponement of code refractoring untill the next
+3. [@todo](docs/todo.md): Request postponement of code refractoring untill the next
 release.
+
 
 ## 2. ./QualityAssurance/
 
@@ -35,6 +38,7 @@ checks are:
 - check for functions that need to be drupal wrapped
 - check for hardcoded image tags
 - check for hardcoded link tags
+
 
 ## 3. ./DrupalSecure/
 
