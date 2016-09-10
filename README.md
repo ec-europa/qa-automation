@@ -1,6 +1,6 @@
 # qa-automation
-Holds all quality assurance automation tools. It currently consists of 3 parts. One
-class that executes the quality assurance tests. And 2 folders that contain their
+Holds all quality assurance automation tools. It currently consists of 3 parts. The
+classes that execute the quality assurance tests. And 2 folders that contain their
 respective PHPCS sniffs. One for security sniffs and one for quality assurance
 sniffs.
 
@@ -27,6 +27,8 @@ checks are:
 - check for unlocked fields
 - check for date fields that are not datestamp
 - check for functions that need to be drupal wrapped
+- check for hardcoded image tags
+- check for hardcoded link tags
 
 ## DrupalSecure
 
