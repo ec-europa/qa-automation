@@ -34,7 +34,9 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       $this->checkGitDiffUpdateHook($pathinfo);
       $this->checkBypassCodingStandards($pathinfo);
       $this->checkTodos($pathinfo);
-      $this->checkCodingStandards($pathinfo);
+      if (!$this->skipPHPCS) {
+        $this->checkCodingStandards($pathinfo);
+      }
       echo PHP_EOL;
 
       // Get contents of output.

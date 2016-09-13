@@ -45,13 +45,23 @@ class QualityAssuranceTask extends \Task {
   protected $passbuild = TRUE;
 
   /**
-   * The setter for the attribute "autoSelect".
+   * The setter for the attribute "skipSelect".
    *
    * @param bool $boolean
-   *   Wether or not to run the entire codebase.
+   *   Wether or not to run the entire codebase automatically.
    */
-  public function setAutoSelect($boolean) {
-    $this->autoSelect = $boolean;
+  public function setSkipSelect($boolean) {
+    $this->skipSelect = $boolean;
+  }
+
+  /**
+   * The setter for the attribute "skipPHPCS".
+   *
+   * @param bool $boolean
+   *   Wether or not to run PHPCS.
+   */
+  public function setSkipPHPCS($boolean) {
+    $this->skipPHPCS = $boolean;
   }
 
   /**
@@ -125,7 +135,7 @@ class QualityAssuranceTask extends \Task {
     echo SELF::COLORS['magenta'] . "     0) Select all" . PHP_EOL;
     foreach ($finder as $file) {
       $filepathname = $file->getRealPath();
-      $filename = drupal_basename($filepathname);
+      $filename = basename($filepathname);
       echo "     " . $i . ") " . $filename, PHP_EOL;
       $options[$i] = $filepathname;
       $i++;
@@ -133,7 +143,7 @@ class QualityAssuranceTask extends \Task {
     // Stop for selection of module if autoselect is disabled.
     echo SELF::COLORS['nocolor'] . PHP_EOL;
     $selected = $options;
-    if (!$this->autoSelect) {
+    if (!$this->skipSelect) {
       $qa_selection = readline(
           'Select features, modules and/or themes to QA (seperate with space): '
         );
@@ -207,7 +217,7 @@ class QualityAssuranceTask extends \Task {
       preg_match_all('~' . implode('|', $updates) . '~', $contents, $matches, PREG_OFFSET_CAPTURE);
       foreach ($matches[0] as $key => $match) {
         list($before) = str_split($contents, $match[1]);
-        $line_number = drupal_strlen($before) - drupal_strlen(str_replace("\n", "", $before)) + 1;
+        $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
         echo SELF::COLORS['nocolor'] . PHP_EOL . "  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
       }
     }
