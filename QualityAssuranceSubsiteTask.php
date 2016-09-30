@@ -34,7 +34,7 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       $this->checkGitDiffUpdateHook($pathinfo);
       $this->checkBypassCodingStandards($pathinfo);
       $this->checkTodos($pathinfo);
-      if (!$this->skipPHPCS) {
+      if (!$this->skipPhpcs) {
         $this->checkCodingStandards($pathinfo);
       }
       echo PHP_EOL;
@@ -53,6 +53,7 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       echo $this->makeFile . PHP_EOL;
       echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
       $this->checkGitDiffSiteMake($this->makeFile);
+      $this->checkSiteMakeForPlatformDependencies($this->makeFile);
 
       // Get contents of output.
       $content .= str_replace(SELF::COLORS, '', ob_get_contents());

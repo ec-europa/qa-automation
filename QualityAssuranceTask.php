@@ -55,13 +55,13 @@ class QualityAssuranceTask extends \Task {
   }
 
   /**
-   * The setter for the attribute "skipPHPCS".
+   * The setter for the attribute "skipPhpcs".
    *
    * @param bool $boolean
-   *   Wether or not to run PHPCS.
+   *   Wether or not to run Phpcs.
    */
-  public function setSkipPHPCS($boolean) {
-    $this->skipPHPCS = $boolean;
+  public function setSkipPhpcs($boolean) {
+    $this->skipPhpcs = $boolean;
   }
 
   /**
@@ -113,6 +113,16 @@ class QualityAssuranceTask extends \Task {
    */
   public function setLibDir($string) {
     $this->libDir = $string;
+  }
+
+  /**
+   * The setter for the attribute "profileName".
+   *
+   * @param string $string
+   *   The name of the platform.
+   */
+  public function setProfileName($string) {
+    $this->profileName = $string;
   }
 
   /**
@@ -365,6 +375,103 @@ class QualityAssuranceTask extends \Task {
         echo SELF::COLORS['yellow'] . implode(', ', $additions) . "." . PHP_EOL;
       }
     }
+  }
+
+  /**
+   * Check modules, themes or libraries used in the platform.
+   *
+   * @param string $makefile
+   *   The makefile to check.
+   */
+  public function checkSiteMakeForPlatformDependencies($makefile) {
+    // Find site.make in resources folder.
+    $searches = array(
+      'projects' => 'modules or themes',
+      'libraries' => 'libraries',
+    );
+    $duplicates = array();
+    // Get the make file of the profile.
+    $url = 'https://raw.githubusercontent.com/ec-europa/platform-dev/master/resources/' . $this->profileName . '.make';
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HEADER, false);
+    if ($data = curl_exec($curl)) {
+      // Get the contents of the profile make file.
+      $profile = $this->drupalParseInfoFormat($data);
+      // Get the contents of the subsite make file.
+      $siteMake = $this->drupalParseInfoFormat(file_get_contents($makefile));
+      // Search the subsite make file for duplicates.
+      foreach ($searches as $search => $subject) {
+        // Print result subject.
+        echo SELF::COLORS['cyan'] . 'Platform ' . $subject . ' found: ';
+        // Perform search.
+        if (isset($siteMake[$search])) {
+          foreach ($siteMake[$search] as $name => $contents) {
+            if (isset($profile[$search][$name]) && !isset($siteMake[$search][$name]['patch'])) {
+              $duplicates[$search][] = $name;
+            }
+          }
+        }
+        // Print result.
+        if (empty($duplicates[$search])) {
+          echo SELF::COLORS['green'] . "none found." . PHP_EOL;
+        } else {
+          echo SELF::COLORS['yellow'] . implode(', ', $duplicates[$search]) . "." . PHP_EOL;
+        }
+      }
+    }
+    curl_close($curl);
+  }
+
+  /**
+   * Parses data in Drupal's .info format.
+   *
+   * @param string $data
+   *   The contents of the file.
+   */
+  public function drupalParseInfoFormat($data) {
+    $info = array();
+
+    if (preg_match_all('@^\s*((?:[^=;\[\]]|\[[^\[\]]*\])+?)\s*=\s*(?:("(?:[^"]|(?<=\\\\)")*")|(\'(?:[^\']|(?<=\\\\)\')*\')|([^\r\n]*?))\s*$@msx', $data, $matches, PREG_SET_ORDER)) {
+      foreach ($matches as $match) {
+        // Fetch the key and value string.
+        $i = 0;
+        foreach (array('key', 'value1', 'value2', 'value3') as $var) {
+          $$var = isset($match[++$i]) ? $match[$i] : '';
+        }
+        $value = stripslashes(substr($value1, 1, -1)) . stripslashes(substr($value2, 1, -1)) . $value3;
+
+        // Parse array syntax.
+        $keys = preg_split('/\]?\[/', rtrim($key, ']'));
+        $last = array_pop($keys);
+        $parent = &$info;
+
+        // Create nested arrays.
+        foreach ($keys as $key) {
+          if ($key == '') {
+            $key = count($parent);
+          }
+          if (!isset($parent[$key]) || !is_array($parent[$key])) {
+            $parent[$key] = array();
+          }
+          $parent = &$parent[$key];
+        }
+
+        // Handle PHP constants.
+        if (preg_match('/^\w+$/i', $value) && defined($value)) {
+          $value = constant($value);
+        }
+
+        // Insert actual value.
+        if ($last == '') {
+          $last = count($parent);
+        }
+        $parent[$last] = $value;
+      }
+    }
+
+    return $info;
   }
 
 }
