@@ -60,7 +60,7 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
     }
 
     // Write contents to file.
-    file_put_contents('../phpcs-reports/qa-report.txt', $content);
+    file_put_contents('qa-report.txt', $content);
 
     // Stop output buffering.
     ob_end_flush();
