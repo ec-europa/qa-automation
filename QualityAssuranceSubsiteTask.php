@@ -27,9 +27,9 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
     foreach ($selected as $filepathname) {
       $pathinfo = pathinfo($filepathname);
       // Print header of module, feature or theme.
-      echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+      echo parent::$color['magenta'] . parent::$separator['double'];
       echo $pathinfo['dirname'] . PHP_EOL;
-      echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+      echo parent::$color['magenta'] . parent::$separator['double'];
       $this->checkCron($pathinfo);
       $this->checkGitDiffUpdateHook($pathinfo);
       $this->checkBypassCodingStandards($pathinfo);
@@ -40,7 +40,7 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       echo PHP_EOL;
 
       // Get contents of output.
-      $content .= str_replace(SELF::COLORS, '', ob_get_contents());
+      $content .= str_replace(parent::$color, '', ob_get_contents());
 
       // Flush contents of output.
       ob_flush();
@@ -49,18 +49,18 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
 
     if (is_file($this->makeFile)) {
       echo PHP_EOL;
-      echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+      echo parent::$color['magenta'] . parent::$separator['double'];
       echo $this->makeFile . PHP_EOL;
-      echo SELF::COLORS['magenta'] . SELF::SEPERATOR['double'];
+      echo parent::$color['magenta'] . parent::$separator['double'];
       $this->checkGitDiffSiteMake($this->makeFile);
       $this->checkSiteMakeForPlatformDependencies($this->makeFile);
 
       // Get contents of output.
-      $content .= str_replace(SELF::COLORS, '', ob_get_contents());
+      $content .= str_replace(parent::$color, '', ob_get_contents());
     }
 
     // Write contents to file.
-    file_put_contents('qa-report.txt', $content);
+    file_put_contents('report.txt', $content);
 
     // Stop output buffering.
     ob_end_flush();
