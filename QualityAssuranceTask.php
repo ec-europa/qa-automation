@@ -31,12 +31,13 @@ class QualityAssuranceTask extends \Task {
     'red' => "\e[1;31m",
     'yellow'  => "\e[0;33m",
   );
+
   /**
    * Used for printing seperators.
    */
   public static $separator = array(
-    'double' => "======================================================================" . PHP_EOL,
-    'single' => PHP_EOL . "----------------------------------------------------------------------",
+    'double' => "======================================================================\r\n",
+    'single' => "\r\n----------------------------------------------------------------------",
   );
 
   /**
@@ -142,16 +143,16 @@ class QualityAssuranceTask extends \Task {
     // Loop over files and extract the info files.
     $i = 1;
     $options = array();
-    echo self::$color['magenta'] . "     0) Select all" . PHP_EOL;
+    echo self::$color['magenta'] . "     0) Select all\r\n";
     foreach ($finder as $file) {
       $filepathname = $file->getRealPath();
       $filename = basename($filepathname);
-      echo "     " . $i . ") " . $filename, PHP_EOL;
+      echo "     " . $i . ") " . $filename . "\r\n";
       $options[$i] = $filepathname;
       $i++;
     }
     // Stop for selection of module if autoselect is disabled.
-    echo self::$color['nocolor'] . PHP_EOL;
+    echo self::$color['nocolor'] . "\r\n";
     $selected = $options;
     if (!$this->skipSelect) {
       $qa_selection = readline(
@@ -162,7 +163,7 @@ class QualityAssuranceTask extends \Task {
         $selected = array_intersect_key($options, array_flip($qa_selection));
       }
     }
-    echo PHP_EOL;
+    echo "\r\n";
 
     // Start the QA on selected features, modules and/or themes.
     $this->startQa($selected);
@@ -211,7 +212,7 @@ class QualityAssuranceTask extends \Task {
     }
 
     // Print result.
-    echo self::$color['cyan'] . PHP_EOL . "Check for new updates in branch: ";
+    echo self::$color['cyan'] . "\r\nCheck for new updates in branch: ";
     if (empty($updates)) {
       echo self::$color['green'] . "none found." . self::$color['nocolor'];
     }
@@ -228,7 +229,7 @@ class QualityAssuranceTask extends \Task {
       foreach ($matches[0] as $key => $match) {
         list($before) = str_split($contents, $match[1]);
         $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
-        echo self::$color['nocolor'] . PHP_EOL . "  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
+        echo self::$color['nocolor'] . "\r\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
       }
     }
   }
@@ -242,7 +243,7 @@ class QualityAssuranceTask extends \Task {
   public function checkBypassCodingStandards($pathinfo) {
     // Find codingStandardsIgnore tags.
     $dirname = $pathinfo['dirname'];
-    echo self::$color['cyan'] . PHP_EOL . "Check for coding standard ignores: ";
+    echo self::$color['cyan'] . "\r\nCheck for coding standard ignores: ";
     $search_for = array(
       '@codingStandardsIgnoreStart',
       '@codingStandardsIgnoreFile',
@@ -256,7 +257,7 @@ class QualityAssuranceTask extends \Task {
               self::$color['nocolor'];
       foreach ($results as $result) {
         $lines = explode(':', str_replace($dirname, '', $result));
-        echo PHP_EOL . "  ." . implode(':', array_map('trim', $lines));
+        echo "\r\n  ." . implode(':', array_map('trim', $lines));
       }
     }
     else {
@@ -273,7 +274,7 @@ class QualityAssuranceTask extends \Task {
   public function checkTodos($pathinfo) {
     // Find todo tags.
     $dirname = $pathinfo['dirname'];
-    echo self::$color['cyan'] . PHP_EOL . "Check for todo's for this release: ";
+    echo self::$color['cyan'] . "\r\nCheck for todo's for this release: ";
     $search_for = array(
       '@todo: .*?MULTISITE-[0-9]{5}.*?',
     );
@@ -285,7 +286,7 @@ class QualityAssuranceTask extends \Task {
               self::$color['nocolor'];
       foreach ($results as $result) {
         $lines = explode(':', str_replace($dirname, '', $result));
-        echo PHP_EOL . "  ." . implode(':', array_map('trim', $lines));
+        echo "\r\n  ." . implode(':', array_map('trim', $lines));
       }
     }
     else {
@@ -303,7 +304,7 @@ class QualityAssuranceTask extends \Task {
     // Set directories.
     $dirname = $pathinfo['dirname'];
     // Execute phpcs on the module folder.
-    echo self::$color['cyan'] . PHP_EOL . "Check for coding standards: " . self::$color['nocolor'];
+    echo self::$color['cyan'] . "\r\nCheck for coding standards: " . self::$color['nocolor'];
     ob_start();
     passthru('./bin/phpcs --standard=phpcs.xml ' . $dirname, $error);
     $phpcs = ob_get_contents();
@@ -314,7 +315,7 @@ class QualityAssuranceTask extends \Task {
       $this->passbuild = FALSE;
     }
     else {
-      echo self::$color['green'] . "no violations." . PHP_EOL;
+      echo self::$color['green'] . "no violations.\r\n";
     }
   }
 
@@ -333,7 +334,7 @@ class QualityAssuranceTask extends \Task {
     if (exec("grep -IPrino '{$search_pattern}' {$dirname}", $results)) {
       echo self::$color['yellow'] . "hook found." . self::$color['nocolor'];
       foreach ($results as $result) {
-        echo PHP_EOL . "  ." . str_replace($dirname, '', $result);
+        echo "\r\n  ." . str_replace($dirname, '', $result);
       }
     }
     else {
@@ -369,10 +370,10 @@ class QualityAssuranceTask extends \Task {
       // Print result.
       echo self::$color['cyan'] . 'New ' . $subject . ' found: ';
       if (empty($additions)) {
-        echo self::$color['green'] . "none found." . PHP_EOL;
+        echo self::$color['green'] . "none found.\r\n";
       }
       else {
-        echo self::$color['yellow'] . implode(', ', $additions) . "." . PHP_EOL;
+        echo self::$color['yellow'] . implode(', ', $additions) . ".\r\n";
       }
     }
   }
@@ -415,9 +416,9 @@ class QualityAssuranceTask extends \Task {
         }
         // Print result.
         if (empty($duplicates[$search])) {
-          echo self::$color['green'] . "none found." . PHP_EOL;
+          echo self::$color['green'] . "none found.\r\n";
         } else {
-          echo self::$color['yellow'] . implode(', ', $duplicates[$search]) . "." . PHP_EOL;
+          echo self::$color['yellow'] . implode(', ', $duplicates[$search]) . ".\r\n";
         }
       }
     }

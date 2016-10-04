@@ -28,7 +28,7 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       $pathinfo = pathinfo($filepathname);
       // Print header of module, feature or theme.
       echo parent::$color['magenta'] . parent::$separator['double'];
-      echo $pathinfo['dirname'] . PHP_EOL;
+      echo $pathinfo['dirname'] . "\r\n";
       echo parent::$color['magenta'] . parent::$separator['double'];
       $this->checkCron($pathinfo);
       $this->checkGitDiffUpdateHook($pathinfo);
@@ -37,7 +37,7 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       if (!$this->skipPhpcs) {
         $this->checkCodingStandards($pathinfo);
       }
-      echo PHP_EOL;
+      echo "\r\n";
 
       // Get contents of output.
       $content .= str_replace(parent::$color, '', ob_get_contents());
@@ -48,9 +48,9 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
     }
 
     if (is_file($this->makeFile)) {
-      echo PHP_EOL;
+      echo "\r\n";
       echo parent::$color['magenta'] . parent::$separator['double'];
-      echo $this->makeFile . PHP_EOL;
+      echo $this->makeFile . "\r\n";
       echo parent::$color['magenta'] . parent::$separator['double'];
       $this->checkGitDiffSiteMake($this->makeFile);
       $this->checkSiteMakeForPlatformDependencies($this->makeFile);
