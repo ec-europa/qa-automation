@@ -314,7 +314,7 @@ class QualityAssuranceTask extends \Task {
       $this->passbuild = FALSE;
     }
     else {
-      echo SELF::COLORS['green'] . "no violations.";
+      echo SELF::COLORS['green'] . "no violations." . PHP_EOL;
     }
   }
 
