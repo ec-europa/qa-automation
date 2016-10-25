@@ -155,9 +155,12 @@ class QualityAssuranceTask extends \Task {
     echo self::$color['nocolor'] . "\r\n";
     $selected = $options;
     if (!$this->skipSelect) {
-      $qa_selection = readline(
-          'Select features, modules and/or themes to QA (seperate with space): '
-        );
+
+      echo "Select features, modules and/or themes to QA (seperate with space): ";
+      $handle = fopen("php://stdin", "r");
+      $qa_selection = rtrim(fgets($handle, 128));
+      fclose($handle);
+
       if ($qa_selection != "0") {
         $qa_selection = explode(' ', $qa_selection);
         $selected = array_intersect_key($options, array_flip($qa_selection));
