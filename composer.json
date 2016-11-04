@@ -1,4 +1,6 @@
 {
+    "name": "ec-europa/qa-automation",
+    "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
     "require": {
         "php": ">=5.2.0",
         "squizlabs/php_codesniffer": ">=2.4.0"
