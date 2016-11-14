@@ -207,10 +207,10 @@ class QualityAssuranceTask extends \Task {
       $diff = $git->diff('master', $head, $filepath);
 
       // Find new hook update functions in diff.
-      $regex = '~' . $filename . '_update_7\d{3}~';
+      $regex = '~(\+)(function ' . $filename . '_update_7\d{3})~';
       $contents = is_file($filepath) ? file_get_contents($filepath) : '';
       preg_match_all($regex, $diff, $matches);
-      $updates = $matches[0];
+      $updates = $matches[2];
       $count = count($updates);
     }
 
