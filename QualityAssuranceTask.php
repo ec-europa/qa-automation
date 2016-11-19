@@ -188,7 +188,7 @@ class QualityAssuranceTask extends \Task {
   public function checkGitDiffUpdateHook($pathinfo) {
     // Find file in lib folder.
     $filename = $pathinfo['filename'];
-    $updates = 0;
+    $schema_versions = array();
     // Find our install file in the lib folder.
     $finder = new Finder();
     $finder->files()
@@ -206,34 +206,46 @@ class QualityAssuranceTask extends \Task {
       $head = $branches->head();
       $diff = $git->diff('master', $head, $filepath);
 
-      // Find new hook update functions in diff.
-      $regex = '~(\+)(function ' . $filename . '_update_7\d{3})~';
+      // Find hook update functions in diff.
+      $regex = '~(\+|\-)' . 'function ' . $filename . '_update_' . '(7\d{3})~';
       $contents = is_file($filepath) ? file_get_contents($filepath) : '';
-      preg_match_all($regex, $diff, $matches);
-      $updates = $matches[2];
-      $count = count($updates);
+      preg_match_all($regex, $diff, $results);
+      $function_names = array_unique(str_replace(array('+', '-'), '', $results[0]));
+      $diff_actions = isset($results[1]) ? $results[1] : array();
+      $schema_versions = isset($results[2]) ? $results[2] : array();
     }
 
-    // Print result.
+    // Print result of new updates.
     echo self::$color['cyan'] . "\r\nCheck for new updates in branch: ";
-    if (empty($updates)) {
+    if (empty($schema_versions)) {
       echo self::$color['green'] . "none found." . self::$color['nocolor'];
     }
     else {
-      if ($count === 1) {
-        echo self::$color['yellow'] . "1 update found.";
+      $count = count(array_unique($schema_versions));
+      $plural = $count > 1 ? 's' : '';
+      echo self::$color['yellow'] . $count . " update" . $plural . " found.";
+      $this->printAllFoundFunctionNames($filename, $function_names, $contents);
+    }
+
+    // Print result of removed updates!
+    echo self::$color['cyan'] . "\r\nCheck for removed updates in branch: ";
+    $function_names = array();
+    if (isset($diff_actions)) {
+      $count_occurrance = array_count_values($schema_versions);
+      foreach ($diff_actions as $key => $action) {
+        if ($action == '-' && $count_occurrance[$schema_versions[$key]] == '1') {
+          $function_names[] = str_replace('-', '', $results[0][$key]);
+        }
       }
-      else {
-        echo self::$color['red'] . $count . " updates found.";
-        $this->passbuild = FALSE;
-      }
-      // Print the found hooks with file and line number.
-      preg_match_all('~' . implode('|', $updates) . '~', $contents, $matches, PREG_OFFSET_CAPTURE);
-      foreach ($matches[0] as $key => $match) {
-        list($before) = str_split($contents, $match[1]);
-        $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
-        echo self::$color['nocolor'] . "\r\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
-      }
+    }
+    if (empty($function_names)) {
+      echo self::$color['green'] . "none found." . self::$color['nocolor'];
+    } else {
+      $count = count($function_names);
+      $plural = $count > 1 ? 's' : '';
+      echo self::$color['red'] . $count . " update" . $plural . " found.";
+      $this->printAllFoundFunctionNames($filename, $function_names, $contents);
+      $this->passbuild = FALSE;
     }
   }
 
@@ -426,6 +438,26 @@ class QualityAssuranceTask extends \Task {
       }
     }
     curl_close($curl);
+  }
+
+  /**
+   * Print all found function names.
+   *
+   * @param string $filename
+   *   The name of the file.
+   * @param array $function_names.
+   *   An array with the function names.
+   * @param string $contents
+   *   The contents of the file.
+   */
+  private function printAllFoundFunctionNames($filename, $function_names, $contents) {
+    // Print the found hooks with file and line number.
+    preg_match_all('~' . implode('\((.*)(?=\))\)|', $function_names) . '\((.*)(?=\))\)~', $contents, $matches, PREG_OFFSET_CAPTURE);
+    foreach ($matches[0] as $key => $match) {
+      list($before) = str_split($contents, $match[1]);
+      $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
+      echo self::$color['nocolor'] . "\r\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
+    }
   }
 
   /**
