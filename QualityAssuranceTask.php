@@ -135,15 +135,25 @@ class QualityAssuranceTask extends \Task {
   public function main() {
     // Find all info files in our build folder.
     $finder = new Finder();
+    $makefile = $this->makeFile;
     $finder->files()
           ->name('*.info')
           ->in($this->distBuildDir)
           ->exclude(array('contrib', 'contributed'))
           ->sortByName();
-    // Loop over files and extract the info files.
-    $i = 1;
+
     $options = array();
+    $i = 1;
     echo self::$color['magenta'] . "     0) Select all\r\n";
+    // Set the make file(s) as the first option(s).
+    // @todo: refractor this to allow multiple make files.
+    // @todo: would be nice to have selection on top and display on bottom for this.
+    if (is_file($makefile)) {
+      $options[$i] =  $makefile;
+      echo "     " . $i . ") " . basename($makefile) . "\r\n";
+      $i++;
+    }
+    // Loop over files and extract the info files.
     foreach ($finder as $file) {
       $filepathname = $file->getRealPath();
       $filename = basename($filepathname);
@@ -151,6 +161,7 @@ class QualityAssuranceTask extends \Task {
       $options[$i] = $filepathname;
       $i++;
     }
+
     // Stop for selection of module if autoselect is disabled.
     echo self::$color['nocolor'] . "\r\n";
     $selected = $options;
@@ -363,32 +374,76 @@ class QualityAssuranceTask extends \Task {
    * @param string $makefile
    *   The makefile to check.
    */
-  public function checkGitDiffSiteMake($makefile) {
+  public function checkGitDiffSiteMake($pathinfo) {
     // Find site.make in resources folder.
     $searches = array(
       'projects' => 'modules or themes',
       'libraries' => 'libraries',
     );
+    $makefile = $pathinfo['dirname'] . '/' . $pathinfo['basename'];
     // Get a diff of current branch and master.
     $wrapper = new GitWrapper();
     $git = $wrapper->workingCopy($this->resourcesDir);
     $branches = $git->getBranches();
     $head = $branches->head();
-    $diff = $git->diff('master', $head, $makefile);
+    $diff = $git->diff('master', $makefile, $makefile);
+    $filtered_diff = str_replace('"', '', $diff->getOutput());
+    $master = $this->drupalParseInfoFormat($git->show('master:' . str_replace(getcwd(). '/', '', $makefile)));
+    $current = $this->drupalParseInfoFormat(file_get_contents($makefile));
 
     // Find new projects or libraries.
     foreach ($searches as $search => $subject) {
-      $regex = "~\+$search\[(.*?)\]~i";
-      preg_match_all($regex, $diff, $matches);
-      $additions = array_unique($matches[1]);
+      $current_items = isset($current[$search]) ? $current[$search] : array();
+      $master_items = isset($master[$search]) ? $master[$search] : array();
+      $added_items = array_diff_key($current_items, $master_items);
+      $removed_items = array_diff_key($master_items, $current_items);
+      $complete_items = array_merge($added_items, $removed_items);
+      $untouched_items = array_keys(array_diff_key($current_items, $complete_items));
 
-      // Print result.
-      echo self::$color['cyan'] . 'New ' . $subject . ' found: ';
-      if (empty($additions)) {
-        echo self::$color['green'] . "none found.\r\n";
+      // Check for new projects or libraries.
+      echo self::$color['cyan'] . 'Added ' . $subject . ' found: ';
+      if (!empty($added_items)) {
+        $added_string = $this->transformArrayIntoInfoFormat(array($search => $added_items));
+        echo self::$color['red'] . count($added_items) . " found." . self::$color['nocolor'] . "\r\n" . preg_replace('/^/m', '+', $added_string);
       }
       else {
-        echo self::$color['yellow'] . implode(', ', $additions) . ".\r\n";
+        echo self::$color['green'] . "none found.\r\n";
+      }
+      // Check for removed projects or libraries.
+      echo self::$color['cyan'] . 'Removed ' . $subject . ' found: ';
+      if (!empty($removed_items)) {
+        $removed_string = $this->transformArrayIntoInfoFormat(array($search => $removed_items));
+        echo self::$color['red'] . count($removed_items) . " found." . self::$color['nocolor'] . "\r\n" . preg_replace('/^/m', '-', $removed_string);
+      }
+      else {
+        echo self::$color['green'] . "none found.\r\n";
+      }
+
+      // Check for altered projects or libraries.
+      echo self::$color['cyan'] . 'Altered ' . $subject . ' found: ';
+      $regex = '~^[\+|\-]' . $search . '\[(' . implode(')\].*?$|^[\+|\-]' . $search . '\[(', $untouched_items) . ')\].*?$~m';
+      if (!is_null(preg_match_all($regex, $filtered_diff, $matches)) && !empty($matches[0])) {
+        // Filter out empty arrays.
+        $changed = array_map('array_filter', $matches);
+        $changed = array_values(array_filter(array_values($changed)));
+        echo self::$color['red'] . count($changed[1]) . " found.\r\n";
+        foreach ($changed as $key => $changed_array) {
+          $changed_array = array_values($changed_array);
+          if (!empty($changed_array) && $key != 0) {
+            $new_item = array(' ' .$search => array($changed_array[0] => $current_items[$changed_array[0]]));
+            $old_item = array(' ' .$search => array($changed_array[0] => $master_items[$changed_array[0]]));
+            $new_string = $this->transformArrayIntoInfoFormat($new_item);
+            $old_string = $this->transformArrayIntoInfoFormat($old_item);
+            $combined_string = implode("\n", array_unique(explode("\n", $old_string . $new_string )));
+            foreach ($changed[0] as $replacement) {
+              $combined_string = str_replace(' ' . substr($replacement, 1), $replacement, $combined_string);
+            }
+            echo self::$color['nocolor'] . $combined_string;
+          }
+        }
+      }
+      else {
+        echo self::$color['green'] . "none found.\r\n";
       }
     }
   }
@@ -399,8 +454,9 @@ class QualityAssuranceTask extends \Task {
    * @param string $makefile
    *   The makefile to check.
    */
-  public function checkSiteMakeForPlatformDependencies($makefile) {
+  public function checkSiteMakeForPlatformDependencies($pathinfo) {
     // Find site.make in resources folder.
+    $makefile = $pathinfo['dirname'] . '/' . $pathinfo['basename'];
     $searches = array(
       'projects' => 'modules or themes',
       'libraries' => 'libraries',
@@ -458,6 +514,34 @@ class QualityAssuranceTask extends \Task {
       $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
       echo self::$color['nocolor'] . "\r\n  ./" . $filename . '.install:' . $line_number . ':' . $match[0];
     }
+  }
+
+  /**
+   * Converts array into Drupal's .info format.
+   *
+   * @param array $info
+   *   An array or single value to put in an .info file.
+   * @param array $parents
+   *   Array of parent keys (internal use only).
+   */
+  private function transformArrayIntoInfoFormat($info, $parents = array()) {
+    $output = '';
+    if (is_array($info)) {
+      foreach ($info as $k => $v) {
+        $child = $parents;
+        $child[] = $k;
+        $output .= $this->transformArrayIntoInfoFormat($v, $child);
+      }
+    }
+    else if (!empty($info) && count($parents)) {
+      $line = array_shift($parents);
+      foreach ($parents as $key) {
+        $line .= is_numeric($key) ? "[]" : "[{$key}]";
+      }
+      $line .=  " = {$info}\n";
+      return $line;
+    }
+    return $output;
   }
 
   /**

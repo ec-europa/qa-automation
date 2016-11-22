@@ -30,12 +30,18 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       echo parent::$color['magenta'] . parent::$separator['double'];
       echo $pathinfo['dirname'] . "\r\n";
       echo parent::$color['magenta'] . parent::$separator['double'];
-      $this->checkCron($pathinfo);
-      $this->checkGitDiffUpdateHook($pathinfo);
-      $this->checkBypassCodingStandards($pathinfo);
-      $this->checkTodos($pathinfo);
-      if (!$this->skipPhpcs) {
-        $this->checkCodingStandards($pathinfo);
+      if ($pathinfo['extension'] == 'info') {
+        $this->checkCron($pathinfo);
+        $this->checkGitDiffUpdateHook($pathinfo);
+        $this->checkBypassCodingStandards($pathinfo);
+        $this->checkTodos($pathinfo);
+        if (!$this->skipPhpcs) {
+          $this->checkCodingStandards($pathinfo);
+        }
+      }
+      elseif ($pathinfo['extension'] == 'make') {
+        $this->checkGitDiffSiteMake($pathinfo);
+        $this->checkSiteMakeForPlatformDependencies($pathinfo);
       }
       echo "\r\n";
 
@@ -45,18 +51,6 @@ class QualityAssuranceSubsiteTask extends QualityAssuranceTask {
       // Flush contents of output.
       ob_flush();
       flush();
-    }
-
-    if (is_file($this->makeFile)) {
-      echo "\r\n";
-      echo parent::$color['magenta'] . parent::$separator['double'];
-      echo $this->makeFile . "\r\n";
-      echo parent::$color['magenta'] . parent::$separator['double'];
-      $this->checkGitDiffSiteMake($this->makeFile);
-      $this->checkSiteMakeForPlatformDependencies($this->makeFile);
-
-      // Get contents of output.
-      $content .= str_replace(parent::$color, '', ob_get_contents());
     }
 
     // Write contents to file.
