@@ -53,7 +53,7 @@ class QualityAssurance_Sniffs_InfoFiles_FilesizeSniff implements PHP_CodeSniffer
 
         $filesize = filesize($fileName);
         if ((int)$filesize > 65535) {
-            $error = 'The filesize of the info file (' . $filesize . 'bytes) exceeds the limit of 65535 bytes.';
+            $error = 'The filesize of the info file (' . $filesize . ' bytes) exceeds the limit of 65535 bytes.';
             $phpcsFile->addError($error, null, 'Filesize');
         }
 
