@@ -30,6 +30,7 @@ release.
 
 This folder contains the code sniffs developed by the FPFIS QA team. Current included
 checks are:
+- check if info file does not exceed maximum filesize
 - check required properties in info file
 - check forbidden properties in info file
 - check if features api is set to version 2
@@ -38,7 +39,6 @@ checks are:
 - check for date fields that are not datestamp
 - check for functions that need to be drupal wrapped
 - check for hardcoded image tags
-- check for hardcoded link tags
 
 
 ## 3. ./DrupalSecure/
