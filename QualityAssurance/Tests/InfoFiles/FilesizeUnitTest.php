@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_InfoFiles_Features_FilesizeUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_InfoFiles_Filesize_FilesizeUnitTest extends CoderSniffUnitTest
 {
 
     /**
