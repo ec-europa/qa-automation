@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_InfoFiles_Required_RequiredUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_InfoFiles_Features_FilesizeUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,7 +14,7 @@ class QualityAssurance_Sniffs_InfoFiles_Required_RequiredUnitTest extends CoderS
     public function getErrorList($testFile)
     {
         return array(
-            1 => 2
+          1 => 1,            
         );
 
     }//end getErrorList()
@@ -47,7 +47,7 @@ class QualityAssurance_Sniffs_InfoFiles_Required_RequiredUnitTest extends CoderS
      */
     public function getTestFiles() {
         return array(
-          'Required.info' => '',
+          'Filesize.info' => '',
         );
     }// end getTestFiles()
 

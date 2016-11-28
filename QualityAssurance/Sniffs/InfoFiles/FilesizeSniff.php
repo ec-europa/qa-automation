@@ -1,6 +1,6 @@
 <?php
 /**
- * QualityAssurance_Sniffs_InfoFiles_FeaturesSniff.
+ * QualityAssurance_Sniffs_InfoFiles_FilesizeSniff.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_InfoFiles_FilesizeSniff implements PHP_CodeSniffer_Sniff
 {
 
 
@@ -45,21 +45,16 @@ class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer
     {
         // Only run this sniff once per info file.
         $end = (count($phpcsFile->getTokens()) + 1);
-
-        $fileExtension = strtolower(substr($phpcsFile->getFilename(), -4));
+        $fileName = $phpcsFile->getFilename();
+        $fileExtension = strtolower(substr($fileName, -4));
         if ($fileExtension !== 'info') {
             return $end;
         }
 
-        $tokens = $phpcsFile->getTokens();
-
-        $contents = file_get_contents($phpcsFile->getFilename());
-        $info     = QualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
-        if (isset($info['features']['features_api'])
-            && in_array('api:1', $info['features']['features_api'])
-        ) {
-            $warning = 'We highly recommend upgrading features to "api:2"';
-            $phpcsFile->addWarning($warning, $stackPtr, 'Features API');
+        $filesize = filesize($fileName);
+        if ($filesize > 65535) {
+            $error = 'The filesize of the info file (' . $filesize . 'bytes) exceeds the limit of 65535 bytes.';
+            $phpcsFile->addError($error, $stackPtr, 'Filesize');
         }
 
         return $end;
