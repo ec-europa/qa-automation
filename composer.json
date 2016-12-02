@@ -3,9 +3,19 @@
     "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
     "require": {
         "php": ">=5.2.0",
-        "squizlabs/php_codesniffer": ">=2.4.0"
+        "squizlabs/php_codesniffer": ">=2.4.0",
+        "symfony/console": "~2.6",
+        "symfony/yaml": "~2.3"
     },
     "require-dev": {
         "phpunit/phpunit": ">=3.7 <5.0"
-    }
+    },
+    "autoload": {
+        "psr-4": {
+            "QualityAssurance\\Component\\Console\\": "src/Console"
+        }
+    },
+    "bin": [
+        "bin/qa"
+    ]
 }
