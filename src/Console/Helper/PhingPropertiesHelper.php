@@ -1,21 +1,23 @@
 <?php
 namespace QualityAssurance\Component\Console\Helper;
 
-use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class PhingPropertiesHelper extends Helper
+class PhingPropertiesHelper
 {
-
   /**
-   * Returns the canonical name of this helper.
+   * PhingPropertiesHelper constructor.
    *
-   * @return string The canonical name
+   * Setup our input output interfaces.
    *
-   * @api
+   * @param InputInterface $input
+   * @param OutputInterface $output
    */
-  public function getName()
+  function __construct(InputInterface $input, OutputInterface $output)
   {
-    return 'phing-properties-helper';
+    $this->input = $input;
+    $this->output = $output;
   }
 
   /**
@@ -34,19 +36,21 @@ class PhingPropertiesHelper extends Helper
   private function findPhingBuildFile($path = '')
   {
     $path = empty($path) ? getcwd() : $path;
+    $filename = 'build.xml';
+    $filepath = $path . '/' . $filename;
     // If the current folder does not contain the build file, proceed.
-    if (!is_file($path . '/build.xml')) {
-      echo "not found at $path\n";
+    if (!is_file($filepath)) {
+      // If we haven't reached root yet, retry in parent folder.
       if (dirname($path) != $path) {
         return $this->findPhingBuildFile(dirname($path));
-      } else {
-        echo "reached root\n";
-        return FALSE;
+      }
+      else {
+        throw new \BuildException("Reached filesystem root without finding '$filename'.");
       }
     }
     // If found return absolute path.
     else {
-      echo "found at $path\n";
+      $this->output->writeln('<info>Succesfully loaded: ' . $filepath . '</info>');
       return "$path/build.xml";
     }
   }
@@ -63,7 +67,7 @@ class PhingPropertiesHelper extends Helper
   public function parseFile($filepath)
   {
     if (($lines = @file($filepath, FILE_IGNORE_NEW_LINES)) === false) {
-      throw new IOException("Unable to parse contents of $filepath");
+      throw new \BuildException("Unable to parse contents of '$filepath'.");
     }
 
     // concatenate lines ending with backslash
@@ -166,7 +170,7 @@ class PhingPropertiesHelper extends Helper
   public function getAllSettings($buildfile = '') {
     $buildfile = $this->findPhingBuildFile();
     if ($buildfile) {
-      $settings = array();
+      $settings = array('project.basedir' => dirname($buildfile));
       // Array that will gather the build.properties files.
       $buildproperties = array();
       // Start by parsing the main build file.
@@ -190,12 +194,12 @@ class PhingPropertiesHelper extends Helper
       }
       foreach ($buildproperties as $propertiesfile) {
         if (is_file($propertiesfile)) {
-          $settings = $this->parsefile($relative_build_folder . '/' . $propertiesfile);
-          $settings['project.basedir'] = dirname($buildfile);
-          $this->resolveProperties($settings);
+          $settings += $this->parsefile($relative_build_folder . '/' . $propertiesfile);
+
         }
       }
     }
+    $this->resolveProperties($settings);
     return $settings;
   }
 
@@ -209,8 +213,7 @@ class PhingPropertiesHelper extends Helper
       'version',
       'ansi',
       'no-ansi',
-      'no-interaction',
-      'starterkit.branch'
+      'no-interaction'
     )));
     $settings = $this->getAllSettings();
     $selection = array();
@@ -222,7 +225,6 @@ class PhingPropertiesHelper extends Helper
         throw new \BuildException('Required property ' . $option . ' not provided.');
       }
     }
-    var_dump($selection);
     return $selection;
   }
   

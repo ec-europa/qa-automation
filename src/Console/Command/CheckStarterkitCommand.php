@@ -6,11 +6,11 @@ use GitWrapper\GitException;
 use GitWrapper\GitWrapper;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CheckStarterkitCommand extends Command
 {
@@ -28,8 +28,11 @@ class CheckStarterkitCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Get the symfony console styleguide.
+        $io = new SymfonyStyle($input, $output);
+
         // Get the needed options for if the call came from console and not from phing.
-        $phingPropertiesHelper = new PhingPropertiesHelper();
+        $phingPropertiesHelper = new PhingPropertiesHelper($input, $output);
         $options = $phingPropertiesHelper->requestRequiredSettings($input->getOptions());
 
         // Prepare option variables for future usage.
@@ -43,7 +46,7 @@ class CheckStarterkitCommand extends Command
         $remote_branch = 'remotes/' . $starterkitRemote . '/' . $starterkitBranch;
         $remote_exists = $subsiteRepository->hasRemote($starterkitRemote);
         if (!$remote_exists) {
-            $output->writeln('<info>NOTHING</info>');
+            $io->note('Adding remote repository.');
             // $log('Adding remote repository.');
             // Only track the given branch, and don't download any tags.
             $options = [
@@ -88,9 +91,9 @@ class CheckStarterkitCommand extends Command
                 throw new \BuildException('The current branch is not up to date with the starterkit.');
             }
         }
-
-        $output->writeln('<info>TEST RIGHT</info>');
-        // $log('The starterkit is up to date.');
+        else {
+            $output->writeln('<info>The starterkit is up to date.</info>');
+        }
     }
 
     /**
