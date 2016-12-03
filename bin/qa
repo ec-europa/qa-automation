@@ -1,15 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-// Just take it hardcoded for now because it's symlinked twice and can't figure it out.
-//require __DIR__.'/vendor/autoload.php';
-require '/var/www/subsite-starterkit/vendor/autoload.php';
-
 use Symfony\Component\Console\Application;
 use QualityAssurance\Component\Console\Command\CheckStarterkitCommand;
 
-$command = new CheckStarterkitCommand();
+// Just take it hardcoded for now because it's symlinked twice and can't figure it out.
+require '/var/www/subsite-starterkit/vendor/autoload.php';
 
-$application = new Application('Quality Assurance', '2.0');
+$command = new CheckStarterkitCommand();
+$application = new Application('Quality Assurance', '@package_version@');
 $application->add($command);
 $application->run();

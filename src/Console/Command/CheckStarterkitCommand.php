@@ -2,14 +2,15 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
+use GitWrapper\GitException;
+use GitWrapper\GitWrapper;
+use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use GitWrapper\GitException;
-use GitWrapper\GitWrapper;
 
 class CheckStarterkitCommand extends Command
 {
@@ -18,21 +19,26 @@ class CheckStarterkitCommand extends Command
         $this
             ->setName('check-starterkit')
             ->setDescription('Check if the starterkit is up to date.')
-            ->addOption('starterkitBranch', null, InputOption::VALUE_REQUIRED, 'Starterkit repository on github.')
-            ->addOption('starterkitRemote', null, InputOption::VALUE_REQUIRED, 'Starterkit repository on github.')
-            ->addOption('starterkitRepository', null, InputOption::VALUE_REQUIRED, 'Starterkit repository on github.')
-            ->addOption('subsiteRepository', null, InputOption::VALUE_REQUIRED, 'Starterkit repository on github.')
+            ->addOption('starterkit.branch', null, InputOption::VALUE_REQUIRED, 'Starterkit branch.')
+            ->addOption('starterkit.remote', null, InputOption::VALUE_REQUIRED, 'Starterkit remote.')
+            ->addOption('starterkit.repository', null, InputOption::VALUE_REQUIRED, 'Starterkit repository on github.')
+            ->addOption('project.basedir', null, InputOption::VALUE_REQUIRED, 'Project base directory.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Get the needed options for if the call came from console and not from phing.
+        $phingPropertiesHelper = new PhingPropertiesHelper();
+        $options = $phingPropertiesHelper->requestRequiredSettings($input->getOptions());
 
-        $starterkitBranch = $input->getOption('starterkitBranch');
-        $starterkitRemote = $input->getOption('starterkitRemote');
-        $starterkitRepository = $input->getOption('starterkitRepository');
-        $subsiteRepository = $this->getGitWrapper()->workingCopy($input->getOption('subsiteRepository'));
+        // Prepare option variables for future usage.
+        $starterkitBranch = !empty($input->getOption('starterkit.branch')) ? $input->getOption('starterkit.branch') : $options['starterkit.branch'];
+        $starterkitRemote = !empty($input->getOption('starterkit.remote')) ? $input->getOption('starterkit.remote') : $options['starterkit.remote'];
+        $starterkitRepository = !empty($input->getOption('starterkit.repository')) ? $input->getOption('starterkit.repository') : $options['starterkit.repository'];
+        $projectBasedir = !empty($input->getOption('project.basedir')) ? $input->getOption('project.basedir') : $options['project.basedir'];
 
+        $subsiteRepository = $this->getGitWrapper()->workingCopy($projectBasedir);
         // Add the remote for the starterkit if it doesn't exist yet.
         $remote_branch = 'remotes/' . $starterkitRemote . '/' . $starterkitBranch;
         $remote_exists = $subsiteRepository->hasRemote($starterkitRemote);
