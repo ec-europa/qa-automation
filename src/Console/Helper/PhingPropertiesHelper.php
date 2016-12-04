@@ -45,7 +45,9 @@ class PhingPropertiesHelper
         return $this->findPhingBuildFile(dirname($path));
       }
       else {
-        throw new \BuildException("Reached filesystem root without finding '$filename'.");
+        throw new \Symfony\Component\Debug\Exception\FatalErrorException(
+          "Reached filesystem root without finding '$filename'.", 0, 1, __FILE__, __LINE__
+        );
       }
     }
     // If found return absolute path.
@@ -64,7 +66,7 @@ class PhingPropertiesHelper
    *   Flat array with the settings non resolved.
    * @throws IOException
    */
-  public function parseFile($filepath)
+  private function parseFile($filepath)
   {
     if (($lines = @file($filepath, FILE_IGNORE_NEW_LINES)) === false) {
       throw new \BuildException("Unable to parse contents of '$filepath'.");
@@ -106,7 +108,7 @@ class PhingPropertiesHelper
    * @return mixed
    *   The new property value (may be boolean, etc.)
    */
-  protected function inVal($val)
+  private function inVal($val)
   {
     if ($val === "true") {
       $val = true;
@@ -121,7 +123,7 @@ class PhingPropertiesHelper
    *
    * @param array $properties
    */
-  public function resolveProperties(&$properties)
+  private function resolveProperties(&$properties)
   {
     foreach ($properties as $key => $value) {
       if (preg_match_all('/\$\{([^\$}]+)\}/', $value, $matches)) {
@@ -147,7 +149,7 @@ class PhingPropertiesHelper
    * @param string $buildproperties
    *   The (relative?) path to the build properties file.
    */
-  public function setBuildProperties($contents, &$buildproperties) {
+  private function setBuildProperties($contents, &$buildproperties) {
     if ($xml = simplexml_load_string($contents)) {
       $json = json_encode($xml);
       $array = json_decode($json, TRUE);
@@ -167,7 +169,7 @@ class PhingPropertiesHelper
    * @param $buildfile
    *   Absolute path to the main build file (build.xml).
    */
-  public function getAllSettings($buildfile = '') {
+  private function getAllSettings($buildfile = '') {
     $buildfile = $this->findPhingBuildFile();
     if ($buildfile) {
       $settings = array('project.basedir' => dirname($buildfile));
@@ -222,7 +224,9 @@ class PhingPropertiesHelper
         $selection[$option] = $settings[$option];
       }
       else {
-        throw new \BuildException('Required property ' . $option . ' not provided.');
+        throw new \Symfony\Component\Debug\Exception\FatalErrorException(
+          "Required property ' . $option . ' not provided.", 0, 1, __FILE__, __LINE__
+        );
       }
     }
     return $selection;

@@ -80,7 +80,8 @@ class CheckStarterkitCommand extends Command
         if ($merge_base !== $latest_commit) {
             $output->writeln('');
             $helperquestion = $this->getHelper('question');
-            $question = new ChoiceQuestion("<error>Your current branch is not up to date with the starterkit.</error>\nDo you want to try to update your starterkit?", array('yes', 'no'), 1);
+            $io->note("Your current branch is not up to date with the starterkit.");
+            $question = new ChoiceQuestion("Do you want to try to update your starterkit?", array('yes', 'no'), 1);
             $question->setErrorMessage('Please answer yes or no.');
 
             $selection = $helperquestion->ask($input, $output, $question);
@@ -88,7 +89,9 @@ class CheckStarterkitCommand extends Command
 
             }
             else {
-                throw new \BuildException('The current branch is not up to date with the starterkit.');
+                throw new \Symfony\Component\Debug\Exception\FatalErrorException(
+                  "The current branch is not up to date with the starterkit.", 0, 1, __FILE__, __LINE__
+                );
             }
         }
         else {
