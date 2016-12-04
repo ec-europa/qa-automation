@@ -3,7 +3,6 @@
     "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
     "git-version": "package_version",
     "require": {
-        "knplabs/github-api": "~2.0.0-rc4",
         "php": ">=5.2.0",
         "squizlabs/php_codesniffer": ">=2.4.0",
         "symfony/console": "~2.6",
