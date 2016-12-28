@@ -2,6 +2,7 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
+use GitWrapper\GitCommand;
 use GitWrapper\GitException;
 use GitWrapper\GitWrapper;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
@@ -17,7 +18,7 @@ class CheckStarterkitCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('check-starterkit')
+            ->setName('check:ssk')
             ->setDescription('Check if the starterkit is up to date.')
             ->addOption('starterkit.branch', null, InputOption::VALUE_REQUIRED, 'Starterkit branch.')
             ->addOption('starterkit.remote', null, InputOption::VALUE_REQUIRED, 'Starterkit remote.')
@@ -79,8 +80,17 @@ class CheckStarterkitCommand extends Command
         // the repository is not up-to-date.
         if ($merge_base !== $latest_commit) {
             $output->writeln('');
+            $request_tags = $subsiteRepository->run(array('ls-remote', '--tags', 'git://github.com/ec-europa/subsite-starterkit.git'));
+            $tags = array_filter(explode("\n", $request_tags->getOutput()));
+            $last_tag = array_pop($tags);
+            preg_match('/([0-9a-f]{5,40}).*?(starterkit\/\d+\.\d+\.[\*|\d+])$/', $last_tag, $release);
+            if ($release) {
+                $release_commit = $release[1];
+                $release_tag = $release[2];
+            }
             $helperquestion = $this->getHelper('question');
             $io->note("Your current branch is not up to date with the starterkit.");
+            $io->listing(array("$release_tag = $release_commit"));
             $question = new ChoiceQuestion("Do you want to try to update your starterkit?", array('yes', 'no'), 1);
             $question->setErrorMessage('Please answer yes or no.');
 
@@ -97,6 +107,7 @@ class CheckStarterkitCommand extends Command
         else {
             $output->writeln('<info>The starterkit is up to date.</info>');
         }
+        $output->setVar($tags);
     }
 
     /**

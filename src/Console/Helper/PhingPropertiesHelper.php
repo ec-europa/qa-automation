@@ -52,7 +52,7 @@ class PhingPropertiesHelper
     }
     // If found return absolute path.
     else {
-      $this->output->writeln('<info>Succesfully loaded: ' . $filepath . '</info>');
+      $this->output->writeln('<comment>Succesfully loaded: </comment><info>' . $filepath . '</info>');
       return "$path/build.xml";
     }
   }
@@ -172,6 +172,7 @@ class PhingPropertiesHelper
   private function getAllSettings($buildfile = '') {
     $buildfile = $this->findPhingBuildFile();
     if ($buildfile) {
+      $root = dirname($buildfile);
       $settings = array('project.basedir' => dirname($buildfile));
       // Array that will gather the build.properties files.
       $buildproperties = array();
@@ -180,23 +181,19 @@ class PhingPropertiesHelper
       // Gather build properties from within found files.
       $this->setBuildProperties($contents, $buildproperties);
 
-      // This allows for me to test with a symlinked vendor/ec-europa/qa-automation
-      // folder. I don't know if this works with an absolute folder.
-      $relative_build_file = $this->findRelativePath(getcwd(), $buildfile);
-      $relative_build_folder = dirname($relative_build_file);
-
-      if (isset($array['import'])) {
-        foreach($array['import'] as $import) {
+      // This also needs to be recursified.
+      if (isset($buildproperties['import'])) {
+        foreach($buildproperties['import'] as $import) {
           if (isset($import['@attributes']['file'])) {
-            $imports[] = $relative_build_folder . '/' . $import['@attributes']['file'];
-            $contents = file_get_contents($relative_build_folder . '/' . $import['@attributes']['file']);
+            $contents = file_get_contents($root . '/' . $import['@attributes']['file']);
             $this->setBuildProperties($contents, $buildproperties);
           }
         }
       }
+
       foreach ($buildproperties as $propertiesfile) {
-        if (is_file($propertiesfile)) {
-          $settings += $this->parsefile($relative_build_folder . '/' . $propertiesfile);
+        if (is_file($root . '/' . $propertiesfile)) {
+          $settings += $this->parsefile($root . '/' . $propertiesfile);
 
         }
       }

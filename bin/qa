@@ -2,12 +2,23 @@
 <?php
 
 use Symfony\Component\Console\Application;
+use QualityAssurance\Component\Console\Command\CheckCodingStandardsCommand;
+use QualityAssurance\Component\Console\Command\CheckBypassCodingStandardsCommand;
+use QualityAssurance\Component\Console\Command\CheckCronCommand;
 use QualityAssurance\Component\Console\Command\CheckStarterkitCommand;
+use QualityAssurance\Component\Console\Command\CheckTodosCommand;
+use QualityAssurance\Component\Console\Command\FullReviewCommand;
 
 // Just take it hardcoded for now because it's symlinked twice and can't figure it out.
 require '/var/www/subsite-starterkit/vendor/autoload.php';
 
-$command = new CheckStarterkitCommand();
 $application = new Application('Quality Assurance', '@package_version@');
-$application->add($command);
+$commands = array();
+$commands[] = new FullReviewCommand();
+$commands[] = new CheckCodingStandardsCommand();
+$commands[] = new CheckBypassCodingStandardsCommand();
+$commands[] = new CheckCronCommand();
+$commands[] = new CheckTodosCommand();
+$commands[] = new CheckStarterkitCommand();
+$application->addCommands($commands);
 $application->run();
