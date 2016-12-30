@@ -57,18 +57,18 @@ class QualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeSniffe
         $info     = QualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
         if (isset($info['dependencies']) && in_array('php', $info['dependencies'])) {
             $error = 'dependency on "php"  has to be removed';
-            $phpcsFile->addError($error, $stackPtr, 'Dependency on php');
+            $phpcsFile->addError($error, $stackPtr, 'PHPDependency');
         }
 
         if (isset($info['dependencies']) && in_array('menu', $info['dependencies'])) {
             $error = 'dependency on "menu"  has to be removed';
-            $phpcsFile->addError($error, $stackPtr, 'Dependency on menu');
+            $phpcsFile->addError($error, $stackPtr, 'MenuDependency');
         }
 
         if (isset($info['features']['taxonomy'])
             && in_array('tags', $info['features']['taxonomy'])) {
                 $error = 'taxonomy "tags" property has to be removed';
-                $phpcsFile->addError($error, $stackPtr, 'Taxonomy tags property');
+                $phpcsFile->addError($error, $stackPtr, 'TagsTaxonomy');
         }
 
         return $end;

@@ -228,6 +228,23 @@ class PhingPropertiesHelper
     }
     return $selection;
   }
+
+  public function requestSettings($options) {
+
+    $settings = $this->getAllSettings();
+    $selection = array();
+    foreach ($options as $key => $value) {
+      if (isset($settings[$value])) {
+        $selection[$key] = $settings[$value];
+      }
+      else {
+        throw new \Symfony\Component\Debug\Exception\FatalErrorException(
+          "Requested property ' . $value . ' not found.", 0, 1, __FILE__, __LINE__
+        );
+      }
+    }
+    return $selection;
+  }
   
   
 

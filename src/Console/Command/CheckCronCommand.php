@@ -31,14 +31,14 @@ class CheckCronCommand extends Command
     // Find todos tags.
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
-    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=./' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
+    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
     $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
 
     $search_pattern = $filename . '_cron';
     if (exec("grep -IPrino  $exclude_dir'{$search_pattern}' {$dirname}", $results)) {
       $output->writeln("<comment>Cron implementation: </comment><info>hook found.</info>");
       foreach ($results as $result) {
-        $output->writeln(str_replace($dirname, '', $result));
+        $output->writeln(str_replace($dirname, '.', $result));
       }
     }
   }

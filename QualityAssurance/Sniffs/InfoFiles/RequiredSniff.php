@@ -64,14 +64,14 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
 
         if (!isset($info['multisite_version']) || empty($info['multisite_version'])) {
             $error = '"multisite_version" property is missing in the info file';
-            $phpcsFile->addError($error, $stackPtr, 'Multisite version');
+            $phpcsFile->addError($error, $stackPtr, 'MultisiteVersion');
         } else if ($info['multisite_version'] === '2.2'
             && isset($info['php']) === true
             && $info['php'] <= '5.2'
         ) {
             $error = 'Multisite version 2.2 minimal requirement is PHP 5.2';
             $ptr   = Drupal_Sniffs_InfoFiles_ClassFilesSniff::getPtr('php', $info['php'], $phpcsFile);
-            $phpcsFile->addError($error, $ptr, 'Multisite PHP version');
+            $phpcsFile->addError($error, $ptr, 'MultisitePHPVersion');
         }
 
         return $end;

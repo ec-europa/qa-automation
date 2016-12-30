@@ -1,11 +1,14 @@
 <?php
 
+/**
+ * @file
+ * File for command class to run PHPCS on specified directory or current directory.
+ *
+ * Contains QualityAssurance\Component\Console\Command\CheckCodingStandardsCommand.
+ */
+
 namespace QualityAssurance\Component\Console\Command;
 
-use GitWrapper\GitCommand;
-use GitWrapper\GitException;
-use GitWrapper\GitWrapper;
-use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,6 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * .
+ */
 class CheckCodingStandardsCommand extends Command
 {
   protected function configure()
@@ -30,15 +36,14 @@ class CheckCodingStandardsCommand extends Command
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    // Find codingStandardsIgnore tags.
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--exclude-dir=' . $input->getOption('exclude-dirs') . ' ' : '';
+    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
     $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : 'request';
-    $width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
+    //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();
     //passthru("./bin/phpcs --standard=$standard --report-width=$width -qv " . $dirname, $error);
-    passthru("./bin/phpcs --standard=$standard --report=emacs -qv " . $dirname, $error);
+    passthru("./bin/phpcs --standard=$standard $exclude_dirs --report=emacs -qv " . $dirname, $error);
     $phpcs = ob_get_contents();
     ob_end_clean();
     if($error && preg_match_all('/^\/(.*)$/m', $phpcs, $emacs)) {
@@ -54,7 +59,6 @@ class CheckCodingStandardsCommand extends Command
           $type = $type_message[0];
           $message = rtrim($type_message[1], '.') . '.';
           $output->writeln("$path:$line:$type:$sniff");
-//          if (TRUE) {
           if ($show && $char) {
             $output->writeln("  <comment>$message</comment>");
           }

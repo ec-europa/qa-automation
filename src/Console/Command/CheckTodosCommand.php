@@ -30,7 +30,7 @@ class CheckTodosCommand extends Command
     // Find todos tags.
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
-    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=./' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
+    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
     $search_for = array(
       '@todo: .*?MULTISITE-[0-9]{5}.*?',
     );
@@ -39,7 +39,7 @@ class CheckTodosCommand extends Command
       $plural = count($results) > 1 ? '\'s' : '';
       $output->writeln("<comment>Scan for pending tasks: </comment><info>" . count($results) . " todo" . $plural . " found.</info>");
       foreach ($results as $result) {
-        $lines = explode(':', str_replace($dirname, '', $result));
+        $lines = explode(':', str_replace($dirname, '.', $result));
         $output->writeln(implode(':', array_map('trim', $lines)));
       }
     }

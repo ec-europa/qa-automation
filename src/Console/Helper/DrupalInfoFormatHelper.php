@@ -69,4 +69,32 @@ class DrupalInfoFormatHelper
 
     return $info;
   }
+
+  /**
+   * Converts array into Drupal's .info format.
+   *
+   * @param array $info
+   *   An array or single value to put in an .info file.
+   * @param array $parents
+   *   Array of parent keys (internal use only).
+   */
+  public function transformArrayIntoInfoFormat($info, $parents = array()) {
+    $output = '';
+    if (is_array($info)) {
+      foreach ($info as $k => $v) {
+        $child = $parents;
+        $child[] = $k;
+        $output .= $this->transformArrayIntoInfoFormat($v, $child);
+      }
+    }
+    else if (!empty($info) && count($parents)) {
+      $line = array_shift($parents);
+      foreach ($parents as $key) {
+        $line .= is_numeric($key) ? "[]" : "[{$key}]";
+      }
+      $line .=  " = {$info}\n";
+      return $line;
+    }
+    return $output;
+  }
 }

@@ -59,7 +59,7 @@ class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer
             && in_array('api:1', $info['features']['features_api'])
         ) {
             $warning = 'We highly recommend upgrading features to "api:2"';
-            $phpcsFile->addWarning($warning, $stackPtr, 'Features API');
+            $phpcsFile->addWarning($warning, $stackPtr, 'FeaturesAPI');
         }
 
         return $end;

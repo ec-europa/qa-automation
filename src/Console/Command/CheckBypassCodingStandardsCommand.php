@@ -30,8 +30,8 @@ class CheckBypassCodingStandardsCommand extends Command
   {
     // Find codingStandardsIgnore tags.
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
-    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=./' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
+    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? (array) explode(',', $input->getOption('exclude-dirs')) : NULL;
+    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
     $show = $input->getOption('show') ? TRUE : FALSE;
     $messages = array();
     $search_for = array(
@@ -49,7 +49,7 @@ class CheckBypassCodingStandardsCommand extends Command
           $file = $params[0];
           $type = $params[2];
 
-          $messages[] = str_replace($dirname, '', $result);
+          $messages[] = str_replace($dirname, '.', $result);
 //          if (strpos($type, '@codingStandardsIgnoreFile') !== FALSE) {
 //            $messages[] = "<comment>" . $params[0] . "</comment>";
 //          }
