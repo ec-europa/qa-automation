@@ -50,8 +50,8 @@ Scan for codingStandardsIgnore tags.
 for possible commented code.
 - [scan:cron](src/Console/Command/ScanCronCommand.php): Scan for cron
 implementations.
-- [scan:mkpd](src/Console/Command/ScanPlatformProvidedCommand.php):
-Scan for platform provided modules.
+- [scan:mkpd](src/Console/Command/ScanPlatformProvidedCommand.php): Scan
+for platform provided modules.
 - [scan:todo](src/Console/Command/ScanTodosCommand.php): Scan for
 pending refractoring tasks.
 
