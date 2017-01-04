@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Command\ScanCronCommand.
+ */
+
 namespace QualityAssurance\Component\Console\Command;
 
 use GitWrapper\GitCommand;
@@ -13,6 +18,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class ScanCronCommand
+ * @package QualityAssurance\Component\Console\Command
+ */
 class ScanCronCommand extends Command
 {
   protected function configure()

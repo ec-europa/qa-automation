@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Command\ScanCodingStandardsIgnoreCommand.
+ */
+
 namespace QualityAssurance\Component\Console\Command;
 
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
@@ -10,6 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class ScanCodingStandardsIgnoreCommand
+ * @package QualityAssurance\Component\Console\Command
+ */
 class ScanCodingStandardsIgnoreCommand extends Command
 {
   protected function configure()
@@ -19,7 +28,6 @@ class ScanCodingStandardsIgnoreCommand extends Command
       ->setDescription('Scan for codingStandardsIgnore tags.')
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
-      ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given, code is shown.')
     ;
   }
 
@@ -29,7 +37,6 @@ class ScanCodingStandardsIgnoreCommand extends Command
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? (array) explode(',', $input->getOption('exclude-dirs')) : NULL;
     $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
-    $show = $input->getOption('show') ? TRUE : FALSE;
     $messages = array();
     $search_for = array(
       '@codingStandardsIgnoreStart',
@@ -50,7 +57,7 @@ class ScanCodingStandardsIgnoreCommand extends Command
 //          if (strpos($type, '@codingStandardsIgnoreFile') !== FALSE) {
 //            $messages[] = "<comment>" . $params[0] . "</comment>";
 //          }
-          if ($show) {
+          if ($output->isVerbose()) {
             if (strpos($type, '@codingStandardsIgnoreLine') !== FALSE) {
               $messages[] = "<comment>  " . ltrim(exec("sed \"$start q;d\" $file")) . "</comment>";
             } elseif (strpos($type, '@codingStandardsIgnoreStart') !== FALSE) {

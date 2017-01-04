@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Command\ScanTodosCommand.
+ */
 namespace QualityAssurance\Component\Console\Command;
 
 use GitWrapper\GitCommand;
@@ -13,6 +17,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class ScanTodosCommand
+ * @package QualityAssurance\Component\Console\Command
+ */
 class ScanTodosCommand extends Command
 {
   protected function configure()

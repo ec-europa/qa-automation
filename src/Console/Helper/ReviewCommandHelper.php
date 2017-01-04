@@ -1,15 +1,25 @@
 <?php
+
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Helper\ReviewCommandHelper.
+ */
+
 namespace QualityAssurance\Component\Console\Helper;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Console\Input\ArrayInput;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 
 
+/**
+ * Class ReviewCommandHelper
+ * @package QualityAssurance\Component\Console\Helper
+ */
 class ReviewCommandHelper
 {
   /**
@@ -23,7 +33,7 @@ class ReviewCommandHelper
    */
   function __construct(InputInterface $input, OutputInterface $output, $commands)
   {
-    // Set default properties.
+    // Set construct properties.
     $this->input = $input;
     $this->output = $output;
     $this->commands = $commands;

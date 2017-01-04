@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Command\DiffUpdateHooksCommand.
+ */
+
 namespace QualityAssurance\Component\Console\Command;
 
 use GitWrapper\GitCommand;
@@ -14,7 +19,10 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 
-
+/**
+ * Class DiffUpdateHooksCommand
+ * @package QualityAssurance\Component\Console\Command
+ */
 class DiffUpdateHooksCommand extends Command
 {
   protected function configure()

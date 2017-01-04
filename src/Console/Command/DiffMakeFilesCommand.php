@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Command\DiffMakeFilesCommand.
+ */
 namespace QualityAssurance\Component\Console\Command;
 
 use GitWrapper\GitCommand;
@@ -15,7 +19,10 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 
-
+/**
+ * Class DiffMakeFilesCommand
+ * @package QualityAssurance\Component\Console\Command
+ */
 class DiffMakeFilesCommand extends Command
 {
   protected function configure()

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Command\ScanPlatformProvidedCommand.
+ */
+
 namespace QualityAssurance\Component\Console\Command;
 
 use QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper;
@@ -10,6 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class ScanPlatformProvidedCommand
+ * @package QualityAssurance\Component\Console\Command
+ */
 class ScanPlatformProvidedCommand extends Command
 {
   protected function configure()

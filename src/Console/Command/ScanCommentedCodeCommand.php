@@ -2,9 +2,7 @@
 
 /**
  * @file
- * File for command class to run PHPCS on specified directory or current directory.
- *
- * Contains QualityAssurance\Component\Console\Command\CheckCodingStandardsCommand.
+ * Contains QualityAssurance\Component\Console\Command\ScanCommentedCodeCommand.
  */
 
 namespace QualityAssurance\Component\Console\Command;
@@ -17,7 +15,8 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * .
+ * Class ScanCommentedCodeCommand
+ * @package QualityAssurance\Component\Console\Command
  */
 class ScanCommentedCodeCommand extends Command
 {
@@ -57,7 +56,7 @@ class ScanCommentedCodeCommand extends Command
           $type = $type_message[0];
           $message = rtrim($type_message[1], '.') . '.';
           $output->writeln("$path:$line:$type:$sniff");
-          if (TRUE) {
+          if ($output->isVerbose() && $char) {
 //          if ($show && $char) {
             $output->writeln("  <comment>$message</comment>");
           }
