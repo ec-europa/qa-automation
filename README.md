@@ -52,8 +52,6 @@ for possible commented code.
 implementations.
 - [scan:mkpd](src/Console/Command/ScanPlatformProvidedCommand.php): Scan
 for platform provided modules.
-- [scan:todo](src/Console/Command/ScanTodosCommand.php): Scan for
-pending refractoring tasks.
 
 1. [Cronjobs](docs/cron.md): Check codebase for cronjob and verify it is running at
 requested interval.
