@@ -13,7 +13,7 @@ use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 class ReviewCommandHelper
 {
   /**
-   * PhingPropertiesHelper constructor.
+   * ReviewCommandHelper constructor.
    *
    * Setup our input output interfaces and other variables.
    *
@@ -23,12 +23,15 @@ class ReviewCommandHelper
    */
   function __construct(InputInterface $input, OutputInterface $output, $commands)
   {
+    // Set default properties.
     $this->input = $input;
     $this->output = $output;
     $this->commands = $commands;
 
+    // Get extra properties.
     list($properties, $options, $ruler_length) = $this->buildVariableArray($input, $output);
 
+    // Set extra properties.
     $this->properties = $properties;
     $this->options = $options;
     $this->ruler_length = $ruler_length;
