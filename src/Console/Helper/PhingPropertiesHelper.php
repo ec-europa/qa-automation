@@ -1,9 +1,19 @@
 <?php
+
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Helper\PhingPropertiesHelper.
+ */
+
 namespace QualityAssurance\Component\Console\Helper;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class PhingPropertiesHelper
+ * @package QualityAssurance\Component\Console\Helper
+ */
 class PhingPropertiesHelper
 {
   /**

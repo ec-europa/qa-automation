@@ -1,9 +1,19 @@
 <?php
+
+/**
+ * @file
+ * Contains QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper.
+ */
+
 namespace QualityAssurance\Component\Console\Helper;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class DrupalInfoFormatHelper
+ * @package QualityAssurance\Component\Console\Helper
+ */
 class DrupalInfoFormatHelper
 {
   /**
