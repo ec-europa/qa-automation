@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_Fields_Locked_LockedUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissions_ForbiddenPermissionsUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,7 +14,14 @@ class QualityAssurance_Sniffs_Fields_Locked_LockedUnitTest extends CoderSniffUni
     public function getErrorList($testFile)
     {
         return array(
-            22 => 1,
+            14 => 1,
+            23 => 1,
+            32 => 1,
+            39 => 1,
+            48 => 1,
+            55 => 1,
+            62 => 1,
+            71 => 1,
         );
 
     }//end getErrorList()
@@ -47,7 +54,7 @@ class QualityAssurance_Sniffs_Fields_Locked_LockedUnitTest extends CoderSniffUni
      */
     public function getTestFiles() {
         return array(
-          'Locked.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
+          'Forbidden.features.user_permission.inc' => '',
         );
     }// end getTestFiles()
 

@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class QualityAssurance_Sniffs_Permissions_ForbiddenSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements PHP_CodeSniffer_Sniff
 {
 
 

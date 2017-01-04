@@ -12,4 +12,5 @@
   <exclude-pattern>*.info</exclude-pattern>
   <exclude-pattern>*.yml</exclude-pattern>
  </rule>
+
 </ruleset>

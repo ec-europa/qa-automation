@@ -13,15 +13,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CheckTodosCommand extends Command
+class ScanCronCommand extends Command
 {
   protected function configure()
   {
     $this
-      ->setName('scan:tds')
-      ->setDescription('Scan for pending refractoring tasks.')
+      ->setName('scan:cron')
+      ->setDescription('Scan for cron implementations.')
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
+      ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'Modulename.')
     ;
   }
 
@@ -31,16 +32,13 @@ class CheckTodosCommand extends Command
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
     $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
-    $search_for = array(
-      '@todo: .*?MULTISITE-[0-9]{5}.*?',
-    );
-    $search_pattern = implode('|', $search_for);
-    if (exec("grep -IPrino $exclude_dir'{$search_pattern}' {$dirname}", $results)) {
-      $plural = count($results) > 1 ? '\'s' : '';
-      $output->writeln("<comment>Scan for pending tasks: </comment><info>" . count($results) . " todo" . $plural . " found.</info>");
+    $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
+
+    $search_pattern = $filename . '_cron';
+    if (exec("grep -IPrino  $exclude_dir'{$search_pattern}' {$dirname}", $results)) {
+      $output->writeln("<comment>Cron implementation: </comment><info>hook found.</info>");
       foreach ($results as $result) {
-        $lines = explode(':', str_replace($dirname, '.', $result));
-        $output->writeln(implode(':', array_map('trim', $lines)));
+        $output->writeln(str_replace($dirname, '.', $result));
       }
     }
   }

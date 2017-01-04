@@ -36,6 +36,10 @@ class DiffMakeFilesCommand extends Command
     $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '';
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
 
+    if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
+      return;
+    }
+
     // Find site.make in resources folder.
     $searches = array(
       'projects' => 'modules or themes',

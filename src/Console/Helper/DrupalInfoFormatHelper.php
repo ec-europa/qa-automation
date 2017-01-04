@@ -84,7 +84,7 @@ class DrupalInfoFormatHelper
       foreach ($info as $k => $v) {
         $child = $parents;
         $child[] = $k;
-        $output .= $this->transformArrayIntoInfoFormat($v, $child);
+        $output .= SELF::transformArrayIntoInfoFormat($v, $child);
       }
     }
     else if (!empty($info) && count($parents)) {

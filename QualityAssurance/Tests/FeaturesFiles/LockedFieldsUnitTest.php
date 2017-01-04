@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_Fields_Datestamp_DatestampUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -14,8 +14,7 @@ class QualityAssurance_Sniffs_Fields_Datestamp_DatestampUnitTest extends CoderSn
     public function getErrorList($testFile)
     {
         return array(
-            41 => 1,
-            71 => 1,
+            22 => 1,
         );
 
     }//end getErrorList()
@@ -48,10 +47,9 @@ class QualityAssurance_Sniffs_Fields_Datestamp_DatestampUnitTest extends CoderSn
      */
     public function getTestFiles() {
         return array(
-          'Datestamp.features.field_base.inc' => 'Datestamp.fixed.features.field_base.inc',
+          'Locked.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
         );
     }// end getTestFiles()
-
 
 
 }//end class

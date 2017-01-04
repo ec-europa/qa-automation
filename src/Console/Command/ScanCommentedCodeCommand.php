@@ -19,15 +19,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * .
  */
-class CheckCodingStandardsCommand extends Command
+class ScanCommentedCodeCommand extends Command
 {
   protected function configure()
   {
     $this
-      ->setName('phpcs:xml')
-      ->setDescription('Perform a phpcs run with provided phpcs.xml standard.')
+      ->setName('scan:coco')
+      ->setDescription('Scan for possible commented code.')
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to run PHPCS on.')
-      ->addOption('standard', null, InputOption::VALUE_OPTIONAL, 'PHPCS standard.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
       ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
@@ -38,17 +37,16 @@ class CheckCodingStandardsCommand extends Command
   {
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
-    $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : 'request';
     //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();
     //passthru("./bin/phpcs --standard=$standard --report-width=$width -qv " . $dirname, $error);
-    passthru("./bin/phpcs --standard=$standard $exclude_dirs --report=emacs -qvs " . $dirname, $error);
+    passthru("./bin/phpcs --standard=" . __DIR__ . "/../../../resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
     $phpcs = ob_get_contents();
     ob_end_clean();
     if($error && preg_match_all('/^\/(.*)$/m', $phpcs, $emacs)) {
       $count = count($emacs[0]);
-      $output->writeln("<comment>Coding standards violations: </comment><info>$count detected.</info>");
+      $output->writeln("<comment>Possible commented code: </comment><info>$count detected.</info>");
       foreach($emacs[0] as $emac) {
         $vars = preg_split('/[:\(\)]/', $emac, 0, PREG_SPLIT_NO_EMPTY);if (is_array($vars)) {
           $path = str_replace($dirname, '.', array_shift($vars));

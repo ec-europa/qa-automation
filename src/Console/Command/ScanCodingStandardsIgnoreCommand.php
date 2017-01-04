@@ -2,9 +2,6 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
-use GitWrapper\GitCommand;
-use GitWrapper\GitException;
-use GitWrapper\GitWrapper;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CheckBypassCodingStandardsCommand extends Command
+class ScanCodingStandardsIgnoreCommand extends Command
 {
   protected function configure()
   {

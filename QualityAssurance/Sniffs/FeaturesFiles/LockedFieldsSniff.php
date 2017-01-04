@@ -1,6 +1,6 @@
 <?php
 /**
- * QualityAssurance_Sniffs_Fields_DatestampSniff.
+ * QualityAssurance_Sniffs_Fields_LockedSniff.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class QualityAssurance_Sniffs_Fields_DatestampSniff implements PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_CodeSniffer_Sniff
 {
 
 
@@ -65,17 +65,16 @@ class QualityAssurance_Sniffs_Fields_DatestampSniff implements PHP_CodeSniffer_S
                 $fieldBaseArray = $phpcsFile->findNext(T_ARRAY, ($fieldName + 1), ($fieldName + 6), false);
                 $fieldBaseArrayStart = $tokens[$fieldBaseArray]['parenthesis_opener'];
                 $fieldBaseArrayEnd = $tokens[$fieldBaseArray]['parenthesis_closer'];
-                // Find the type property.
-                if ($type = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $fieldBaseArrayStart, $fieldBaseArrayEnd, false, "'type'")) {
-                    // If field type is not datestamp.
-                    if (($isDatestamp = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($type + 1), ($type + 5), false))
-                      && ($tokens[$isDatestamp]['content'] === "'datetime'" || $tokens[$isDatestamp]['content'] === "'date'")) {
+                // Find the locked property.
+                if ($locked = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $fieldBaseArrayStart, $fieldBaseArrayEnd, false, "'locked'")) {
+                    // If field is not locked.
+                    if ($isLocked = $phpcsFile->findNext(T_LNUMBER, ($locked + 1), ($locked + 5), false, "0")) {
                         // Set error.
-                        $error = 'Field ' . $tokens[$fieldName]['content'] . ' is of type ' . $tokens[$isDatestamp]['content'] . '; needs to be \'datestamp\'';
-                        $fix = $phpcsFile->addFixableError($error, $isDatestamp, 'DatestampFields');
+                        $error = 'Field ' . $tokens[$fieldName]['content'] . ' needs to be locked';
+                        $fix = $phpcsFile->addFixableError($error, $isLocked, 'LockedFields');
                         if ($fix === true) {
                             $phpcsFile->fixer->beginChangeset();
-                            $phpcsFile->fixer->replaceToken($isDatestamp, "'datestamp'");
+                            $phpcsFile->fixer->replaceToken($isLocked, '1');
                             $phpcsFile->fixer->endChangeset();
                         }
                     }

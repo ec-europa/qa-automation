@@ -2,10 +2,7 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
-use GitWrapper\GitCommand;
-use GitWrapper\GitException;
-use GitWrapper\GitWrapper;
-use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
+use QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CheckPlatformProvidedCommand extends Command
+class ScanPlatformProvidedCommand extends Command
 {
   protected function configure()
   {
@@ -36,6 +33,10 @@ class CheckPlatformProvidedCommand extends Command
     $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
     $profile = !empty($input->getOption('profile')) ? $input->getOption('profile') : '@todo';
 
+    if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
+      return;
+    }
+
     // Find site.make in resources folder.
     $makefile = $filename;
     $searches = array(
@@ -51,9 +52,9 @@ class CheckPlatformProvidedCommand extends Command
     curl_setopt($curl, CURLOPT_HEADER, false);
     if ($data = curl_exec($curl)) {
       // Get the contents of the profile make file.
-      $profile = $this->drupalParseInfoFormat($data);
+      $profile = DrupalInfoFormatHelper::drupalParseInfoFormat($data);
       // Get the contents of the subsite make file.
-      $siteMake = $this->drupalParseInfoFormat(file_get_contents($makefile));
+      $siteMake = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($makefile));
       // Search the subsite make file for duplicates.
       foreach ($searches as $search => $subject) {
         // Perform search.
