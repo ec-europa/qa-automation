@@ -63,7 +63,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
           'administer ckeditor_lite',
           'administer jquery update',
           'access devel information',
-          'execute php code'
+          'execute php code',
+          'manage feature nexteuropa_dgt_connector'
         );
         // Find the variable.
         if ($token['content'] == '$permissions') {
