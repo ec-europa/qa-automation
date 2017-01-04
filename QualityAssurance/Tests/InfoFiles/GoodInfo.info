@@ -1,8 +1,0 @@
-; correct info file
-name = MyProject Core
-description = Core feature of the MyProject site.
-core = 7.x
-php = 5.5
-multisite_version = 2.2
-
-features[features_api][] = api:2
