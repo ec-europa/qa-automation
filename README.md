@@ -32,7 +32,7 @@ checks are:
 ## 2 ./bin/qa
 This is the console application which you can use to perform analysis
 and review of your code. It contains various commands:
-- [phpcs:xml](src/Console/Command/CheckCodingStandardsCommand.php):
+- [phpcs:xml](src/Console/Command/CheckCodingStandardsCommand.php#L21):
 Perform a phpcs run with provided phpcs.xml standard.
 - [check:ssk](src/Console/Command/CheckStarterkitCommand.php): Check if
 the starterkit is up to date.
