@@ -41,9 +41,9 @@ file for changes.
 - [diff:updb](src/Console/Command/DiffUpdateHooksCommand.php) : Check
 make file for changes.
 - [review:full](src/Console/Command/ReviewFullCommand.php): Performs all
-required QA checks on the codebase.
-- [review:select](src/Console/Command/ReviewSelectCommand.php): Performs
-a selection of QA checks on the codebase.
+required QA checks on the entire codebase.
+- [review:this](src/Console/Command/ReviewThisCommand.php): Performs all
+required QA checks on the current folder.
 - [scan:csi](src/Console/Command/ScanCodingStandardsIgnoreCommand.php): 
 Scan for codingStandardsIgnore tags.
 - [scan:coco](src/Console/Command/ScanCommentedCodeCommand.php): Scan

@@ -10,6 +10,7 @@ namespace QualityAssurance\Component\Console\Helper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Finder\Finder;
@@ -29,31 +30,73 @@ class ReviewCommandHelper
    *
    * @param InputInterface $input
    * @param OutputInterface $output
-   * @param array $commands
+   * @param $application
    */
-  function __construct(InputInterface $input, OutputInterface $output, $commands)
+  function __construct(InputInterface $input, OutputInterface $output, $application)
   {
     // Set construct properties.
     $this->input = $input;
     $this->output = $output;
-    $this->commands = $commands;
-
-    // Get extra properties.
-    list($properties, $options, $ruler_length) = $this->buildVariableArray($input, $output);
-
-    // Set extra properties.
-    $this->properties = $properties;
-    $this->options = $options;
-    $this->ruler_length = $ruler_length;
+    $this->application = $application;
+    $this->commands = $this->getSelectedCommands($input, $output, $application);
   }
 
   /**
-   * Public helper function to ask users to select options if needed.
+   * Public helper function to set the properties before starting a review.
+   *
+   * @param array $overrides
+   *   An array of possible overrides.
+   */
+  public function setProperties($overrides = array()) {
+    // Start off by fetching the review type.
+    $type = $this->input->getOption('type');
+    // Get the needed properties to target the QA review on.
+    $phingProperties = $this->getPhingProperties($type, $this->input, $this->output);
+    if (!empty($overrides)) {
+      $this->properties = array_merge($phingProperties, $overrides);
+    }
+    else {
+      $this->properties = $phingProperties;
+    }
+  }
+
+  /**
+   * Start a review process.
+   */
+  public function startReview() {
+    // Ask for a selection of options if needed.
+    $selected = $this->getSelectedOptions();
+    // Setup a buffered output to capture results of command.
+    $buffered_output = new BufferedOutput($this->output->getVerbosity(), true);
+
+    // Loop over each selection to run commands.
+    foreach ($selected as $absolute_path => $filename) {
+      // Build the commandlines.
+      $commandlines = $this->buildCommandlines($absolute_path);
+      // Execute commandlines.
+      $this->executeCommandlines($this->application, $commandlines, $buffered_output);
+      // Write the results.
+      $this->outputCommandlines($buffered_output, dirname($absolute_path));
+      // @todo: incorporate build exception.
+//    // If an error was discovered, fail the build.
+//    if (!$this->passbuild) {
+//      throw new \BuildException(
+//        'Build failed because the code did not pass quality assurance checks.'
+//      );
+    }
+  }
+
+  /**
+   * Helper function to ask users to select options if needed.
    *
    * @return array
    *   An associative array of options keyed by absolute path and valued by filename.
    */
-  public function getSelectedOptions() {
+  private function getSelectedOptions() {
+    // Setup options if it hasn't happened yet.
+    if (!isset($this->options)) {
+      $this->setOptions();
+    }
 
     // Stop for user input to select modules.
     $helperquestion = new QuestionHelper();
@@ -75,14 +118,14 @@ class ReviewCommandHelper
   }
 
   /**
-   * Public helper function to build the commandlines.
+   * Helper function to build the commandlines.
    *
    * @param $absolute_path
    *   The absolute path of the info file or make file.
    * @return array
    *   An associative array containing ArrayInput instances keyed by command name.
    */
-  public function buildCommandlines($absolute_path) {
+  private function buildCommandlines($absolute_path) {
     $pathinfo = pathinfo($absolute_path);
     $directory = $pathinfo['dirname'];
     $filename = $pathinfo['filename'];
@@ -99,9 +142,6 @@ class ReviewCommandHelper
 
     $commandlines = array();
     $commands = $this->commands;
-    // Unset the standard console commands.
-    unset($commands['help']);
-    unset($commands['list']);
     //unset($commands['scan:coco']);
     foreach ($commands as $command) {
       $command_name = $command->getName();
@@ -122,7 +162,7 @@ class ReviewCommandHelper
   }
 
   /**
-   * Public helper function to execute the commmandlines array.
+   * Helper function to execute the commmandlines array.
    *
    * @param $application
    *   The application of which we need to execute commands.
@@ -131,7 +171,7 @@ class ReviewCommandHelper
    * @param $buffered_output
    *   The buffered output on which we capture the results.
    */
-  public function executeCommandlines($application, $commandlines, $buffered_output) {
+  private function executeCommandlines($application, $commandlines, $buffered_output) {
     foreach ($commandlines as $name => $commandline) {
       $command = $application->find($name);
       // @todo: implement the return code somehow.
@@ -140,38 +180,76 @@ class ReviewCommandHelper
   }
 
   /**
-   * Public helper function to output the commandlines results.
+   * Helper function to output the commandlines results.
    *
    * @param $buffered_output
    *  The buffered output where the results were captured.
-   * @param $title
+   * @param $path
    *  The path to the folder that was reviewed.
    */
-  public function outputCommandlines($buffered_output, $title) {
+  private function outputCommandlines($buffered_output, $path) {
     if ($content = $buffered_output->fetch()) {
+      $title = str_replace(getcwd(), '.', $path);
       $ruler = "<info>" . str_repeat('=', $this->ruler_length) . "</info>";
       $this->output->writeln("");
       $this->output->writeln($ruler);
-      $this->output->writeln(str_replace(getcwd(), '.', $title));
+      if ($title != '.') {
+        $this->output->writeln($title);
+      }
+      else {
+        $this->output->writeln('../' . basename($path));
+      }
+
       $this->output->writeln($ruler);
       $this->output->writeln($content);
     }
   }
 
   /**
-   * Build an array of variables needed for review commands.
+   * Helper function to allow the user to make a selection of commands.
    *
-   * @return array $variables
-   *   An array consisting of:
-   *   - array of the build properties.
-   *   - array of options.
-   *   - integer of ruler length.
+   * @param $input
+   *   The command input.
+   * @param $output
+   *   The command output.
+   * @param $application
+   *   The application of which to select the commands.
+   * @return array
+   *   An array of commands.
    */
-  private function buildVariableArray() {
-    // Start off by fetching the review type.
-    $type = $this->input->getOption('type');
-    // Get the needed properties to target the QA review on.
-    $properties = $this->getPhingProperties($type, $this->input, $this->output);
+  private function getSelectedCommands($input, $output, $application) {
+    // Get all application commands.
+    $commands = $application->all();
+    // Unset unwanted commands.
+    foreach ($commands as $name => $command) {
+      if (in_array($name, array('help', 'list')) || strpos($name, 'review:') === 0) {
+        unset($commands[$name]);
+      }
+    }
+    // Stop for user input to select commands.
+    if ($this->input->getOption('select')) {
+      $helperquestion = new QuestionHelper();
+      $question = new ChoiceQuestion("Select commands to execute in review (seperate with commas): ", array_keys($commands), 0);
+      $question->setMultiselect(true);
+      $selection = $helperquestion->ask($input, $output, $question);
+
+      // Set selected commands.
+      if ($selection) {
+        return array_intersect_key($commands, array_flip($selection));
+      }
+    }
+    else {
+      return $commands;
+    }
+  }
+
+  /**
+   * Helper function to set initial options.
+   *
+   * Also sets the ruler length.
+   */
+  private function setOptions() {
+    $properties = $this->properties;
     // Fetch all modules, features and themes into an array.
     $info_files = $this->getInfoFiles($properties['lib']);
     // Fetch all make files into an array.
@@ -180,16 +258,10 @@ class ReviewCommandHelper
     $options = array_merge($make_files, $info_files);
     // Add the "Select all" option.
     array_unshift($options, 'Select all');
-    // Calculate the ruler length for header output.
-    $ruler_length = $this->getRulerLength($options);
-
-    $variables = array(
-      $properties,
-      $options,
-      $ruler_length,
-    );
-
-    return $variables;
+    // Set the options.
+    $this->options = $options;
+    // Set the ruler length.
+    $this->setRulerLength($options);
   }
 
   /**
@@ -319,5 +391,15 @@ class ReviewCommandHelper
       $ruler_length = strlen($relative_dirname) > $ruler_length ? strlen($relative_dirname) : $ruler_length;
     }
     return $ruler_length;
+  }
+
+  /**
+   * Helper function to set the ruler length.
+   *
+   * @param $options
+   */
+  private function setRulerLength($options) {
+    // Calculate the ruler length for header output.
+    $this->ruler_length = $this->getRulerLength($options);
   }
 }

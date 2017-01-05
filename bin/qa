@@ -11,16 +11,16 @@ use QualityAssurance\Component\Console\Command\ScanTodosCommand;
 use QualityAssurance\Component\Console\Command\ScanPlatformProvidedCommand;
 use QualityAssurance\Component\Console\Command\DiffUpdateHooksCommand;
 use QualityAssurance\Component\Console\Command\DiffMakeFilesCommand;
+use QualityAssurance\Component\Console\Command\ReviewThisCommand;
 use QualityAssurance\Component\Console\Command\ReviewFullCommand;
-use QualityAssurance\Component\Console\Command\ReviewSelectCommand;
 
 // Just take it hardcoded for now because it's symlinked twice and can't figure it out.
 require '/var/www/subsite-starterkit/vendor/autoload.php';
 
 $application = new Application('Quality Assurance', '@package_version@');
 $commands = array();
+$commands[] = new ReviewThisCommand();
 $commands[] = new ReviewFullCommand();
-$commands[] = new ReviewSelectCommand();
 $commands[] = new CheckCodingStandardsCommand();
 $commands[] = new ScanCodingStandardsIgnoreCommand();
 $commands[] = new ScanCronCommand();
