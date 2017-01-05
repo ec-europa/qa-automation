@@ -7,6 +7,7 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
+use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,7 +24,7 @@ class CheckCodingStandardsCommand extends Command
   protected function configure()
   {
     $this
-      ->setName('phpcs:xml')
+      ->setName('phpcs:run')
       ->setDescription('Perform a phpcs run with provided phpcs.xml standard.')
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to run PHPCS on.')
       ->addOption('standard', null, InputOption::VALUE_OPTIONAL, 'PHPCS standard.')
@@ -35,9 +36,11 @@ class CheckCodingStandardsCommand extends Command
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+    $phingPropertiesHelper = new PhingPropertiesHelper($input, $output);
+    $properties = $phingPropertiesHelper->requestSettings(array('phpcs-config' => 'phpcs.config'));
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
-    $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : 'request';
+    $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : $properties['phpcs-config'];
     //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();

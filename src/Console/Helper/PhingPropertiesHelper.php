@@ -211,8 +211,16 @@ class PhingPropertiesHelper
     $this->resolveProperties($settings);
     return $settings;
   }
-
-
+  
+  /**
+   * Public helper function to request required settings.
+   *
+   * @param array $options
+   *   An array of properties.
+   * @return array
+   *   Returns a selection of properties in an array.
+   * @throws \Symfony\Component\Debug\Exception\FatalErrorException
+   */
   public function requestRequiredSettings($options) {
     // Remove standard options.
     $options = array_diff_key($options, array_flip(array(
@@ -239,6 +247,16 @@ class PhingPropertiesHelper
     return $selection;
   }
 
+  /**
+   * Public function to request specific settings.
+   *
+   * @param $options
+   *   An array of properties to select valued by the property name.
+   * @return array
+   *   An array of selected properties where the property name has been replaced by
+   *   the property value.
+   * @throws \Symfony\Component\Debug\Exception\FatalErrorException
+   */
   public function requestSettings($options) {
 
     $settings = $this->getAllSettings();
@@ -255,8 +273,6 @@ class PhingPropertiesHelper
     }
     return $selection;
   }
-  
-  
 
   /**
    *
