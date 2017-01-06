@@ -73,15 +73,15 @@ class ReviewCommandHelper
       // Build the commandlines.
       $commandlines = $this->buildCommandlines($absolute_path);
       // Execute commandlines.
-      $this->executeCommandlines($this->application, $commandlines, $buffered_output);
+      if ($this->executeCommandlines($this->application, $commandlines, $buffered_output) !== 0) {
+        $failbuild = TRUE;
+      }
       // Write the results.
       $this->outputCommandlines($buffered_output, dirname($absolute_path));
-      // @todo: incorporate build exception.
-//    // If an error was discovered, fail the build.
-//    if (!$this->passbuild) {
-//      throw new \BuildException(
-//        'Build failed because the code did not pass quality assurance checks.'
-//      );
+    }
+
+    if ($failbuild) {
+      return 1;
     }
   }
 
@@ -171,11 +171,14 @@ class ReviewCommandHelper
    *   The buffered output on which we capture the results.
    */
   private function executeCommandlines($application, $commandlines, $buffered_output) {
+    $failbuild = FALSE;
     foreach ($commandlines as $name => $commandline) {
       $command = $application->find($name);
-      // @todo: implement the return code somehow.
-      $returnCode = $command->run($commandline, $buffered_output);
+      if ($command->run($commandline, $buffered_output) !== 0) {
+        $failbuild = TRUE;
+      }
     }
+    return $failbuild;
   }
 
   /**
@@ -220,8 +223,9 @@ class ReviewCommandHelper
     // Get all application commands.
     $commands = $application->all();
     // Unset unwanted commands.
+    $unwanted = array('help', 'list');
     foreach ($commands as $name => $command) {
-      if (in_array($name, array('help', 'list')) || strpos($name, 'review:') === 0) {
+      if (in_array($name, $unwanted) || strpos($name, 'review:') === 0) {
         unset($commands[$name]);
       }
     }
@@ -302,7 +306,7 @@ class ReviewCommandHelper
    */
   private function getPhingProperties($type) {
     // Get required properties from the build properties depending on QA review type.
-    $phingPropertiesHelper = new PhingPropertiesHelper($this->input, $this->output);
+    $phingPropertiesHelper = new PhingPropertiesHelper($this->output);
     $properties = array();
     if ($this->input->getOption('type') == 'subsite') {
       $properties = $phingPropertiesHelper->requestSettings(array(

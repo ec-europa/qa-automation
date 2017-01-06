@@ -47,6 +47,9 @@ class ReviewFullCommand extends Command
     // Set properties.
     $reviewCommandHelper->setProperties();
     // Start the review.
-    $reviewCommandHelper->startReview();
+    if ($reviewCommandHelper->startReview()) {
+      $output->writeln("<error>Code did not pass quality assurance checks.</error>");
+      return 1;
+    }
   }
 }

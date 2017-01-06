@@ -28,10 +28,10 @@ class CheckStarterkitCommand extends Command
         $this
             ->setName('check:ssk')
             ->setDescription('Check if the starterkit is up to date.')
-            ->addOption('starterkit.branch', null, InputOption::VALUE_REQUIRED, 'Starterkit branch.')
-            ->addOption('starterkit.remote', null, InputOption::VALUE_REQUIRED, 'Starterkit remote.')
-            ->addOption('starterkit.repository', null, InputOption::VALUE_REQUIRED, 'Starterkit repository on github.')
-            ->addOption('project.basedir', null, InputOption::VALUE_REQUIRED, 'Project base directory.')
+            ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Starterkit branch.')
+            ->addOption('remote', null, InputOption::VALUE_OPTIONAL, 'Starterkit remote.')
+            ->addOption('repository', null, InputOption::VALUE_OPTIONAL, 'Starterkit repository on github.')
+            ->addOption('basedir', null, InputOption::VALUE_OPTIONAL, 'Project base directory.')
         ;
     }
 
@@ -41,28 +41,33 @@ class CheckStarterkitCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // Get the needed options for if the call came from console and not from phing.
-        $phingPropertiesHelper = new PhingPropertiesHelper($input, $output);
-        $options = $phingPropertiesHelper->requestRequiredSettings($input->getOptions());
+        $phingPropertiesHelper = new PhingPropertiesHelper($output);
+        $options = $phingPropertiesHelper->requestSettings(array(
+          'branch' => 'starterkit.branch',
+          'remote' => 'starterkit.remote',
+          'repository' => 'starterkit.repository',
+          'basedir' => 'project.basedir',
+        ));
 
         // Prepare option variables for future usage.
-        $starterkitBranch = !empty($input->getOption('starterkit.branch')) ? $input->getOption('starterkit.branch') : $options['starterkit.branch'];
-        $starterkitRemote = !empty($input->getOption('starterkit.remote')) ? $input->getOption('starterkit.remote') : $options['starterkit.remote'];
-        $starterkitRepository = !empty($input->getOption('starterkit.repository')) ? $input->getOption('starterkit.repository') : $options['starterkit.repository'];
-        $projectBasedir = !empty($input->getOption('project.basedir')) ? $input->getOption('project.basedir') : $options['project.basedir'];
+        $branch = !empty($input->getOption('branch')) ? $input->getOption('branch') : $options['branch'];
+        $remote = !empty($input->getOption('remote')) ? $input->getOption('remote') : $options['remote'];
+        $repository = !empty($input->getOption('repository')) ? $input->getOption('repository') : $options['repository'];
+        $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $options['basedir'];
 
-        $subsiteRepository = $this->getGitWrapper()->workingCopy($projectBasedir);
+        $subsiteRepository = $this->getGitWrapper()->workingCopy($basedir);
         // Add the remote for the starterkit if it doesn't exist yet.
-        $remote_branch = 'remotes/' . $starterkitRemote . '/' . $starterkitBranch;
-        $remote_exists = $subsiteRepository->hasRemote($starterkitRemote);
+        $remote_branch = 'remotes/' . $remote . '/' . $branch;
+        $remote_exists = $subsiteRepository->hasRemote($remote);
         if (!$remote_exists) {
             $io->note('Adding remote repository.');
             // $log('Adding remote repository.');
             // Only track the given branch, and don't download any tags.
             $options = [
               '--no-tags' => TRUE,
-              '-t' => [$starterkitBranch],
+              '-t' => [$branch],
             ];
-            $subsiteRepository->addRemote($starterkitRemote, $starterkitRepository, $options);
+            $subsiteRepository->addRemote($remote, $repository, $options);
         }
 
         // Check if the tracking branch exists and create it if it doesn't.
@@ -71,12 +76,12 @@ class CheckStarterkitCommand extends Command
         }
         catch (GitException $e) {
             // $log('Adding tracking branch.');
-            $subsiteRepository->remote('set-branches', '--add', $starterkitRemote, $starterkitBranch);
+            $subsiteRepository->remote('set-branches', '--add', $remote, $branch);
         }
 
         // Fetch the latest changes.
         // $log('Fetching latest changes.');
-        $subsiteRepository->fetch($starterkitRemote);
+        $subsiteRepository->fetch($remote);
 
         // Check if the latest commit on the remote is merged into the current
         // branch.
@@ -107,15 +112,12 @@ class CheckStarterkitCommand extends Command
 
             }
             else {
-                throw new \Symfony\Component\Debug\Exception\FatalErrorException(
-                  "The current branch is not up to date with the starterkit.", 0, 1, __FILE__, __LINE__
-                );
+                return 1;
             }
         }
         else {
             $output->writeln('<info>The starterkit is up to date.</info>');
         }
-        $output->setVar($tags);
     }
 
     /**

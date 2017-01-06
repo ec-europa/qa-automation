@@ -7,7 +7,6 @@
 
 namespace QualityAssurance\Component\Console\Helper;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,14 +18,12 @@ class PhingPropertiesHelper
   /**
    * PhingPropertiesHelper constructor.
    *
-   * Setup our input output interfaces.
+   * Setup our output interface.
    *
-   * @param InputInterface $input
    * @param OutputInterface $output
    */
-  function __construct(InputInterface $input, OutputInterface $output)
+  function __construct(OutputInterface $output)
   {
-    $this->input = $input;
     $this->output = $output;
   }
 
@@ -180,7 +177,9 @@ class PhingPropertiesHelper
    *   Absolute path to the main build file (build.xml).
    */
   private function getAllSettings($buildfile = '') {
-    $buildfile = $this->findPhingBuildFile();
+    if (empty($buildfile)) {
+      $buildfile = $this->findPhingBuildFile();
+    }
     if ($buildfile) {
       $root = dirname($buildfile);
       $settings = array('project.basedir' => dirname($buildfile));
@@ -210,41 +209,6 @@ class PhingPropertiesHelper
     }
     $this->resolveProperties($settings);
     return $settings;
-  }
-  
-  /**
-   * Public helper function to request required settings.
-   *
-   * @param array $options
-   *   An array of properties.
-   * @return array
-   *   Returns a selection of properties in an array.
-   * @throws \Symfony\Component\Debug\Exception\FatalErrorException
-   */
-  public function requestRequiredSettings($options) {
-    // Remove standard options.
-    $options = array_diff_key($options, array_flip(array(
-      'help',
-      'quiet',
-      'verbose',
-      'version',
-      'ansi',
-      'no-ansi',
-      'no-interaction'
-    )));
-    $settings = $this->getAllSettings();
-    $selection = array();
-    foreach ($options as $option => $value) {
-      if (isset($settings[$option])) {
-        $selection[$option] = $settings[$option];
-      }
-      else {
-        throw new \Symfony\Component\Debug\Exception\FatalErrorException(
-          "Required property ' . $option . ' not provided.", 0, 1, __FILE__, __LINE__
-        );
-      }
-    }
-    return $selection;
   }
 
   /**
