@@ -71,7 +71,7 @@ abstract class CoderSniffUnitTest extends PHPUnit_Framework_TestCase
         $failureMessages = array();
         foreach (array_keys($testFiles) as $filename) {
             self::$phpcs->setConfigData('installed_paths', __DIR__ . '/../../');
-            self::$phpcs->initStandard("phpcs/Standards/$standard", $sniffCodes);
+            self::$phpcs->initStandard($standard, $sniffCodes);
             $rc = new ReflectionClass(get_class($this));
             $testFile = dirname($rc->getFileName()) . '/' . $filename;
 
@@ -88,7 +88,7 @@ abstract class CoderSniffUnitTest extends PHPUnit_Framework_TestCase
 
             // Attempt to fix the errors.
             // Re-initialize the standard to use all sniffs for the fixer.
-            self::$phpcs->initStandard("phpcs/Standards/$standard");
+            self::$phpcs->initStandard($standard);
             self::$phpcs->cli->setCommandLineValues($cliValues);
             $phpcsFile = self::$phpcs->processFile($testFile);
 
