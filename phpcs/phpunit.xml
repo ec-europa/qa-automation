@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="phpcs/Standards/QualityAssurance/Tests/phpunit-bootstrap.php" colors="true">
+<phpunit bootstrap="Standards/QualityAssurance/Tests/phpunit-bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="QualityAssurance PHPCS Test Suite">
-      <directory>phpcs/Standards/QualityAssurance/Tests</directory>
+      <directory>Standards/QualityAssurance/Tests</directory>
     </testsuite>
   </testsuites>
   <!-- Filter for coverage reports. -->

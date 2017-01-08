@@ -48,7 +48,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFields_DatestampFieldsUnitT
      */
     public function getTestFiles() {
         return array(
-          'Datestamp.features.field_base.inc' => 'Datestamp.fixed.features.field_base.inc',
+          'DatestampFields.features.field_base.inc' => 'DatestampFields.fixed.features.field_base.inc',
         );
     }// end getTestFiles()
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * QualityAssurance_Sniffs_Permissions_ForbiddenSniff.
+ * QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff.
  *
  * PHP version 5
  *

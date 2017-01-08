@@ -54,7 +54,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissions_ForbiddenPermis
      */
     public function getTestFiles() {
         return array(
-          'Forbidden.features.user_permission.inc' => '',
+          'ForbiddenPermissions.features.user_permission.inc' => '',
         );
     }// end getTestFiles()
 

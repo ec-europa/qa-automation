@@ -47,7 +47,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getTestFiles() {
         return array(
-          'Locked.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
+          'LockedFields.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
         );
     }// end getTestFiles()
 

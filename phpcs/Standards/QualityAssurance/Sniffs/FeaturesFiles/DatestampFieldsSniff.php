@@ -1,6 +1,6 @@
 <?php
 /**
- * QualityAssurance_Sniffs_Fields_DatestampSniff.
+ * QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff.
  *
  * PHP version 5
  *

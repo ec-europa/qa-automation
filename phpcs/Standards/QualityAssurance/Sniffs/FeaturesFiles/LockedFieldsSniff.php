@@ -1,6 +1,6 @@
 <?php
 /**
- * QualityAssurance_Sniffs_Fields_LockedSniff.
+ * QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff.
  *
  * PHP version 5
  *
