@@ -46,9 +46,7 @@ class CheckCodingStandardsCommand extends Command
     //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();
-    // @todo: remove hardcoding cause I was working with symlinks.
-    //$executable = __DIR__ . "/../../../bin/phpcs";
-    $executable = "/var/www/subsite-starterkit/vendor/squizlabs/php_codesniffer/scripts/phpcs";
+    $executable = __DIR__ . "/../../../bin/phpcs";
     passthru($executable . " --standard=$standard $exclude_dirs --report=emacs -qvs " . $dirname, $error);
     $phpcs = ob_get_contents();
     ob_end_clean();
