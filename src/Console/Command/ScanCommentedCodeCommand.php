@@ -35,6 +35,9 @@ class ScanCommentedCodeCommand extends Command
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+    $properties = array(
+      'basedir' => 'todo',
+    );
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
     $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $properties['basedir'];

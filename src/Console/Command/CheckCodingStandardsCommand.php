@@ -41,6 +41,10 @@ class CheckCodingStandardsCommand extends Command
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+    $properties = array(
+      'phpcs-config' => 'todo',
+      'basedir' => 'todo',
+    );
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
     $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : $properties['phpcs-config'];
