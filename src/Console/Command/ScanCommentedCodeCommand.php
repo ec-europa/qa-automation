@@ -42,7 +42,7 @@ class ScanCommentedCodeCommand extends Command
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();
     $executable = $basedir . "/bin/phpcs";
-    passthru($executable . " --standard=" . $basedir . '/resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
+    passthru($executable . " --standard=" . $basedir . "/resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
     $phpcs = ob_get_contents();
     ob_end_clean();
     if($error && preg_match_all('/^\/(.*)$/m', $phpcs, $emacs)) {
