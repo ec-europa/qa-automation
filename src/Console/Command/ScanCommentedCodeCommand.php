@@ -7,10 +7,12 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
+use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -22,6 +24,10 @@ class ScanCommentedCodeCommand extends Command
 {
   protected function configure()
   {
+    $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
+    $properties = $phingPropertiesHelper->requestSettings(array(
+      'basedir' => 'project.basedir',
+    ));
     $this
       ->setName('scan:coco')
       ->setDescription('Scan for possible commented code.')
@@ -29,7 +35,7 @@ class ScanCommentedCodeCommand extends Command
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
       ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
-      ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.')
+      ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.', $properties['basedir'])
     ;
   }
 

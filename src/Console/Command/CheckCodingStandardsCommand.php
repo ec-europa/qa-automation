@@ -25,7 +25,10 @@ class CheckCodingStandardsCommand extends Command
   protected function configure()
   {
     $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
-    $properties = $phingPropertiesHelper->requestSettings(array('phpcs-config' => 'phpcs.config'));
+    $properties = $phingPropertiesHelper->requestSettings(array(
+      'phpcs-config' => 'phpcs.config',
+      'basedir' => 'project.basedir',
+    ));
 
     $this
       ->setName('phpcs:run')
@@ -35,20 +38,16 @@ class CheckCodingStandardsCommand extends Command
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
       ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
-      ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.')
+      ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.', $properties['basedir'])
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $properties = array(
-      'phpcs-config' => 'todo',
-      'basedir' => 'todo',
-    );
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
     $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : $properties['phpcs-config'];
-    $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $properties['basedir'];
+    $basedir = $input->getOption('basedir');
 
     //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
