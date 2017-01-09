@@ -29,6 +29,7 @@ class ScanCommentedCodeCommand extends Command
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
       ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
+      ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.')
     ;
   }
 
@@ -36,13 +37,12 @@ class ScanCommentedCodeCommand extends Command
   {
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
+    $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $properties['basedir'];
     //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();
-    // @todo: remove hardcoding cause I was working with symlinks.
-    //$executable = __DIR__ . "/../../../bin/phpcs";
-    $executable = "/var/www/subsite-starterkit/vendor/squizlabs/php_codesniffer/scripts/phpcs";
-    passthru($executable . " --standard=" . __DIR__ . "/../../../resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
+    $executable = $basedir . "/bin/phpcs";
+    passthru($executable . " --standard=" . $basedir . '/resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
     $phpcs = ob_get_contents();
     ob_end_clean();
     if($error && preg_match_all('/^\/(.*)$/m', $phpcs, $emacs)) {

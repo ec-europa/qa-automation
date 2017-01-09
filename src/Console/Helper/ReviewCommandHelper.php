@@ -134,6 +134,7 @@ class ReviewCommandHelper
       'filename' => $filename,
       'profile' => $this->properties['profile'],
       'standard' => $this->properties['phpcs-config'],
+      'basedir' => $this->properties['basedir'],
     );
     if ($exclude_directories = $this->getSubmoduleDirectories($filename, $directory)) {
       $command_options['exclude-dirs'] = implode(',', $exclude_directories);
@@ -314,6 +315,7 @@ class ReviewCommandHelper
         'resources' => 'subsite.resources.dir',
         'phpcs-config' => 'phpcs.config',
         'profile' => 'platform.profile.name',
+        'basedir' => 'project.basedir',
       ));
     }
     else {

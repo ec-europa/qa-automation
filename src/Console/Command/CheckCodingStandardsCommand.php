@@ -35,6 +35,7 @@ class CheckCodingStandardsCommand extends Command
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
       ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
+      ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.')
     ;
   }
 
@@ -43,10 +44,12 @@ class CheckCodingStandardsCommand extends Command
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
     $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : $properties['phpcs-config'];
+    $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $properties['basedir'];
+
     //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
     $show = $input->getOption('show') ? TRUE : FALSE;
     ob_start();
-    $executable = __DIR__ . "/../../bin/phpcs";
+    $executable = $basedir . "/bin/phpcs";
     passthru($executable . " --standard=$standard $exclude_dirs --report=emacs -qvs " . $dirname, $error);
     $phpcs = ob_get_contents();
     ob_end_clean();
