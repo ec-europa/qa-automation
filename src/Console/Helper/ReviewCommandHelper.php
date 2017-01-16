@@ -224,7 +224,7 @@ class ReviewCommandHelper
     // Get all application commands.
     $commands = $application->all();
     // Unset unwanted commands.
-    $unwanted = array('help', 'list');
+    $unwanted = array('help', 'list', 'check:ssk');
     foreach ($commands as $name => $command) {
       if (in_array($name, $unwanted) || strpos($name, 'review:') === 0) {
         unset($commands[$name]);
