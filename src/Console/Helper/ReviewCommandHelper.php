@@ -63,6 +63,7 @@ class ReviewCommandHelper
    * Start a review process.
    */
   public function startReview() {
+    $failbuild = FALSE;
     // Ask for a selection of options if needed.
     $selected = $this->getSelectedOptions();
     // Setup a buffered output to capture results of command.
