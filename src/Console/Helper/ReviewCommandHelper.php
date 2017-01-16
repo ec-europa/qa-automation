@@ -73,7 +73,7 @@ class ReviewCommandHelper
       // Build the commandlines.
       $commandlines = $this->buildCommandlines($absolute_path);
       // Execute commandlines.
-      if ($this->executeCommandlines($this->application, $commandlines, $buffered_output) !== 0) {
+      if ($this->executeCommandlines($this->application, $commandlines, $buffered_output)) {
         $failbuild = TRUE;
       }
       // Write the results.
