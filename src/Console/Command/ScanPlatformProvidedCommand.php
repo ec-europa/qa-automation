@@ -76,7 +76,8 @@ class ScanPlatformProvidedCommand extends Command
         }
         // Print result.
         if (!empty($duplicates[$search])) {
-          $output->writeln('Platform ' . $subject . ' found: ' . implode(', ', $duplicates[$search]));
+          $output->writeln('<comment>Platform ' . $subject . ' found: </comment><info>' . implode(', ', $duplicates[$search]) . '</info>');
+          $output->writeln('');
         }
       }
     }

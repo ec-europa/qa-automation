@@ -75,13 +75,13 @@ class DiffMakeFilesCommand extends Command
       // Check for new projects or libraries.
       if (!empty($added_items)) {
         $added_string = DrupalInfoFormatHelper::transformArrayIntoInfoFormat(array($search => $added_items));
-        $output->writeln('Added ' . $subject . ' found: ' . count($added_items) . " found.");
+        $output->writeln('<comment>Added ' . $subject . ' found: </comment><info>' . count($added_items) . " found.</info>");
         $output->writeln(preg_replace('/^/m', '+', $added_string));
       }
       // Check for removed projects or libraries.
       if (!empty($removed_items)) {
         $removed_string = DrupalInfoFormatHelper::transformArrayIntoInfoFormat(array($search => $removed_items));
-        $output->writeln('Removed ' . $subject . ' found: ' . count($removed_items) . " found.");
+        $output->writeln('<comment>Removed ' . $subject . ' found: </comment><info>' . count($removed_items) . " found.</info>");
         $output->writeln(preg_replace('/^/m', '-', $removed_string));
       }
 
@@ -91,7 +91,7 @@ class DiffMakeFilesCommand extends Command
         // Filter out empty arrays.
         $changed = array_map('array_filter', $matches);
         $changed = array_values(array_filter(array_values($changed)));
-        $output->writeln('Altered ' . $subject . ' found: ' . count($changed[1]) . " found.");
+        $output->writeln('<comment>Altered ' . $subject . ' found: </comment><info>' . count($changed[1]) . " found.</info>");
         foreach ($changed as $key => $changed_array) {
           $changed_array = array_values($changed_array);
           if (!empty($changed_array) && $key != 0) {
