@@ -65,6 +65,11 @@ class QualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeSniffe
             $phpcsFile->addError($error, $stackPtr, 'MenuDependency');
         }
 
+        if (isset($info['project path'])) {
+            $error = '"project path" property has to be removed';
+            $phpcsFile->addError($error, $stackPtr, 'ProjectPath');
+        }
+
         if (isset($info['features']['taxonomy'])
             && in_array('tags', $info['features']['taxonomy'])) {
                 $error = 'taxonomy "tags" property has to be removed';
