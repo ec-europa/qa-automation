@@ -128,8 +128,9 @@ class ReviewCommandHelper
   private function buildCommandlines($absolute_path) {
     $pathinfo = pathinfo($absolute_path);
     $directory = $pathinfo['dirname'];
-    $filename = $pathinfo['filename'];
     $extension = $pathinfo['extension'];
+    $filename = $extension == 'make' ? $absolute_path : $pathinfo['filename'];
+
     $command_options = array(
       'directory' => $directory,
       'filename' => $filename,
