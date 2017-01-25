@@ -1,32 +1,21 @@
 # QA-Automation
-Holds all quality assurance automation tools. It currently consists of 3 parts. The
-classes that execute the quality assurance tests. And 2 folders that contain their
-respective PHPCS sniffs. One for security sniffs and one for quality assurance
-sniffs.
+Holds all quality assurance automation tools. It currently consists of 2
+parts. The custom phpcs sniffs that contain standards regarding the
+FPFIS platform. And a symfony console implementation for running QA
+analysis and/or reviews on subsite projects.
 
-## 1. ./QualityAssuranceTasks.php
+## 1 ./phpcs/Standards
+This folder contains 2 types of phpcs sniffs. One for security and the 
+other for FPFIS project specific standards.
 
-This class will be run with the mjolnir target from the quality-assurance target.
-When the build property qa.autoselect is set to 0 you have the option to run the
-quality assurance tests on your selected modules only. If it is enabled it will be
-run on all the modules.
+### 1.1 ./phpcs/Standards/DrupalSecure/
 
-Currently it provides only checks through the PHPCS it will run. The other functions
-inside of the class will be used for the QA team solely as a reporting tool. But if
-there are other checks that can't be added with PHPCS these will be added to the
-class.
+This folder contains the code sniffs of an old [drupal sandbox] (https://www.drupal.org/sandbox/coltrane/1921926).
+These should be thouroughly checked because they might be out of date. We can select
+usefull sniffs and move them over to the QualityAssurance sniffs. After that we
+should maintain these ourselves because the sandbox is not being maintained.
 
-### 1.1 Current reporting tools and code checks
-1. [Cronjobs](docs/cron.md): Check codebase for cronjob and verify it is running at
-requested interval.
-2. [Database updates](docs/updb.md): Scanning pull request for hook_update_N's.
-3. [codingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
-checks with permission of the QA team.
-4. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
-release.
-
-
-## 2. ./QualityAssurance/
+### 1.2 ./phpcs/Standards/QualityAssurance/
 
 This folder contains the code sniffs developed by the FPFIS QA team. Current included
 checks are:
@@ -40,10 +29,40 @@ checks are:
 - check for hardcoded image tags
 - check for hardcoded link tags
 
+## 2 ./bin/qa
+This is the console application which you can use to perform analysis
+and review of your code. It contains various commands:
+- [phpcs:xml](src/Console/Command/CheckCodingStandardsCommand.php#L21):
+Perform a phpcs run with provided phpcs.xml standard.
+- [check:ssk](src/Console/Command/CheckStarterkitCommand.php): Check if
+the starterkit is up to date.
+- [diff:make](src/Console/Command/DiffMakeFilesCommand.php): Check make
+file for changes.
+- [diff:updb](src/Console/Command/DiffUpdateHooksCommand.php) : Check
+make file for changes.
+- [review:full](src/Console/Command/ReviewFullCommand.php): Performs all
+required QA checks on the entire codebase.
+- [review:this](src/Console/Command/ReviewThisCommand.php): Performs all
+required QA checks on the current folder.
+- [scan:csi](src/Console/Command/ScanCodingStandardsIgnoreCommand.php): 
+Scan for codingStandardsIgnore tags.
+- [scan:coco](src/Console/Command/ScanCommentedCodeCommand.php): Scan
+for possible commented code.
+- [scan:cron](src/Console/Command/ScanCronCommand.php): Scan for cron
+implementations.
+- [scan:mkpd](src/Console/Command/ScanPlatformProvidedCommand.php): Scan
+for platform provided modules.
+- [scan:todo](src/Console/Command/ScanTodosCommand.php): Scan for
+pending refractoring tasks.
 
-## 3. ./DrupalSecure/
+### 2.1 Documentation
+1. [Cronjobs](docs/cron.md): Check codebase for cronjob and verify it is running at
+requested interval.
+2. [Database updates](docs/updb.md): Scanning pull request for hook_update_N's.
+3. [codingStandardsIgnore](docs/codingstandardsignore.md): Skip coding standards
+checks with permission of the QA team.
+4. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
+release.
 
-This folder contains the code sniffs of an old [drupal sandbox] (https://www.drupal.org/sandbox/coltrane/1921926).
-These should be thouroughly checked because they might be out of date. We can select
-usefull sniffs and move them over to the FPFISQualityAssurance sniffs. After that we
-should maintain these ourselves because the sandbox is not being maintained.
+
+

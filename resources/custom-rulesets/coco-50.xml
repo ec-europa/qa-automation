@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="CommentedCode50">
+    <description>Single sniff to find possible commented code at 50%.</description>
+    <rule ref="Squiz.PHP.CommentedOutCode">
+        <properties>
+            <property name="maxPercentage" value="50"/>
+        </properties>
+    </rule>
+</ruleset>

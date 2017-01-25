@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="Standards/QualityAssurance/Tests/phpunit-bootstrap.php" colors="true">
+  <testsuites>
+    <testsuite name="QualityAssurance PHPCS Test Suite">
+      <directory>Standards/QualityAssurance/Tests</directory>
+    </testsuite>
+  </testsuites>
+  <!-- Filter for coverage reports. -->
+  <filter>
+    <blacklist>
+      <directory>./vendor</directory>
+    </blacklist>
+  </filter>
+</phpunit>
