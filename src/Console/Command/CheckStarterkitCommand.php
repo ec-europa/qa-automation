@@ -40,14 +40,21 @@ class CheckStarterkitCommand extends Command
         // Get the symfony console styleguide.
         $io = new SymfonyStyle($input, $output);
 
-        // Get the needed options for if the call came from console and not from phing.
-        $phingPropertiesHelper = new PhingPropertiesHelper($output);
-        $options = $phingPropertiesHelper->requestSettings(array(
-          'branch' => 'starterkit.branch',
-          'remote' => 'starterkit.remote',
-          'repository' => 'starterkit.repository',
-          'basedir' => 'project.basedir',
-        ));
+        // If a single option is missing load the build properties.
+        if (empty($input->getOption('branch'))
+          || empty($input->getOption('remote'))
+          || empty($input->getOption('repository'))
+          || empty($input->getOption('basedir'))
+        ) {
+            // Get the needed options for if the call came from console and not from phing.
+            $phingPropertiesHelper = new PhingPropertiesHelper($output);
+            $options = $phingPropertiesHelper->requestSettings(array(
+              'branch' => 'starterkit.branch',
+              'remote' => 'starterkit.remote',
+              'repository' => 'starterkit.repository',
+              'basedir' => 'project.basedir',
+            ));
+        }
 
         // Prepare option variables for future usage.
         $branch = !empty($input->getOption('branch')) ? $input->getOption('branch') : $options['branch'];
@@ -101,21 +108,23 @@ class CheckStarterkitCommand extends Command
                 $release_commit = $release[1];
                 $release_tag = $release[2];
             }
-            $helperquestion = $this->getHelper('question');
-            $io->note("Your current branch is not up to date with the starterkit.");
-            $io->listing(array("$release_tag = $release_commit"));
-            $question = new ChoiceQuestion("Do you want to try to update your starterkit?", array('yes', 'no'), 1);
-            $question->setErrorMessage('Please answer yes or no.');
-
-            $selection = $helperquestion->ask($input, $output, $question);
-            if ($selection == 'yes') {
-
-            }
-            else {
-                return 1;
-            }
+            // Inform user on failure and give solution.
+            $output->writeln(array(
+              "<comment>  Your current branch is not up to date with the latest starterkit release: $release_tag. </comment>",
+              "<comment>  To update your starterkit please execute the following commands and solve any conflicts:    </comment>",
+              "",
+              "<comment>></comment> <info>git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git</info>",
+              "<comment>></comment> <info>git fetch starterkit</info>",
+              "<comment>></comment> <info>git merge starterkit/master</info>",
+              "",
+              "<comment>  Please verify that your site.make file has not been altered or renamed by the merge.</comment>",
+              "",
+            ));
+            // Exit with error code.
+            return 1;
         }
         else {
+            // Inform user he or she is up to date.
             $output->writeln('<info>The starterkit is up to date.</info>');
         }
     }

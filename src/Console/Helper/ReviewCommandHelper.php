@@ -64,6 +64,14 @@ class ReviewCommandHelper
    */
   public function startReview() {
     $failbuild = FALSE;
+
+    // Perform the starterkit check if needed.
+    if (!empty($this->properties['check-ssk'])) {
+      if ($this->executeCommandlines($this->application, array('check:ssk' => new ArrayInput(array())), $this->output)) {
+        return 1;
+      }
+    }
+    
     // Ask for a selection of options if needed.
     $selected = $this->getSelectedOptions();
     // Setup a buffered output to capture results of command.
