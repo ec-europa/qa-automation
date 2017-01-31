@@ -36,7 +36,7 @@ class DrupalInfoFormatHelper
    * @param string $data
    *   The contents of the file.
    */
-  public function drupalParseInfoFormat($data) {
+  public static function drupalParseInfoFormat($data) {
     $info = array();
 
     if (preg_match_all('@^\s*((?:[^=;\[\]]|\[[^\[\]]*\])+?)\s*=\s*(?:("(?:[^"]|(?<=\\\\)")*")|(\'(?:[^\']|(?<=\\\\)\')*\')|([^\r\n]*?))\s*$@msx', $data, $matches, PREG_SET_ORDER)) {
@@ -88,7 +88,7 @@ class DrupalInfoFormatHelper
    * @param array $parents
    *   Array of parent keys (internal use only).
    */
-  public function transformArrayIntoInfoFormat($info, $parents = array()) {
+  public static function transformArrayIntoInfoFormat($info, $parents = array()) {
     $output = '';
     if (is_array($info)) {
       foreach ($info as $k => $v) {
