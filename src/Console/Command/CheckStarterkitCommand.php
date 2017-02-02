@@ -117,6 +117,10 @@ class CheckStarterkitCommand extends Command
               "<comment>></comment> <info>git fetch starterkit</info>",
               "<comment>></comment> <info>git merge starterkit/master</info>",
               "",
+              "<comment>  Do not forget to install the latest composer packages.</comment>",
+              "",
+              "<comment>></comment> <info>composer install</info>",
+              "",
               "<comment>  Please verify that your site.make file has not been altered or renamed by the merge.</comment>",
               "",
             ));
