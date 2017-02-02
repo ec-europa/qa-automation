@@ -67,7 +67,7 @@ class CheckStarterkitCommand extends Command
         $remote_branch = 'remotes/' . $remote . '/' . $branch;
         $remote_exists = $subsiteRepository->hasRemote($remote);
         if (!$remote_exists) {
-            $io->note('Adding remote repository.');
+            $output->writeln("<comment>Adding remote repository.</comment>");
             // $log('Adding remote repository.');
             // Only track the given branch, and don't download any tags.
             $options = [

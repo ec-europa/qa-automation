@@ -326,6 +326,7 @@ class ReviewCommandHelper
         'phpcs-config' => 'phpcs.config',
         'profile' => 'platform.profile.name',
         'basedir' => 'project.basedir',
+        'check-ssk' => 'qa.check.ssk',
       ));
     }
     else {
@@ -333,6 +334,8 @@ class ReviewCommandHelper
         'lib' => 'platform.resources.profiles.dir',
         'resources' => 'platform.resources.dir',
         'phpcs-config' => 'phpcs.config',
+        'profile' => 'platform.profile.name',
+        'basedir' => 'project.basedir',
       ));
     }
     return $properties;
