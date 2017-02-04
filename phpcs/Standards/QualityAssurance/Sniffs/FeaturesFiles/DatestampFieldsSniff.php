@@ -95,7 +95,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff implements PHP_
                         if ($tokens[$typeValue]['content'] !== "'datestamp'") {
                             // Set error.
                             $error = 'Date field detected with type other than datestamp.';
-                            $fix = $phpcsFile->addFixableError($error, $typeValue, 'DatestampFields');
+                            $fix = $phpcsFile->addFixableError($error, $typeValue, 'NonDatestamp');
                             if ($fix === true) {
                                 $phpcsFile->fixer->beginChangeset();
                                 $phpcsFile->fixer->replaceToken($typeValue, "'datestamp'");
