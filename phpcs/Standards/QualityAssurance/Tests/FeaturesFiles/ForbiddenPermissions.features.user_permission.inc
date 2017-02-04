@@ -74,5 +74,12 @@ function forbidden_user_default_permissions() {
     'module' => 'features',
   );
 
+  // Exported permission: 'manage feature nexteuropa_dgt_connector'.
+  $permissions['manage feature nexteuropa_dgt_connector'] = array(
+    'name' => 'manage feature nexteuropa_dgt_connector',
+    'roles' => array(),
+    'module' => 'nexteuropa_dgt_connector',
+  );
+
   return $permissions;
 }

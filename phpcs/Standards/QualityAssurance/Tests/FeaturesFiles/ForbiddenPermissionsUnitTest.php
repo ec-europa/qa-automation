@@ -14,14 +14,16 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissions_ForbiddenPermis
     public function getErrorList($testFile)
     {
         return array(
-            14 => 1,
-            23 => 1,
-            32 => 1,
-            39 => 1,
-            48 => 1,
-            55 => 1,
-            62 => 1,
-            71 => 1,
+            15 => 1,
+            24 => 1,
+            33 => 1,
+            33 => 1,
+            40 => 1,
+            49 => 1,
+            56 => 1,
+            63 => 1,
+            72 => 1,
+            79 => 1,
         );
 
     }//end getErrorList()

@@ -28,8 +28,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
     public function register()
     {
         return array(
-          T_CONSTANT_ENCAPSED_STRING,
-          T_VARIABLE,
+          T_ARRAY,
+          T_OPEN_SHORT_ARRAY,
         );
 
     }//end register()
@@ -52,30 +52,64 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
             return;
         }
 
-        // Get our tokens.
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-        $riskyPermissions = array(
-          'administer modules',
-          'administer software updates',
-          'administer features',
-          'manage features',
-          'administer ckeditor_lite',
-          'administer jquery update',
-          'access devel information',
-          'execute php code',
-          'manage feature nexteuropa_dgt_connector'
+
+        // Support long and short syntax.
+        $parenthesis_opener = 'parenthesis_opener';
+        $parenthesis_closer = 'parenthesis_closer';
+        if ($tokens[$stackPtr]['code'] === T_OPEN_SHORT_ARRAY) {
+            $parenthesis_opener = 'bracket_opener';
+            $parenthesis_closer = 'bracket_closer';
+        }
+
+        $lastItem = $phpcsFile->findPrevious(
+          PHP_CodeSniffer_Tokens::$emptyTokens,
+          ($tokens[$stackPtr][$parenthesis_closer] - 1),
+          $stackPtr,
+          true
         );
-        // Find the variable.
-        if ($token['content'] == '$permissions') {
-            // Find the permission name.
-            if (($permission = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1), ($stackPtr + 3), false))
-              && in_array(str_replace("'", "", $tokens[$permission]['content']), $riskyPermissions)) {
-                // Set error.
-                $error = 'The use of permission ' . $tokens[$permission]['content'] . ' is forbidden.';
-                $fix = $phpcsFile->addError($error, $permission, 'Permissions');
+
+        // Empty array.
+        if ($lastItem === $tokens[$stackPtr][$parenthesis_opener]) {
+            return;
+        }
+
+        // Inline array.
+        if ($tokens[$tokens[$stackPtr][$parenthesis_opener]]['line'] === $tokens[$tokens[$stackPtr][$parenthesis_closer]]['line']) {
+            return;
+        }
+
+        $arrayStart = $tokens[$stackPtr][$parenthesis_opener];
+        $arrayEnd = $tokens[$stackPtr][$parenthesis_closer];
+
+        // Loop over array tokens.
+        while ($arrayStart = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($arrayStart + 1), $arrayEnd)) {
+            // Find the field_name key.
+            if ($tokens[$arrayStart]['content'] === "'name'") {
+                $permissionName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($arrayStart + 1), ($arrayStart + 5));
+                $riskyPermissions = array(
+                  'administer modules',
+                  'administer software updates',
+                  'administer features',
+                  'manage features',
+                  'administer ckeditor_lite',
+                  'administer jquery update',
+                  'access devel information',
+                  'execute php code',
+                  'manage feature nexteuropa_dgt_connector'
+                );
+                // If it's a risky permission, trow an error.
+                if (in_array(str_replace("'", '', $tokens[$permissionName]['content']), $riskyPermissions)) {
+                    $error = 'The use of permission ' . str_replace("'", '"', $tokens[$permissionName]['content']) . ' is forbidden.';
+                    $phpcsFile->addError($error, $permissionName, 'Permissions');
+                }
+                // Exit array.
+                return $arrayEnd;
             }
         }
+
+        // If we have checked level one, exit the array.
+        return $arrayEnd;
 
     }//end process()
 
