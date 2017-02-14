@@ -64,6 +64,3 @@ requested interval.
 checks with permission of the QA team.
 4. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
 release.
-
-
-
