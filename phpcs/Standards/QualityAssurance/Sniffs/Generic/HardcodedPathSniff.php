@@ -48,19 +48,25 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
   {
-    // @todo check whole file first and take a coffee
-    
+    // Check whole project for string "sites/".
+    $file_content = file_get_contents($phpcsFile->getFilename());
+
+    if (!strpos($file_content, 'sites') !== false) {
+      $end = (count($phpcsFile->getTokens()) + 1);
+      return $end;
+    }
+
     // Get our tokens.
     $tokens = $phpcsFile->getTokens();
     $token  = $tokens[$stackPtr];
 
-    // Image regular expression.
-    $regexp = 'sites\/[a-zA-Z]+\/(modules|themes|libraries)';
+    // Path regular expression.
+    $regexp = 'sites\/[a-zA-Z]+\/(modules|themes|libraries)*';
 
-    // If image is found.
+    // If hardcoded path is found.
     if(preg_match("/$regexp/", $token['content'], $matches)) {
       $error = 'Hardcoded paths to modules or themes are not allowed. Please use drupal_get_path() function instead.';
-      $phpcsFile->addError($error, $stackPtr);
+      $phpcsFile->addError($error, $stackPtr, 'HardcodedPath');
     }
 
   }//end process()
