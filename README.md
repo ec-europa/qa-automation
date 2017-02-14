@@ -28,6 +28,7 @@ checks are:
 - check for functions that need to be drupal wrapped
 - check for hardcoded image tags
 - check for hardcoded link tags
+- check for hardcoded paths to modules, themes or libraries
 
 ## 2 ./bin/qa
 This is the console application which you can use to perform analysis
