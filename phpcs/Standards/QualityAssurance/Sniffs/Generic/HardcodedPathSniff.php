@@ -27,7 +27,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
   public function register()
   {
     return array(
-      T_CONSTANT_ENCAPSED_STRING,
+      T_STRING,
       T_LNUMBER,
       T_VARIABLE,
       T_ARRAY,
