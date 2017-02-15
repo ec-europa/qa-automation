@@ -64,7 +64,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
     $regexp = 'sites\/[a-zA-Z]+\/(modules|themes|libraries)*';
 
     // If hardcoded path is found.
-    if(preg_match("/$regexp/", $token['content'], $matches)) {
+    if(preg_match("/$regexp/", $token['content'])) {
       $error = 'Hardcoded paths to modules or themes are not allowed. Please use drupal_get_path() function instead.';
       $phpcsFile->addError($error, $stackPtr, 'HardcodedPath');
     }
