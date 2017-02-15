@@ -51,7 +51,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
     // Check whole project for string "sites/".
     $file_content = file_get_contents($phpcsFile->getFilename());
 
-    if (!strpos($file_content, 'sites') !== false) {
+    if (strpos($file_content, 'sites') === false) {
       $end = (count($phpcsFile->getTokens()) + 1);
       return $end;
     }

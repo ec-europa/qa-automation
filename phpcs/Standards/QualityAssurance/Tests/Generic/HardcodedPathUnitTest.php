@@ -14,7 +14,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPath_HardcodedPathUnitTest extend
     public function getErrorList($testFile)
     {
       // All the error-free  files have no errors.
-      return (strpos($testFile, 'Error') != false) ? [55 => 1] : [];
+      return (strpos($testFile, 'Error') !== false) ? [55 => 1] : [];
 
     }//end getErrorList()
 
@@ -30,7 +30,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPath_HardcodedPathUnitTest extend
     public function getWarningList($testFile)
     {
       // All the warning-free  files have no warnings.
-      return (strpos($testFile, 'Warning') != false) ? [1 => 1] : [];
+      return (strpos($testFile, 'Warning') !== false) ? [1 => 1] : [];
 
     }//end getWarningList()
 
