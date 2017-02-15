@@ -14,7 +14,7 @@ class QualityAssurance_Sniffs_InstallFiles_InstallUpdateCallbacks_InstallUpdateC
   public function getErrorList($testFile)
   {
     // All the error-free  files have no errors.
-    return (strpos($testFile, 'Error') !== false) ? [55 => 1] : [];
+    return (strpos($testFile, 'Error') !== false) ? [11 => 1] : [];
 
   }//end getErrorList()
 

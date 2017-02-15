@@ -14,7 +14,7 @@ class QualityAssurance_Sniffs_InstallFiles_HookUpdateN_HookUpdateNUnitTest exten
   public function getErrorList($testFile)
   {
     // All the error-free  files have no errors.
-    return (strpos($testFile, 'Error') !== false) ? [55 => 1] : [];
+    return (strpos($testFile, 'Error') !== false) ? [27 => 1] : [];
 
   }//end getErrorList()
 
