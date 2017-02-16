@@ -61,7 +61,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
     $token  = $tokens[$stackPtr];
 
     // Path regular expression.
-    $regexp = 'sites\/[a-zA-Z]+\/(modules|themes|libraries)*';
+    $regexp = 'sites\/[\'a-zA-Z-0-9\$\.\ \"]+\/(modules|themes|libraries)*';
 
     // If hardcoded path is found.
     if(preg_match("/$regexp/", $token['content'])) {

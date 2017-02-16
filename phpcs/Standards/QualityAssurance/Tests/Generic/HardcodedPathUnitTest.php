@@ -14,7 +14,16 @@ class QualityAssurance_Sniffs_Generic_HardcodedPath_HardcodedPathUnitTest extend
     public function getErrorList($testFile)
     {
       // All the error-free  files have no errors.
-      return (strpos($testFile, 'Error') !== false) ? [55 => 1] : [];
+      $errors = [
+        55 => 1,
+        56 => 1,
+        57 => 1,
+        58 => 1,
+        59 => 1,
+        60 => 1,
+      ];
+
+      return (strpos($testFile, 'Error') !== false) ? $errors : [];
 
     }//end getErrorList()
 
