@@ -14,7 +14,7 @@ class QualityAssurance_Sniffs_InstallFiles_HookUpdateN_HookUpdateNUnitTest exten
   public function getErrorList($testFile)
   {
     // All the error-free  files have no errors.
-    return (strpos($testFile, 'Error') !== false) ? [27 => 1] : [];
+    return (strpos($testFile, 'Error') === false) ? [] : [23 => 1];
 
   }//end getErrorList()
 
@@ -30,7 +30,7 @@ class QualityAssurance_Sniffs_InstallFiles_HookUpdateN_HookUpdateNUnitTest exten
   public function getWarningList($testFile)
   {
     // All the warning-free  files have no warnings.
-    return (strpos($testFile, 'Warning') !== false) ? [1 => 1] : [];
+    return (strpos($testFile, 'Warning') === false) ? [] : [1 => 1];
 
   }//end getWarningList()
 
@@ -45,7 +45,7 @@ class QualityAssurance_Sniffs_InstallFiles_HookUpdateN_HookUpdateNUnitTest exten
    */
   public function getTestFiles() {
     return array(
-      'HookUpdateNError.install' => '',
+      'error/HookUpdateNError.install' => '',
     );
   }// end getTestFiles()
 

@@ -8,14 +8,14 @@
 /**
  * Implements hook_enable().
  */
-function FunctionsDeclarationsError_enable() {
+function HookUpdateNError_enable() {
   drupal_set_message(t("The feature jrccties_core has been enabled."), 'status');
 }
 
 /**
  * Implements hook_disable().
  */
-function FunctionsDeclarationsError_disable() {
+function HookUpdateNError_disable() {
   drupal_set_message(t("The feature jrccties_core has been disabled."), 'status');
 }
 
@@ -24,7 +24,7 @@ function FunctionsDeclarationsError_disable() {
  *
  * Enable the privatemsg sub-modules and disable the Media browser plus module.
  */
-function FunctionsDeclarationsError_update_7001() {
+function HookUpdateNError_update_7001() {
   module_enable(array('pm_block_user',
     'pm_email_notify',
     'privatemsg_filter',
@@ -43,6 +43,6 @@ function FunctionsDeclarationsError_update_7001() {
 /**
  * Helper function for testing purpose.
  */
-function _FunctionsDeclarationsError_helper() {
+function _HookUpdateNError_helper() {
   drupal_set_message("So amazing!!!");
 }
