@@ -49,5 +49,4 @@ class QualityAssurance_Sniffs_InstallFiles_FunctionDeclarations_FunctionDeclarat
     );
   }// end getTestFiles()
 
-
 }//end class
