@@ -31,8 +31,10 @@ class DiffMakeFilesCommand extends Command
       ->setName('diff:make')
       ->setDescription('Check make file for changes.')
       ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The filename to check.')
-      ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
+      ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
+      ->addOption('repository', null, InputOption::VALUE_OPTIONAL, 'Reference repository.')
+      ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Reference repository.')
     ;
   }
 
@@ -42,6 +44,8 @@ class DiffMakeFilesCommand extends Command
     $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
     $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '';
     $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
+    $reference_repository = !empty($input->getOption('repository')) ? explode(',', $input->getOption('repository')) : NULL;
+    $reference_branch = !empty($input->getOption('branch')) ? explode(',', $input->getOption('branch')) : NULL;
 
     if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
       return;

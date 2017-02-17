@@ -80,6 +80,7 @@ class ReviewCommandHelper
     // Loop over each selection to run commands.
     foreach ($selected as $absolute_path => $filename) {
       // Build the commandlines.
+
       $commandlines = $this->buildCommandlines($absolute_path);
       // Execute commandlines.
       if ($this->executeCommandlines($this->application, $commandlines, $buffered_output)) {
@@ -145,18 +146,23 @@ class ReviewCommandHelper
       'profile' => $this->properties['profile'],
       'standard' => $this->properties['phpcs-config'],
       'basedir' => $this->properties['basedir'],
+      'repository' => $this->properties['repository'],
+      'branch' => $this->properties['branch'],
     );
+
     if ($exclude_directories = $this->getSubmoduleDirectories($filename, $directory)) {
       $command_options['exclude-dirs'] = implode(',', $exclude_directories);
     }
 
     $commandlines = array();
     $commands = $this->commands;
+
     //unset($commands['scan:coco']);
     foreach ($commands as $command) {
       $command_name = $command->getName();
       $definition = $command->getDefinition();
       $arguments = $definition->getOptions();
+
       foreach ($command_options as $name => $shared_option) {
         if (isset($arguments[$name])) {
           $commandlines[$command_name]['--' . $name] = $command_options[$name];
@@ -167,7 +173,6 @@ class ReviewCommandHelper
         $commandlines[$command_name] = new ArrayInput((array) $commandlines[$command_name]);
       }
     }
-
     return $commandlines;
   }
 
@@ -326,6 +331,8 @@ class ReviewCommandHelper
         'phpcs-config' => 'phpcs.config',
         'profile' => 'platform.profile.name',
         'basedir' => 'project.basedir',
+        'repository' => 'project.reference.repository',
+        'branch' => 'project.reference.branch',
         'check-ssk' => 'qa.check.ssk',
       ));
     }
