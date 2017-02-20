@@ -46,7 +46,7 @@ class DiffMakeFilesCommand extends Command
     $application = $this->getApplication();
 
     // Setup the reviewCommandHelper.
-    $reviewCommandHelper = new GitCommandHelper($input, $output, $application);
+    $gitCommandHelper = new GitCommandHelper($input, $output, $application);
 
     // Parse build properties here. Get the needed params for if the call came
     // from console and not from phing.
@@ -83,7 +83,7 @@ class DiffMakeFilesCommand extends Command
     );
 
     // Update remote repository
-    $git = $reviewCommandHelper->setGitWrapper($params);
+    $git = $gitCommandHelper->setGitWrapper($params);
 
     $branches = $git->getBranches();
     $head = $branches->head();

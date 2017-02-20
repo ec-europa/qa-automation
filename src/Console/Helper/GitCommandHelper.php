@@ -8,10 +8,10 @@
 namespace QualityAssurance\Component\Console\Helper;
 
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
-use GitWrapper\GitCommand;
-use GitWrapper\GitException;
 use GitWrapper\GitWrapper;
-
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ReviewCommandHelper
