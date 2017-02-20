@@ -11,7 +11,7 @@ use GitWrapper\GitException;
 use GitWrapper\GitWrapper;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper;
-use QualityAssurance\Component\Console\Helper\ReviewCommandHelper;
+use QualityAssurance\Component\Console\Helper\GitCommandHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -46,7 +46,7 @@ class DiffMakeFilesCommand extends Command
     $application = $this->getApplication();
 
     // Setup the reviewCommandHelper.
-    $reviewCommandHelper = new ReviewCommandHelper($input, $output, $application);
+    $reviewCommandHelper = new GitCommandHelper($input, $output, $application);
 
     // Parse build properties here. Get the needed params for if the call came
     // from console and not from phing.

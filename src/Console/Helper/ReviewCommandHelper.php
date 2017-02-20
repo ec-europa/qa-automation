@@ -98,45 +98,7 @@ class ReviewCommandHelper
     }
   }
 
-  /**
-   * Helper function to set the git wrapper object.
-   *
-   * @param $options
-   */
-  public function setGitWrapper($params) {
-    // Get a diff of current branch and master.
-
-    $wrapper = new GitWrapper();
-    $git = $wrapper->workingCopy($params['dirname']);
-
-    // Add starterkit remote if do not exists
-    $remote_exists = $git->hasRemote($params['remote']);
-    if (!$remote_exists) {
-      $this->output->writeln("<comment>Adding remote to repository: </comment><info>" . $params['remote'] . "</info>");
-      // Only track the given branch, and don't download any tags.
-      $options = [
-        '--no-tags' => TRUE,
-        '-t' => [$params['branch']],
-      ];
-      $git->addRemote($params['remote'], $params['repository'], $options);
-    }
-
-    // Add reference remote if do not exist.
-    $remote_exists = $git->hasRemote($params['reference_remote']);
-    if (!$remote_exists) {
-      $this->output->writeln("<comment>Adding remote to repository: </comment><info>" . $params['reference_remote'] . "</info>");
-      // Only track the given branch, and don't download any tags.
-      $options = [
-        '--no-tags' => TRUE,
-        '-t' => [$params['reference_branch']],
-      ];
-      $git->addRemote($params['reference_remote'], $params['reference_repository'], $options);
-    }
-
-    return $git;
-  }
-
-  /**
+   /**
    * Helper function to ask users to select options if needed.
    *
    * @return array
