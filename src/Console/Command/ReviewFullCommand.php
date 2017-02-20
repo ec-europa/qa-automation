@@ -27,8 +27,6 @@ class ReviewFullCommand extends Command
     $this
       ->setName('review:full')
       ->setDescription('Performs all required QA checks on the entire codebase.')
-      ->addOption('repository', null, InputOption::VALUE_OPTIONAL, 'Reference repository on github.')
-      ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Reference repository branch on github.')
       ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'QA review type: platform or subsite.', 'subsite')
       ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
     ;
