@@ -61,6 +61,11 @@ class DiffMakeFilesCommand extends Command
       return;
     }
 
+    if (empty($params['reference_repository'])) {
+      $output->writeln('<comment>Missing property in the  properties file: </comment><info>project.reference.repository</info>');
+      return;
+    }
+
     // Find site.make in resources folder.
     $searches = array(
       'projects' => 'modules or themes',
