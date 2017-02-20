@@ -40,14 +40,24 @@ class DiffMakeFilesCommand extends Command
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    // Find todos tags.
-    $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-    $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '';
-    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
-    $reference_repository = !empty($input->getOption('repository')) ? explode(',', $input->getOption('repository')) : NULL;
-    $reference_branch = !empty($input->getOption('branch')) ? explode(',', $input->getOption('branch')) : NULL;
 
-    if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
+    // Parse build properties here. Get the needed params for if the call came
+    // from console and not from phing.
+    $phingPropertiesHelper = new PhingPropertiesHelper($output);
+    $params = $phingPropertiesHelper->requestSettings(array(
+      'makefile'             => 'subsite.make',
+      'reference_repository' => 'project.reference.repository',
+      'reference_branch'     => 'project.reference.branch',
+      'remote'               => 'project.reference.remote',
+      'repository'           => 'starterkit.repository',
+      'basedir'              => 'project.basedir',
+    ));
+
+    $params += array(
+      'dirname' =>  !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd(),
+    );
+
+    if (!empty($params['makefile']) && pathinfo($params['makefile'], PATHINFO_EXTENSION) !== 'make') {
       return;
     }
 
@@ -56,16 +66,33 @@ class DiffMakeFilesCommand extends Command
       'projects' => 'modules or themes',
       'libraries' => 'libraries',
     );
-    $makefile = $filename;
+
     // Get a diff of current branch and master.
     $wrapper = new GitWrapper();
-    $git = $wrapper->workingCopy($dirname);
+    $git = $wrapper->workingCopy($params['dirname']);
     $branches = $git->getBranches();
     $head = $branches->head();
-    $diff = $git->diff('master', $makefile, $makefile);
+
+    // Add reference remote if do not exist.
+    $remote_exists = $git->hasRemote($params['remote']);
+    if (!$remote_exists) {
+      $output->writeln("<comment>Adding remote repository.</comment>");
+      // Only track the given branch, and don't download any tags.
+      $options = [
+        '--no-tags' => TRUE,
+        '-t' => [$params['reference_branch']],
+      ];
+      $git->addRemote($params['remote'], $params['reference_repository'], $options);
+    }
+
+    $git->fetch($params['remote']);
+
+    // Build the diff between local file and remote reference.
+    $diff = $git->diff($head, $params['remote'] . '/' . $params['reference_branch']);
+
     $filtered_diff = str_replace('"', '', $diff->getOutput());
-    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show('master:' . str_replace(getcwd(). '/', '', $makefile)));
-    $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($makefile));
+    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show($params['remote'] . '/' . $params['reference_branch'] . ':' . str_replace(getcwd(). '/', '', $params['makefile'])));
+    $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($params['makefile']));
 
     // Find new projects or libraries.
     foreach ($searches as $search => $subject) {

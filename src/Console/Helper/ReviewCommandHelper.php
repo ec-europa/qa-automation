@@ -331,8 +331,6 @@ class ReviewCommandHelper
         'phpcs-config' => 'phpcs.config',
         'profile' => 'platform.profile.name',
         'basedir' => 'project.basedir',
-        'repository' => 'project.reference.repository',
-        'branch' => 'project.reference.branch',
         'check-ssk' => 'qa.check.ssk',
       ));
     }
