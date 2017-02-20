@@ -15,9 +15,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Finder\Finder;
-use GitWrapper\GitCommand;
-use GitWrapper\GitException;
-use GitWrapper\GitWrapper;
 
 /**
  * Class ReviewCommandHelper
@@ -83,7 +80,6 @@ class ReviewCommandHelper
     // Loop over each selection to run commands.
     foreach ($selected as $absolute_path => $filename) {
       // Build the commandlines.
-
       $commandlines = $this->buildCommandlines($absolute_path);
       // Execute commandlines.
       if ($this->executeCommandlines($this->application, $commandlines, $buffered_output)) {
@@ -98,7 +94,7 @@ class ReviewCommandHelper
     }
   }
 
-   /**
+  /**
    * Helper function to ask users to select options if needed.
    *
    * @return array
@@ -150,20 +146,17 @@ class ReviewCommandHelper
       'standard' => $this->properties['phpcs-config'],
       'basedir' => $this->properties['basedir'],
     );
-
     if ($exclude_directories = $this->getSubmoduleDirectories($filename, $directory)) {
       $command_options['exclude-dirs'] = implode(',', $exclude_directories);
     }
 
     $commandlines = array();
     $commands = $this->commands;
-
     //unset($commands['scan:coco']);
     foreach ($commands as $command) {
       $command_name = $command->getName();
       $definition = $command->getDefinition();
       $arguments = $definition->getOptions();
-
       foreach ($command_options as $name => $shared_option) {
         if (isset($arguments[$name])) {
           $commandlines[$command_name]['--' . $name] = $command_options[$name];
@@ -174,6 +167,7 @@ class ReviewCommandHelper
         $commandlines[$command_name] = new ArrayInput((array) $commandlines[$command_name]);
       }
     }
+
     return $commandlines;
   }
 
@@ -426,5 +420,4 @@ class ReviewCommandHelper
     // Calculate the ruler length for header output.
     $this->ruler_length = $this->getRulerLength($options);
   }
-
 }
