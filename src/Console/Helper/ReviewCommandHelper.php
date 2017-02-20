@@ -187,8 +187,6 @@ class ReviewCommandHelper
       'profile' => $this->properties['profile'],
       'standard' => $this->properties['phpcs-config'],
       'basedir' => $this->properties['basedir'],
-      'repository' => $this->properties['repository'],
-      'branch' => $this->properties['branch'],
     );
 
     if ($exclude_directories = $this->getSubmoduleDirectories($filename, $directory)) {

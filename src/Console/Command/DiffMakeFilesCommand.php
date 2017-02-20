@@ -82,19 +82,13 @@ class DiffMakeFilesCommand extends Command
       'libraries' => 'libraries',
     );
 
-
     // Update remote repository
     $git = $reviewCommandHelper->setGitWrapper($params);
 
-
     $branches = $git->getBranches();
-
     $head = $branches->head();
-
     $git->fetch($params['reference_remote']);
-//    echo "ahoy";
-//    var_dump($params);
-//    die();
+
     // Build the diff between local file and remote reference.
     $diff = $git->diff($head, $params['reference_remote'] . '/' . $params['reference_branch']);
 
