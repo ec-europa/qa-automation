@@ -11,6 +11,7 @@ use GitWrapper\GitException;
 use GitWrapper\GitWrapper;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper;
+use QualityAssurance\Component\Console\Helper\ReviewCommandHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -35,20 +36,29 @@ class DiffMakeFilesCommand extends Command
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
       ->addOption('repository', null, InputOption::VALUE_OPTIONAL, 'Reference repository.')
       ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Reference repository.')
+      ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+    // Get the application
+    $application = $this->getApplication();
+
+    // Setup the reviewCommandHelper.
+    $reviewCommandHelper = new ReviewCommandHelper($input, $output, $application);
 
     // Parse build properties here. Get the needed params for if the call came
     // from console and not from phing.
     $phingPropertiesHelper = new PhingPropertiesHelper($output);
     $params = $phingPropertiesHelper->requestSettings(array(
       'makefile'             => 'subsite.make',
+      'branch'               => 'starterkit.branch',
+      'remote'               => 'starterkit.remote',
+      'repository'           => 'starterkit.repository',
       'reference_repository' => 'project.reference.repository',
       'reference_branch'     => 'project.reference.branch',
-      'remote'               => 'project.reference.remote',
+      'reference_remote'     => 'project.reference.remote',
       'repository'           => 'starterkit.repository',
       'basedir'              => 'project.basedir',
     ));
@@ -72,31 +82,24 @@ class DiffMakeFilesCommand extends Command
       'libraries' => 'libraries',
     );
 
-    // Get a diff of current branch and master.
-    $wrapper = new GitWrapper();
-    $git = $wrapper->workingCopy($params['dirname']);
+
+    // Update remote repository
+    $git = $reviewCommandHelper->setGitWrapper($params);
+
+
     $branches = $git->getBranches();
+
     $head = $branches->head();
 
-    // Add reference remote if do not exist.
-    $remote_exists = $git->hasRemote($params['remote']);
-    if (!$remote_exists) {
-      $output->writeln("<comment>Adding remote repository.</comment>");
-      // Only track the given branch, and don't download any tags.
-      $options = [
-        '--no-tags' => TRUE,
-        '-t' => [$params['reference_branch']],
-      ];
-      $git->addRemote($params['remote'], $params['reference_repository'], $options);
-    }
-
-    $git->fetch($params['remote']);
-
+    $git->fetch($params['reference_remote']);
+//    echo "ahoy";
+//    var_dump($params);
+//    die();
     // Build the diff between local file and remote reference.
-    $diff = $git->diff($head, $params['remote'] . '/' . $params['reference_branch']);
+    $diff = $git->diff($head, $params['reference_remote'] . '/' . $params['reference_branch']);
 
     $filtered_diff = str_replace('"', '', $diff->getOutput());
-    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show($params['remote'] . '/' . $params['reference_branch'] . ':' . str_replace(getcwd(). '/', '', $params['makefile'])));
+    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show($params['reference_remote'] . '/' . $params['reference_branch'] . ':' . str_replace(getcwd(). '/', '', $params['makefile'])));
     $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($params['makefile']));
 
     // Find new projects or libraries.
