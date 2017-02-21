@@ -34,14 +34,22 @@ class DiffMakeFilesCommand extends Command
       ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The filename to check.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
+      ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
     ;
   }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
-  {
+  protected function execute(InputInterface $input, OutputInterface $output) {
 
     // Get the application
     $application = $this->getApplication();
+
+    $filename = (!empty($input->getOption('filename'))) ? $input->getOption('filename') : '';
+
+    // Is running in a directory, skip command.
+    if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
+      return;
+    }
+
 
     // Setup the reviewCommandHelper.
     $gitCommandHelper = new GitCommandHelper($input, $output, $application);
@@ -62,14 +70,13 @@ class DiffMakeFilesCommand extends Command
     ));
 
     $params += array(
-      'dirname' =>  !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd(),
-      'filename' => !empty($input->getOption('filename')) ? $input->getOption('filename') : '',
+      'dirname' => !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd(),
+      'filename' => $filename,
     );
 
-    if (!empty($params['filename']) && pathinfo($params['filename'], PATHINFO_EXTENSION) !== 'make') {
+    if (!empty($params['makefile']) && pathinfo($params['makefile'], PATHINFO_EXTENSION) !== 'make') {
       return;
     }
-
     if (empty($params['reference_repository'])) {
       $output->writeln('<comment>Missing property in the  properties file: </comment><info>project.reference.repository</info>');
       return;
@@ -92,8 +99,13 @@ class DiffMakeFilesCommand extends Command
     $diff = $git->diff($head, $params['reference_remote'] . '/' . $params['reference_branch']);
 
     $filtered_diff = str_replace('"', '', $diff->getOutput());
-    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show($params['reference_remote'] . '/' . $params['reference_branch'] . ':' . str_replace(getcwd(). '/', '', $params['makefile'])));
-    $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($params['makefile']));
+    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show($params['reference_remote'] . '/' . $params['reference_branch'] . ':' . str_replace(getcwd() . '/', '', $params['makefile'])));
+
+    if (file_exists($params['makefile'])) {
+      $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($params['makefile']));
+    } else {
+      $current = array();
+    }
 
     // Find new projects or libraries.
     foreach ($searches as $search => $subject) {
