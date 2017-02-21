@@ -34,14 +34,12 @@ class DiffMakeFilesCommand extends Command
       ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The filename to check.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
       ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
-      ->addOption('repository', null, InputOption::VALUE_OPTIONAL, 'Reference repository.')
-      ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Reference repository.')
-      ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
     ;
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+
     // Get the application
     $application = $this->getApplication();
 
@@ -65,9 +63,10 @@ class DiffMakeFilesCommand extends Command
 
     $params += array(
       'dirname' =>  !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd(),
+      'filename' => !empty($input->getOption('filename')) ? $input->getOption('filename') : '',
     );
 
-    if (!empty($params['makefile']) && pathinfo($params['makefile'], PATHINFO_EXTENSION) !== 'make') {
+    if (!empty($params['filename']) && pathinfo($params['filename'], PATHINFO_EXTENSION) !== 'make') {
       return;
     }
 
