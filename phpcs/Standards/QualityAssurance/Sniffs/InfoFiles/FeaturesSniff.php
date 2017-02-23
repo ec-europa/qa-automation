@@ -65,7 +65,7 @@ class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer
         }
 
         // Check if it may be just a custom module in the wrong directory.
-        if (!isset($info['features']) && strpos($fileName, '/features/') !== FALSE) {
+        if (!isset($info['features']['features_api']) && strpos($fileName, '/features/') !== FALSE) {
             $error = 'Please move this "custom" module out of the features folder.';
             $phpcsFile->addError($error, $stackPtr, 'CustomModule');
         }
