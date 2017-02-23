@@ -28,7 +28,7 @@ class QualityAssurance_Sniffs_Functions_DrupalHttpRequestSniff extends Generic_S
      * @var array(string => string|null)
      */
     public $forbiddenFunctions = array(
-        'curl' => 'drupal_http_request',
+        'curl_init' => 'drupal_http_request',
         'file_get_contents' => 'drupal_http_request',
     );
 
