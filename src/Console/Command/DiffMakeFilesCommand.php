@@ -50,7 +50,6 @@ class DiffMakeFilesCommand extends Command
       return;
     }
 
-
     // Setup the reviewCommandHelper.
     $gitCommandHelper = new GitCommandHelper($input, $output, $application);
 
