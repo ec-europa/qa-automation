@@ -58,6 +58,7 @@ class QualityAssurance_Sniffs_InstallFiles_FunctionDeclarationsSniff implements 
           $fileName . '_enable',
           $fileName . '_disable',
           $fileName . '_schema',
+          $fileName . '_field_schema',
           $fileName . '_requirements',
         );
 
