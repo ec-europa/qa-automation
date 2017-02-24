@@ -60,6 +60,7 @@ class QualityAssurance_Sniffs_InstallFiles_FunctionDeclarationsSniff implements 
           $fileName . '_schema',
           $fileName . '_field_schema',
           $fileName . '_requirements',
+          $fileName . '_update_last_removed',
         );
 
         if (!in_array($functionName, $allowedHooks) && !preg_match('/' . $fileName . '_update_7\d{3}/', $functionName)) {
