@@ -28,10 +28,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
   {
     return array(
       T_STRING,
-      T_LNUMBER,
-      T_VARIABLE,
-      T_ARRAY,
-      T_INLINE_HTML
+      T_CONSTANT_ENCAPSED_STRING
     );
 
   }//end register()
@@ -61,11 +58,25 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
     $token  = $tokens[$stackPtr];
 
     // Path regular expression.
-    $regexp = 'sites\/[\'a-zA-Z-0-9\$\.\ \"]+\/(modules|themes|libraries)*';
+    $regexp = 'sites/[^/]+/(files|libraries|modules|themes)';
 
     // If hardcoded path is found.
-    if(preg_match("/$regexp/", $token['content'])) {
-      $error = 'Hardcoded paths to modules or themes are not allowed. Please use drupal_get_path() function instead.';
+    if(preg_match("~$regexp~", $token['content'], $matches)) {
+      $error = "Internal hardcoded paths are not allowed. ";
+      switch ($matches[1]) {
+        case 'modules':
+          $error .= "Please use drupal_get_path('module', \$name).";
+          break;
+        case 'themes':
+          $error .= "Please use drupal_get_path('theme', \$name).";
+          break;
+        case 'libraries':
+          $error .= "Please use libraries_get_path(\$name).";
+          break;
+        case 'files':
+          $error .= "Please use variable_get('file_public|private|temporary_path').";
+          break;
+      }
       $phpcsFile->addError($error, $stackPtr, 'HardcodedPath');
     }
 
