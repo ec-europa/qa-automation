@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Generic_HardcodedPath_HardcodedPathUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -13,9 +13,17 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getErrorList($testFile)
     {
-        return array(
-            22 => 1,
-        );
+      // All the error-free  files have no errors.
+      $errors = [
+        55 => 1,
+        56 => 1,
+        57 => 1,
+        58 => 1,
+        59 => 1,
+        60 => 1,
+      ];
+
+      return (strpos($testFile, 'Error') === false) ? [] : $errors;
 
     }//end getErrorList()
 
@@ -30,9 +38,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getWarningList($testFile)
     {
-        return array(
-
-        );
+      // All the warning-free  files have no warnings.
+      return (strpos($testFile, 'Warning') === false) ? [] : [1 => 1];
 
     }//end getWarningList()
 
@@ -47,7 +54,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getTestFiles() {
         return array(
-          'LockedFields.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
+          'HardcodedPathError.tpl.php' => '',
         );
     }// end getTestFiles()
 

@@ -64,7 +64,6 @@ class QualityAssurance_Sniffs_InstallFiles_InstallUpdateCallbacksSniff implement
         );
         while ($string !== false) {
             if (preg_match('/^' . $fileName . '_update_7\d{3}$/', $tokens[$string]['content'])) {
-                var_dump($tokens[$string]['content']);
                 $opener = $phpcsFile->findNext(
                   PHP_CodeSniffer_Tokens::$emptyTokens,
                   ($string + 1),

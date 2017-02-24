@@ -28,10 +28,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_
     public function register()
     {
         return array(
-          T_CONSTANT_ENCAPSED_STRING,
-          T_LNUMBER,
-          T_VARIABLE,
           T_ARRAY,
+          T_OPEN_SHORT_ARRAY,
         );
 
     }//end register()
@@ -54,32 +52,53 @@ class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_
             return;
         }
 
-        // Get our tokens.
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-        // Find the variable.
-        if ($token['content'] == '$field_bases') {
-            // Find the field name.
-            if ($fieldName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1), ($stackPtr + 3), false)) {
-                // Set array variables.
-                $fieldBaseArray = $phpcsFile->findNext(T_ARRAY, ($fieldName + 1), ($fieldName + 6), false);
-                $fieldBaseArrayStart = $tokens[$fieldBaseArray]['parenthesis_opener'];
-                $fieldBaseArrayEnd = $tokens[$fieldBaseArray]['parenthesis_closer'];
-                // Find the type property.
-                if ($type = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $fieldBaseArrayStart, $fieldBaseArrayEnd, false, "'field_name'")) {
-                    // If field type is not datestamp.
-                    if ($fieldMachineName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($type + 1), ($type + 5), false)) {
-                        // Set error.
-                        $field_name = str_replace('\'', '', $tokens[$fieldMachineName]['content']);
-                        $length = strlen($field_name);
-                        if ($length > 32) {
-                            $error = 'Machine name "' . $field_name . '" has ' . $length . ' characters and may not be longer than 32 characters.';
-                            $phpcsFile->addError($error, $fieldMachineName, 'TooLong');
-                        }
-                    }
+
+        // Support long and short syntax.
+        $parenthesis_opener = 'parenthesis_opener';
+        $parenthesis_closer = 'parenthesis_closer';
+        if ($tokens[$stackPtr]['code'] === T_OPEN_SHORT_ARRAY) {
+            $parenthesis_opener = 'bracket_opener';
+            $parenthesis_closer = 'bracket_closer';
+        }
+
+        $lastItem = $phpcsFile->findPrevious(
+          PHP_CodeSniffer_Tokens::$emptyTokens,
+          ($tokens[$stackPtr][$parenthesis_closer] - 1),
+          $stackPtr,
+          true
+        );
+
+        // Empty array.
+        if ($lastItem === $tokens[$stackPtr][$parenthesis_opener]) {
+            return;
+        }
+
+        // Inline array.
+        if ($tokens[$tokens[$stackPtr][$parenthesis_opener]]['line'] === $tokens[$tokens[$stackPtr][$parenthesis_closer]]['line']) {
+            return;
+        }
+
+        $arrayStart = $tokens[$stackPtr][$parenthesis_opener];
+        $arrayEnd = $tokens[$stackPtr][$parenthesis_closer];
+
+        // Loop over array tokens.
+        while ($arrayStart = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($arrayStart + 1), $arrayEnd)) {
+            // Find the field_name key.
+            if ($tokens[$arrayStart]['content'] === "'field_name'") {
+                $fieldName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($arrayStart + 1), ($arrayStart + 5));
+                // If it's longer than 32 chars trow an error.
+                if ((strlen($tokens[$fieldName]['content']) - 2) > 32) {
+                    $error = 'Field name ' . str_replace("'", '"', $tokens[$fieldName]['content']) . ' may not exceed 32 characters.';
+                    $phpcsFile->addError($error, $fieldName, 'TooLong');
                 }
+                // Exit the array.
+                return $arrayEnd;
             }
         }
+
+        // If we have checked level one, exit the array.
+        return $arrayEnd;
 
     }//end process()
 
