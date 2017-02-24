@@ -11,5 +11,4 @@
 function _example_fail_forbidden_functions() {
   // Forbidden non drupal wrapped functions.
   $curl = curl_init();
-  $contents = file_get_contents('test.file.php');
 }
