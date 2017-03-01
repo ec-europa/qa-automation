@@ -17,8 +17,8 @@ should maintain these ourselves because the sandbox is not being maintained.
 
 ### 1.2 ./phpcs/Standards/QualityAssurance/
 
-This folder contains the code sniffs developed by the FPFIS QA team. Current included
-checks are:
+This folder contains the code sniffs developed by the FPFIS QA team.
+Current included checks are:
 - check required properties in info file
 - check forbidden properties in info file
 - check if features api is set to version 2
