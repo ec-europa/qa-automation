@@ -11,6 +11,7 @@ use GitWrapper\GitException;
 use GitWrapper\GitWrapper;
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper;
+use QualityAssurance\Component\Console\Helper\GitCommandHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,19 +32,53 @@ class DiffMakeFilesCommand extends Command
       ->setName('diff:make')
       ->setDescription('Check make file for changes.')
       ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The filename to check.')
-      ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
       ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
+      ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
+      ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
     ;
   }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
-  {
-    // Find todos tags.
-    $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-    $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '';
-    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
+  protected function execute(InputInterface $input, OutputInterface $output) {
 
+    // Get the application
+    $application = $this->getApplication();
+
+    $filename = (!empty($input->getOption('filename'))) ? $input->getOption('filename') : '';
+
+    // Is running in a directory, skip command.
     if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
+      return;
+    }
+
+
+    // Setup the reviewCommandHelper.
+    $gitCommandHelper = new GitCommandHelper($input, $output, $application);
+
+    // Parse build properties here. Get the needed params for if the call came
+    // from console and not from phing.
+    $phingPropertiesHelper = new PhingPropertiesHelper($output);
+    $params = $phingPropertiesHelper->requestSettings(array(
+      'makefile'             => 'subsite.make',
+      'branch'               => 'starterkit.branch',
+      'remote'               => 'starterkit.remote',
+      'repository'           => 'starterkit.repository',
+      'reference_repository' => 'project.reference.repository',
+      'reference_branch'     => 'project.reference.branch',
+      'reference_remote'     => 'project.reference.remote',
+      'repository'           => 'starterkit.repository',
+      'basedir'              => 'project.basedir',
+    ));
+
+    $params += array(
+      'dirname' => !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd(),
+      'filename' => $filename,
+    );
+
+    if (!empty($params['makefile']) && pathinfo($params['makefile'], PATHINFO_EXTENSION) !== 'make') {
+      return;
+    }
+    if (empty($params['reference_repository'])) {
+      $output->writeln('<comment>Missing property in the  properties file: </comment><info>project.reference.repository</info>');
       return;
     }
 
@@ -52,16 +87,25 @@ class DiffMakeFilesCommand extends Command
       'projects' => 'modules or themes',
       'libraries' => 'libraries',
     );
-    $makefile = $filename;
-    // Get a diff of current branch and master.
-    $wrapper = new GitWrapper();
-    $git = $wrapper->workingCopy($dirname);
+
+    // Update remote repository
+    $git = $gitCommandHelper->setGitWrapper($params);
+
     $branches = $git->getBranches();
     $head = $branches->head();
-    $diff = $git->diff('master', $makefile, $makefile);
+    $git->fetch($params['reference_remote']);
+
+    // Build the diff between local file and remote reference.
+    $diff = $git->diff($head, $params['reference_remote'] . '/' . $params['reference_branch']);
+
     $filtered_diff = str_replace('"', '', $diff->getOutput());
-    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show('master:' . str_replace(getcwd(). '/', '', $makefile)));
-    $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($makefile));
+    $master = DrupalInfoFormatHelper::drupalParseInfoFormat($git->show($params['reference_remote'] . '/' . $params['reference_branch'] . ':' . str_replace(getcwd() . '/', '', $params['makefile'])));
+
+    if (file_exists($params['makefile'])) {
+      $current = DrupalInfoFormatHelper::drupalParseInfoFormat(file_get_contents($params['makefile']));
+    } else {
+      $current = array();
+    }
 
     // Find new projects or libraries.
     foreach ($searches as $search => $subject) {
