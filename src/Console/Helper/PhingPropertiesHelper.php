@@ -59,6 +59,7 @@ class PhingPropertiesHelper
     }
     // If found return absolute path.
     else {
+      $this->output->writeln('<comment>Succesfully loaded: </comment><info>' . $filepath . '</info>');
       return "$path/build.xml";
     }
   }

@@ -71,15 +71,7 @@ class ReviewCommandHelper
         return 1;
       }
     }
-
-    // Performs the evaluation to site.make file.
-    $this->output->writeln("");
-    $this->output->writeln("<comment>Checking site.make file: </comment>");
-    if ($this->executeCommandlines($this->application, array('diff:make' => new ArrayInput(array())), $this->output)) {
-      return 1;
-    }
-    $this->output->writeln("");
-
+    
     // Ask for a selection of options if needed.
     $selected = $this->getSelectedOptions();
     // Setup a buffered output to capture results of command.
@@ -248,7 +240,6 @@ class ReviewCommandHelper
         unset($commands[$name]);
       }
     }
-
     // Stop for user input to select commands.
     if ($this->input->getOption('select')) {
       $helperquestion = new QuestionHelper();
