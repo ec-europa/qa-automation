@@ -14,5 +14,5 @@
 
 ### Bug fixes:
   * MULTISITE-16586 - Added hook_update_last_removed() to allowed install file functions
-  * MULTISITE-16318 - Added hook_field_schema to allowed install file functions
+  * MULTISITE-16318 - Added hook_field_schema() to allowed install file functions
   * MULTISITE-16041 - Fixed feature files sniffs that chocked on certain arrays
