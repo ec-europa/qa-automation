@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLength_FieldNameLengthUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -13,9 +13,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getErrorList($testFile)
     {
-        return array(
-            22 => 1,
-        );
+        return (strpos($testFile, 'Error') === false) ? [] : [20=> 1];
 
     }//end getErrorList()
 
@@ -30,9 +28,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getWarningList($testFile)
     {
-        return array(
-
-        );
+        return (strpos($testFile, 'Warning') === false) ? [] : [1 => 1];
 
     }//end getWarningList()
 
@@ -47,9 +43,10 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFields_LockedFieldsUnitTest ex
      */
     public function getTestFiles() {
         return array(
-          'LockedFields.features.field_base.inc' => 'Locked.fixed.features.field_base.inc',
+          'DatestampFieldsError.features.field_base.inc' => '',
         );
     }// end getTestFiles()
+
 
 
 }//end class
