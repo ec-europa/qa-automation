@@ -17,8 +17,8 @@ should maintain these ourselves because the sandbox is not being maintained.
 
 ### 1.2 ./phpcs/Standards/QualityAssurance/
 
-This folder contains the code sniffs developed by the FPFIS QA team. Current included
-checks are:
+This folder contains the code sniffs developed by the FPFIS QA team.
+Current included checks are:
 - check required properties in info file
 - check forbidden properties in info file
 - check if features api is set to version 2
@@ -28,6 +28,7 @@ checks are:
 - check for functions that need to be drupal wrapped
 - check for hardcoded image tags
 - check for hardcoded link tags
+- check for hardcoded paths to modules, themes or libraries
 
 ## 2 ./bin/qa
 This is the console application which you can use to perform analysis
@@ -63,6 +64,3 @@ requested interval.
 checks with permission of the QA team.
 4. [Todo's](docs/todo.md): Request postponement of code refractoring untill the next
 release.
-
-
-

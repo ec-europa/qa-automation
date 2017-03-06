@@ -42,25 +42,7 @@ class DrupalSecure_Sniffs_XSS_NodeTitleSniff extends DrupalSecure_Sniffs_General
           $error = 'Returning unsanitized input from node title in %s';
           $sniff->phpcsFile->addWarning($error, $nextPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content'])));//, trim($sniff->tokens[$definitionPtr]['content'])));
         }
-        elseif (($outputPtr = $sniff->isAnArgument($nextPtr)) !== false && !$sniff->isBeingSanitized($nextPtr)) {
-          if (in_array($sniff->tokens[$outputPtr]['content'], $sniff->outputFunctions())) {
-            $error = 'Node %s output with %s';
-            $sniff->phpcsFile->addError($error, $outputPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content']), $sniff->tokens[$outputPtr]['content']));
-          }
-          elseif ($sniff->isBeingSanitized($outputPtr)) {
-            // 
-          }
-        }
       }
-      /*$next = $sniff->phpcsFile->findNext(T_VARIABLE, $stackPtr, null, false, $sniff->tokens[$variablePtr]['content']);
-      if ($sniff->isBeingPrinted($next)) {
-        $error = 'Printing unsanitized input from node %s set from %s';
-        $sniff->phpcsFile->addError($error, $next, 'DangerousUserInput', array(trim($sniff->tokens[$variablePtr]['content']), trim($sniff->tokens[$stackPtr]['content'])));
-      }
-      elseif (($outputPtr = $sniff->isReturned($variablePtr)) !== false) {
-        $error = 'Returning unsanitized input from node %s';
-        $sniff->phpcsFile->addError($error, $outputPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content'])));
-      }*/
     }
     elseif ($sniff->isBeingReturned($stackPtr) && ($definitionPtr = $sniff->isWithinFunction($stackPtr)) !== false) {
       if (($outputPtr = $sniff->isPrinted($definitionPtr)) !== false) {
@@ -68,15 +50,5 @@ class DrupalSecure_Sniffs_XSS_NodeTitleSniff extends DrupalSecure_Sniffs_General
         $sniff->phpcsFile->addError($error, $outputPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), trim($sniff->tokens[$definitionPtr]['content'])));
       }
     }
-    elseif (($outputPtr = $sniff->isAnArgument($stackPtr)) !== false) {
-      if (in_array($sniff->tokens[$outputPtr]['content'], $sniff->outputFunctions())) {
-        $error = 'Node %s output with %s';
-        $sniff->phpcsFile->addError($error, $outputPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), $sniff->tokens[$outputPtr]['content']));
-      }
-      elseif ($sniff->isBeingSanitized($outputPtr)) {
-        // 
-      }
-    }
   }
-  
 }

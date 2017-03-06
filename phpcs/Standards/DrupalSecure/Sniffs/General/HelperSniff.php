@@ -468,15 +468,7 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
       );
       return $functions;
     }
-    
-    public function outputFunctions() {
-      $functions = array(
-        'drupal_set_title',
-        'drupal_set_message',
-      );
-      return $functions;
-    }
-    
+
     /**
      * Determine if $stackPtr is part of sanitization process.
      */

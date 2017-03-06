@@ -55,15 +55,6 @@ class DrupalSecure_Sniffs_XSS_CallbackOutputSniff extends DrupalSecure_Sniffs_Ge
               $error = 'Menu callback %s of function %s is printed';
               $sniff->phpcsFile->addError($error, $nextPtr, 'XSS.CallbackOutput', array(trim($sniff->tokens[$argumentPtr]['content']), trim($callback)));
             }
-            elseif (($outputPtr = $sniff->isAnArgument($nextPtr, $prevPtr)) !== false) {
-              if (in_array($sniff->tokens[$outputPtr]['content'], $sniff->outputFunctions())) {
-                $error = 'Menu callback argument %s of function %s output with %s';
-                $sniff->phpcsFile->addError($error, $outputPtr, 'XSS.CallbackOutput', array(trim($sniff->tokens[$argumentPtr]['content']), trim($callback), $sniff->tokens[$outputPtr]['content']));
-              }
-              elseif ($sniff->isBeingSanitized($outputPtr)) {
-                // @todo ?
-              }
-            }
             elseif (($variablePtr = $sniff->isBeingAssigned($nextPtr)) !== false) {
               // @todo trace new variable.
             }
