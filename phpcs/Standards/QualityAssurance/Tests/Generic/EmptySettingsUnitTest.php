@@ -15,7 +15,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettings_EmptySettingsUnitTest extend
     {
       // All the warning-free  files have no errors.
       $errors = [
-        1 => 1,
+        31 => 1,
       ];
 
       return (strpos($testFile, 'Error') === false) ? [] : $errors;
@@ -53,7 +53,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettings_EmptySettingsUnitTest extend
      */
     public function getTestFiles() {
         return array(
-          'EmptySettingsWarning.strongarm.inc' => '',
+          'EmptySettingsError.strongarm.inc' => '',
         );
     }// end getTestFiles()
 
