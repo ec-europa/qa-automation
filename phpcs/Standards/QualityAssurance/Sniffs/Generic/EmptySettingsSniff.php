@@ -10,7 +10,7 @@
  */
 
 /**
- * Empty strongarm settings for pathauto shouldbe removed.
+ * Empty strongarm settings for pathauto should be removed.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
