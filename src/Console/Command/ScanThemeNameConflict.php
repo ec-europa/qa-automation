@@ -71,9 +71,9 @@ class ScanThemeNameConflict extends Command
     $search_pattern = $filename . '_cron';
 
     if (count($duplicates) > 0) {
-      $output->writeln("<comment>Cron implementation: </comment><info>hook found.</info>");
-      foreach ($results as $result) {
-        $output->writeln(str_replace($dirname, '.', $result));
+      $output->writeln("<comment>Theme: </comment><info>found conflict with theme name.</info>");
+      foreach ($duplicates as $path => $name) {
+        $output->writeln(str_replace($dirname, '.', $path . ": " . $name));
       }
     }
   }
