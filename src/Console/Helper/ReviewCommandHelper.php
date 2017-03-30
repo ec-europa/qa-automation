@@ -38,6 +38,7 @@ class ReviewCommandHelper
     $this->output = $output;
     $this->application = $application;
     $this->commands = $this->getSelectedCommands($input, $output, $application);
+
   }
 
   /**
@@ -62,7 +63,7 @@ class ReviewCommandHelper
   /**
    * Start a review process.
    */
-  public function startReview() {
+  public function startReview($section = FALSE) {
     $failbuild = FALSE;
 
     // Perform the starterkit check if needed.
@@ -73,7 +74,7 @@ class ReviewCommandHelper
     }
     
     // Ask for a selection of options if needed.
-    $selected = $this->getSelectedOptions();
+    $selected = $this->getSelectedOptions($section);
     // Setup a buffered output to capture results of command.
     $buffered_output = new BufferedOutput($this->output->getVerbosity(), true);
 
@@ -100,16 +101,18 @@ class ReviewCommandHelper
    * @return array
    *   An associative array of options keyed by absolute path and valued by filename.
    */
-  private function getSelectedOptions() {
+  private function getSelectedOptions($section = false) {
     // Setup options if it hasn't happened yet.
     if (!isset($this->options)) {
-      $this->setOptions();
+      $this->setOptions($section);
     }
 
     // Stop for user input to select modules.
     $helperquestion = new QuestionHelper();
     $question = new ChoiceQuestion("Select features, modules and/or themes to QA (seperate with commas): ", array_values($this->options), 0);
     $question->setMultiselect(true);
+
+
     $selection = $helperquestion->ask($this->input, $this->output, $question);
 
     // If user selects all, add all but that option to the selected options.
@@ -233,6 +236,7 @@ class ReviewCommandHelper
   private function getSelectedCommands($input, $output, $application) {
     // Get all application commands.
     $commands = $application->all();
+
     // Unset unwanted commands.
     $unwanted = array('help', 'list', 'check:ssk');
     foreach ($commands as $name => $command) {
@@ -262,15 +266,25 @@ class ReviewCommandHelper
    *
    * Also sets the ruler length.
    */
-  private function setOptions() {
+  private function setOptions($section = false) {
     $properties = $this->properties;
-    // Fetch all modules, features and themes into an array.
-    $info_files = $this->getInfoFiles($properties['lib']);
-    // Fetch all make files into an array.
-    $make_files = $this->getMakeFiles($properties['resources']);
-    // Merge makes and infos into options.
-    $options = array_merge($make_files, $info_files);
-    // Add the "Select all" option.
+
+    switch ($section) {
+      case 'theme':
+        // Fetch all modules, features and themes into an array.
+        $options = $this->getThemeFiles($properties['lib']);
+        break;
+      default:
+        // Fetch all modules, features and themes into an array.
+        $info_files = $this->getInfoFiles($properties['lib']);
+        // Fetch all make files into an array.
+        $make_files = $this->getMakeFiles($properties['resources']);
+        // Merge makes and infos into options.
+        $options = array_merge($make_files, $info_files);
+        // Add the "Select all" option.
+        break;
+    }
+
     array_unshift($options, 'Select all');
     // Set the options.
     $this->options = $options;
@@ -356,6 +370,32 @@ class ReviewCommandHelper
     $finder->files()
       ->name('*.info')
       ->in($path)
+      ->exclude(array('contrib', 'contributed'))
+      ->sortByName();
+    // Loop over files and build an options array.
+    foreach ($finder as $file) {
+      $filepathname = $file->getRealPath();
+      $filename = basename($filepathname);
+      $options[$filepathname] = $filename;
+    }
+    return $options;
+  }
+
+  /**
+   * Helper function to get theme  file select options.
+   *
+   * @param $path
+   *   The path in which to look for the make files.
+   * @return array
+   *   An associative array of filenames keyed with absolute filepath.
+   */
+  private function getThemeFiles($path) {
+    $options = array();
+    // Find all info files in provided path.
+    $finder = new Finder();
+    $finder->files()
+      ->name('*.info')
+      ->in($path . "/**/themes")
       ->exclude(array('contrib', 'contributed'))
       ->sortByName();
     // Loop over files and build an options array.

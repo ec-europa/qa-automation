@@ -47,6 +47,6 @@ class ReviewThemeCommand extends Command
     // Change the lib property to the current folder.
     $reviewCommandHelper->setProperties(array('lib' => getcwd()));
     // Start the review.
-    $reviewCommandHelper->startReview();
+    $reviewCommandHelper->startReview('theme');
   }
 }
