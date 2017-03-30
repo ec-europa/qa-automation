@@ -45,7 +45,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettingsSniff implements PHP_CodeSnif
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
   {
-    // Only run this sniff once per strongarm exported file file.
+    // Only run this sniff once per strongarm exported file.
     $end = (count($phpcsFile->getTokens()) + 1);
 
     // If the file extension is diferent from strongarm.inc return.
@@ -55,7 +55,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettingsSniff implements PHP_CodeSnif
       return $end;
     }
 
-    // Check whole project for string "sites/".
+    // Check whole project for string "pathauto".
     $file_content = file_get_contents($phpcsFile->getFilename());
     // If no pathauto setting found return.
     if (strpos($file_content, 'pathauto') === false) {
