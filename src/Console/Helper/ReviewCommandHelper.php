@@ -395,7 +395,7 @@ class ReviewCommandHelper
     $finder = new Finder();
     $finder->files()
       ->name('*.info')
-      ->in($path . "/**/themes")
+      ->in($path . "/lib/themes")
       ->exclude(array('contrib', 'contributed'))
       ->sortByName();
     // Loop over files and build an options array.
