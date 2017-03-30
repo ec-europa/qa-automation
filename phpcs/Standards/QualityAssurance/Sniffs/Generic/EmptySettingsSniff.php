@@ -68,13 +68,13 @@ class QualityAssurance_Sniffs_Generic_EmptySettingsSniff implements PHP_CodeSnif
 
     // If our token have the keyword pathauto, check next property and value.
     if (strpos($token['content'], 'pathauto') !== false) {
-        if (
-          $tokens[$stackPtr + 10]['content'] == "''" &&
-          $tokens[$stackPtr + 6]['content'] == 'value'
-        ) {
-          $error = "Empty strongarm settings for " . $token['content'] . " are not allowed.";
-          $phpcsFile->addError($error, $stackPtr, 'EmptySettings');
-        }
+      if (
+        $tokens[$stackPtr + 10]['content'] == "''" &&
+        $tokens[$stackPtr + 6]['content'] == 'value'
+      ) {
+        $error = "Empty strongarm settings for " . $token['content'] . " are not allowed.";
+        $phpcsFile->addError($error, $stackPtr, 'EmptySettings');
+      }
     }
 
   }//end process()
