@@ -73,7 +73,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettingsSniff implements PHP_CodeSnif
         $tokens[$stackPtr + 6]['content'] == 'value'
       ) {
         $error = "Empty strongarm settings for " . $token['content'] . " are not allowed.";
-        $phpcsFile->addError($error, $stackPtr, 'EmptySettings');
+        $phpcsFile->addError($error, $stackPtr, 'Strongarm');
       }
     }
 
