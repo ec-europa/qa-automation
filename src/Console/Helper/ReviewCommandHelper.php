@@ -38,7 +38,6 @@ class ReviewCommandHelper
     $this->output = $output;
     $this->application = $application;
     $this->commands = $this->getSelectedCommands($input, $output, $application);
-
   }
 
   /**
@@ -111,8 +110,6 @@ class ReviewCommandHelper
     $helperquestion = new QuestionHelper();
     $question = new ChoiceQuestion("Select features, modules and/or themes to QA (seperate with commas): ", array_values($this->options), 0);
     $question->setMultiselect(true);
-
-
     $selection = $helperquestion->ask($this->input, $this->output, $question);
 
     // If user selects all, add all but that option to the selected options.
@@ -236,9 +233,9 @@ class ReviewCommandHelper
   protected function getSelectedCommands($input, $output, $application) {
     // Get all application commands.
     $commands = $application->all();
-
     // Unset unwanted commands.
     $unwanted = array('help', 'list', 'check:ssk');
+
     foreach ($commands as $name => $command) {
       if (in_array($name, $unwanted) || strpos($name, 'review:') === 0) {
         unset($commands[$name]);

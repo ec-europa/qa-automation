@@ -7,16 +7,11 @@
 
 namespace QualityAssurance\Component\Console\Helper;
 
-
-use QualityAssurance\Component\Console\Helper\ReviewCommandHelper;
-use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Class ReviewCommandThemeHelper

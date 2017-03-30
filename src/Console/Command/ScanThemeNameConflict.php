@@ -47,7 +47,8 @@ class ScanThemeNameConflict extends Command
     $theme_name = $input->getOption('filename');
 
     $duplicates = array();
-    // Find all info files in provided path.
+
+    // Search duplicate file name in the project.
     $finder = new Finder();
     $finder->files()
       ->name($theme_name . '.info')
@@ -62,18 +63,10 @@ class ScanThemeNameConflict extends Command
       $duplicates[$filepathname] = $filename;
     }
 
-    // Find todos tags.
-    $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
-    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
-    $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
-
-    $search_pattern = $filename . '_cron';
-
     if (count($duplicates) > 0) {
       $output->writeln("<comment>Theme: </comment><info>found conflict with theme name.</info>");
       foreach ($duplicates as $path => $name) {
-        $output->writeln(str_replace($dirname, '.', $path . ": " . $name));
+        $output->writeln($name . ": " . $path);
       }
     }
   }
