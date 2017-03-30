@@ -101,7 +101,7 @@ class ReviewCommandHelper
    * @return array
    *   An associative array of options keyed by absolute path and valued by filename.
    */
-  private function getSelectedOptions($section = false) {
+  protected function getSelectedOptions($section = false) {
     // Setup options if it hasn't happened yet.
     if (!isset($this->options)) {
       $this->setOptions($section);
@@ -136,7 +136,7 @@ class ReviewCommandHelper
    * @return array
    *   An associative array containing ArrayInput instances keyed by command name.
    */
-  private function buildCommandlines($absolute_path) {
+  protected function buildCommandlines($absolute_path) {
     $pathinfo = pathinfo($absolute_path);
     $directory = $pathinfo['dirname'];
     $extension = $pathinfo['extension'];
@@ -184,7 +184,7 @@ class ReviewCommandHelper
    * @param $buffered_output
    *   The buffered output on which we capture the results.
    */
-  private function executeCommandlines($application, $commandlines, $buffered_output) {
+  protected function executeCommandlines($application, $commandlines, $buffered_output) {
     $failbuild = FALSE;
     foreach ($commandlines as $name => $commandline) {
       $command = $application->find($name);
@@ -203,7 +203,7 @@ class ReviewCommandHelper
    * @param $path
    *  The path to the folder that was reviewed.
    */
-  private function outputCommandlines($buffered_output, $path) {
+  protected function outputCommandlines($buffered_output, $path) {
     if ($content = $buffered_output->fetch()) {
       $title = str_replace(getcwd(), '.', $path);
       $ruler = "<info>" . str_repeat('=', $this->ruler_length) . "</info>";
@@ -233,7 +233,7 @@ class ReviewCommandHelper
    * @return array
    *   An array of commands.
    */
-  private function getSelectedCommands($input, $output, $application) {
+  protected function getSelectedCommands($input, $output, $application) {
     // Get all application commands.
     $commands = $application->all();
 
@@ -266,7 +266,7 @@ class ReviewCommandHelper
    *
    * Also sets the ruler length.
    */
-  private function setOptions($section = false) {
+  protected function setOptions($section = false) {
     $properties = $this->properties;
 
     switch ($section) {
@@ -302,7 +302,7 @@ class ReviewCommandHelper
    * @return array
    *   An array of submodule directory names.
    */
-  private function getSubmoduleDirectories($filename, $directory) {
+  protected function getSubmoduleDirectories($filename, $directory) {
     $submodule_directories = array();
     $submodules = new Finder();
     $submodules->files()
@@ -329,7 +329,7 @@ class ReviewCommandHelper
    *   The required properties.
    * @throws \Symfony\Component\Debug\Exception\FatalErrorException
    */
-  private function getPhingProperties($type) {
+  protected function getPhingProperties($type) {
     // Get required properties from the build properties depending on QA review type.
     $phingPropertiesHelper = new PhingPropertiesHelper($this->output);
     $properties = array();
@@ -363,7 +363,7 @@ class ReviewCommandHelper
    * @return array
    *   An associative array of filenames keyed with absolute filepath.
    */
-  private function getInfoFiles($path) {
+  protected function getInfoFiles($path) {
     $options = array();
     // Find all info files in provided path.
     $finder = new Finder();
@@ -389,7 +389,7 @@ class ReviewCommandHelper
    * @return array
    *   An associative array of filenames keyed with absolute filepath.
    */
-  private function getThemeFiles($path) {
+  protected function getThemeFiles($path) {
     $options = array();
     // Find all info files in provided path.
     $finder = new Finder();
@@ -415,7 +415,7 @@ class ReviewCommandHelper
    * @return array
    *   An associative array of filenames keyed with absolute filepath.
    */
-  private function getMakeFiles($path) {
+  protected function getMakeFiles($path) {
     $options = array();
     // Find all info files in provided path.
     $finder = new Finder();
@@ -440,7 +440,7 @@ class ReviewCommandHelper
    * @return int
    *   An integer that represents the ruler length.
    */
-  private function getRulerLength($options) {
+  protected function getRulerLength($options) {
 
     $ruler_length = 80;
     foreach ($options as $path => $filename) {
@@ -456,7 +456,7 @@ class ReviewCommandHelper
    *
    * @param $options
    */
-  private function setRulerLength($options) {
+  protected function setRulerLength($options) {
     // Calculate the ruler length for header output.
     $this->ruler_length = $this->getRulerLength($options);
   }

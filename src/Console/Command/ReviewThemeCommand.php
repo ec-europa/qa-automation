@@ -7,7 +7,7 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
-use QualityAssurance\Component\Console\Helper\ReviewCommandHelper;
+use QualityAssurance\Component\Console\Helper\ReviewCommandThemeHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,7 +43,7 @@ class ReviewThemeCommand extends Command
     // Get the application
     $application = $this->getApplication();
     // Setup the reviewCommandHelper.
-    $reviewCommandHelper = new ReviewCommandHelper($input, $output, $application);
+    $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
     // Change the lib property to the current folder.
     $reviewCommandHelper->setProperties(array('lib' => getcwd()));
     // Start the review.
