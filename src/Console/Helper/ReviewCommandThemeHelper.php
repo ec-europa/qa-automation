@@ -19,7 +19,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Class ReviewCommandHelper
+ * Class ReviewCommandThemeHelper
  * @package QualityAssurance\Component\Console\Helper
  */
 class ReviewCommandThemeHelper extends ReviewCommandHelper
@@ -49,13 +49,6 @@ class ReviewCommandThemeHelper extends ReviewCommandHelper
   public function startReview($section = FALSE) {
     $failbuild = FALSE;
 
-    // Perform the starterkit check if needed.
-    if (!empty($this->properties['check-ssk'])) {
-      if ($this->executeCommandlines($this->application, array('check:ssk' => new ArrayInput(array())), $this->output)) {
-        return 1;
-      }
-    }
-    
     // Ask for a selection of options if needed.
     $selected = $this->getSelectedOptions($section);
     // Setup a buffered output to capture results of command.
@@ -65,6 +58,7 @@ class ReviewCommandThemeHelper extends ReviewCommandHelper
     foreach ($selected as $absolute_path => $filename) {
       // Build the commandlines.
       $commandlines = $this->buildCommandlines($absolute_path);
+
       // Execute commandlines.
       if ($this->executeCommandlines($this->application, $commandlines, $buffered_output)) {
         $failbuild = TRUE;
@@ -75,6 +69,35 @@ class ReviewCommandThemeHelper extends ReviewCommandHelper
 
     if ($failbuild) {
       return 1;
+    }
+  }
+
+  protected function getSelectedCommands($input, $output, $application) {
+    // Get all application commands.
+    $commands = $application->all();
+
+    // Unset unwanted commands.
+    foreach ($commands as $name => $command) {
+      $filter = strpos($name, 'theme:');
+      if ($filter !== 0) {
+        unset($commands[$name]);
+      }
+    }
+
+    // Stop for user input to select commands.
+    if ($this->input->getOption('select')) {
+      $helperquestion = new QuestionHelper();
+      $question = new ChoiceQuestion("Select commands to execute in review (separate with commas): ", array_keys($commands), 0);
+      $question->setMultiselect(true);
+      $selection = $helperquestion->ask($input, $output, $question);
+
+      // Set selected commands.
+      if ($selection) {
+        return array_intersect_key($commands, array_flip($selection));
+      }
+    }
+    else {
+      return $commands;
     }
   }
 
