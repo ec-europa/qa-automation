@@ -10,8 +10,7 @@
  */
 
 /**
- * Hardcoded paths to theme or modules need to be removed or replace by a call
- * to drupal_get_path() function.
+ * Empty strongarm settings for pathauto shouldbe removed.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
