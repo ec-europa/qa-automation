@@ -237,10 +237,15 @@ class ReviewCommandHelper
     $unwanted = array('help', 'list', 'check:ssk');
 
     foreach ($commands as $name => $command) {
-      if (in_array($name, $unwanted) || strpos($name, 'review:') === 0) {
+      if (
+        in_array($name, $unwanted) ||
+        strpos($name, 'review:') === 0 ||
+        strpos($name, 'theme:') === 0
+      ) {
         unset($commands[$name]);
       }
     }
+
     // Stop for user input to select commands.
     if ($this->input->getOption('select')) {
       $helperquestion = new QuestionHelper();
