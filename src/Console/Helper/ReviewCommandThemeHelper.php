@@ -35,7 +35,6 @@ class ReviewCommandThemeHelper extends ReviewCommandHelper
     $this->output = $output;
     $this->application = $application;
     $this->commands = $this->getSelectedCommands($input, $output, $application);
-
   }
 
   /**

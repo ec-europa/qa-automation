@@ -467,4 +467,5 @@ class ReviewCommandHelper
     // Calculate the ruler length for header output.
     $this->ruler_length = $this->getRulerLength($options);
   }
+
 }
