@@ -71,6 +71,11 @@ class ReviewCommandHelper
         return 1;
       }
     }
+
+    // Perform the theme conflict check.
+    if ($this->executeCommandlines($this->application, array('theme:conflict' => new ArrayInput(array())), $this->output)) {
+      return 1;
+    }
     
     // Ask for a selection of options if needed.
     $selected = $this->getSelectedOptions($section);
@@ -391,13 +396,13 @@ class ReviewCommandHelper
    * @return array
    *   An associative array of filenames keyed with absolute filepath.
    */
-  protected function getThemeFiles($path) {
+  public function getThemeFiles($path) {
     $options = array();
     // Find all info files in provided path.
     $finder = new Finder();
     $finder->files()
       ->name('*.info')
-      ->in($path . "/lib/themes")
+      ->in($path . "/themes")
       ->exclude(array('contrib', 'contributed'))
       ->sortByName();
     // Loop over files and build an options array.

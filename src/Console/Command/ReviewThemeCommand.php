@@ -8,6 +8,7 @@
 namespace QualityAssurance\Component\Console\Command;
 
 use QualityAssurance\Component\Console\Helper\ReviewCommandThemeHelper;
+use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,12 +41,16 @@ class ReviewThemeCommand extends Command
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+    $phingPropertiesHelper = new PhingPropertiesHelper($output);
+    $properties = $phingPropertiesHelper->requestSettings(array(
+      'lib' => 'subsite.resources.lib.dir',
+    ));
     // Get the application
     $application = $this->getApplication();
     // Setup the reviewCommandHelper.
     $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
     // Change the lib property to the current folder.
-    $reviewCommandHelper->setProperties(array('lib' => getcwd()));
+    $reviewCommandHelper->setProperties(array('lib' => $properties['lib']));
     // Start the review.
     $reviewCommandHelper->startReview('theme');
   }
