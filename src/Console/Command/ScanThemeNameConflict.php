@@ -15,7 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use QualityAssurance\Component\Console\Helper\ReviewCommandThemeHelper;
@@ -77,10 +77,14 @@ class ScanThemeNameConflict extends Command
       }
 
       if (count($duplicates) > 0) {
+        $style = new OutputFormatterStyle('white', 'black');
+        $output->getFormatter()->setStyle('fire', $style);
         $io = new SymfonyStyle($input, $output);
         $io->title("<comment>Theme: </comment><info>found conflict with theme name.</info>");
         foreach ($duplicates as $path => $name) {
-          $io->writeln($name . ": " . $path);
+//          $io->note($name . ": " . $path);
+//          $io->section($name . ": " . $path);
+          $io->section('<fire>' . $name . ": " . $path . '</fire>');
         }
       }
     }
