@@ -72,11 +72,6 @@ class ReviewCommandHelper
       }
     }
 
-    // Perform the theme conflict check.
-    if ($this->executeCommandlines($this->application, array('theme:conflict' => new ArrayInput(array())), $this->output)) {
-      return 1;
-    }
-    
     // Ask for a selection of options if needed.
     $selected = $this->getSelectedOptions($section);
     // Setup a buffered output to capture results of command.
@@ -92,6 +87,11 @@ class ReviewCommandHelper
       }
       // Write the results.
       $this->outputCommandlines($buffered_output, dirname($absolute_path));
+    }
+
+    // Perform the theme conflict check.
+    if ($this->executeCommandlines($this->application, array('theme:conflict' => new ArrayInput(array())), $this->output)) {
+      return 1;
     }
 
     if ($failbuild) {

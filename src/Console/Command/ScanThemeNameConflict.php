@@ -77,9 +77,10 @@ class ScanThemeNameConflict extends Command
       }
 
       if (count($duplicates) > 0) {
-        $output->writeln("<comment>Theme: </comment><info>found conflict with theme name.</info>");
+        $io = new SymfonyStyle($input, $output);
+        $io->title("<comment>Theme: </comment><info>found conflict with theme name.</info>");
         foreach ($duplicates as $path => $name) {
-          $output->writeln($name . ": " . $path);
+          $io->writeln($name . ": " . $path);
         }
       }
     }
