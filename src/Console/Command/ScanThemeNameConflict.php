@@ -82,8 +82,6 @@ class ScanThemeNameConflict extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title("<comment>Theme: </comment><info>found conflict with theme name.</info>");
         foreach ($duplicates as $path => $name) {
-//          $io->note($name . ": " . $path);
-//          $io->section($name . ": " . $path);
           $io->section('<fire>' . $name . ": " . $path . '</fire>');
         }
       }
