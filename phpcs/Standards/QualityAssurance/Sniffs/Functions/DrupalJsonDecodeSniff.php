@@ -59,9 +59,7 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff implements PHP_Cod
     // json_decode is only accepted with 2nd parameter as FALSE.
     if (
       $token['content'] == 'json_decode' &&
-      (
-        $tokens[$stackPtr + 5]['type'] != 'T_FALSE'
-      )
+      $tokens[$stackPtr + 5]['type'] != 'T_FALSE'
     ) {
       $error = 'The function json_decode() is not allowed, use drupal_json_decode() instead.';
       $phpcsFile->addError($error, $stackPtr, 'HardcodedImage');
