@@ -32,7 +32,6 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
         'chmod' => 'drupal_chmod',
         'dirname' => 'drupal_dirname',
         'http_build_query' => 'drupal_http_build_query',
-        'json_decode' => 'drupal_json_decode',
         'json_encode' => 'drupal_json_encode',
         'mkdir' => 'drupal_mkdir',
         'move_uploaded_file' => 'drupal_move_uploaded_file',
