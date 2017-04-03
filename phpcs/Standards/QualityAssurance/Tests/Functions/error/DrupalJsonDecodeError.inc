@@ -9,13 +9,17 @@
  * This is a function with forbidden use of json_decode.
  */
 function _example_json_decode_forbidden_functions() {
+  $data = '';
+
   // Invalid use json_decode.
-  $json_encode = json_encode('string');
-  $json_encode = json_encode('string', TRUE);
-  $json_encode = drupal_json_encode('string', FALSE);
-  $json_encode = drupal_json_encode('string', TRUE);
+  $data = json_decode('string');
+  $data = json_decode('string', TRUE);
+  $data = drupal_json_decode('string', FALSE);
+  $data = drupal_json_decode('string', TRUE);
 
   // Valid use of json_decode().
-  $json_encode = drupal_json_encode('string');
-  $json_encode = json_encode('string', FALSE);
+  $data = drupal_json_decode('string');
+  $data = json_decode('string', FALSE);
+
+  return $data;
 }

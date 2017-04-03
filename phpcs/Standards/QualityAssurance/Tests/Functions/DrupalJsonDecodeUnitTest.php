@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_Functions_DrupalHttpRequest_DrupalHttpRequestUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTest extends CoderSniffUnitTest
 {
 
   /**
@@ -15,10 +15,10 @@ class QualityAssurance_Sniffs_Functions_DrupalHttpRequest_DrupalHttpRequestUnitT
   {
     // All the Error files have  errors.
     $errors = [
-      13 => 1,
-      14 => 1,
       15 => 1,
       16 => 1,
+      17 => 1,
+      18 => 1,
     ];
     return (strpos($testFile, 'Error') === false) ? [] : $errors;
 

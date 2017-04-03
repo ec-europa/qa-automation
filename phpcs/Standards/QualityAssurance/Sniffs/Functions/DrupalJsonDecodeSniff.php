@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends PHP_CodeSniffer_Sniff
+class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff implements PHP_CodeSniffer_Sniff
 {
 
   /**
@@ -27,8 +27,9 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends PHP_CodeSn
   public function register()
   {
     return array(
-      T_CONSTANT_ENCAPSED_STRING,
-      T_INLINE_HTML
+      T_STRING,
+      T_FALSE,
+      T_TRUE
     );
 
   }//end register()
@@ -44,6 +45,39 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends PHP_CodeSn
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
   {
+    // Check whole project for string "json_decode".
+    $file_content = file_get_contents($phpcsFile->getFilename());
+    if (strpos($file_content, 'json_decode') === false) {
+      $end = (count($phpcsFile->getTokens()) + 1);
+      return $end;
+    }
+
+    // Get our tokens.
+    $tokens = $phpcsFile->getTokens();
+    $token  = $tokens[$stackPtr];
+
+    // json_decode is only accepted with 2nd parameter as FALSE.
+    if (
+      $token['content'] == 'json_decode' &&
+      (
+        $tokens[$stackPtr + 5]['type'] != 'T_FALSE'
+      )
+    ) {
+      $error = 'The function json_decode() is not allowed, use drupal_json_decode() instead.';
+      $phpcsFile->addError($error, $stackPtr, 'HardcodedImage');
+    }
+
+    // drupal_json_encode accept no 2nd parameter.
+    if (
+      $token['content'] == 'drupal_json_decode' &&
+      (
+        $tokens[$stackPtr + 5]['type'] == 'T_FALSE' ||
+        $tokens[$stackPtr + 5]['type'] == 'T_TRUE'
+      )
+    ) {
+      $error = 'The function drupal_json_decode() have no 2nd parameter.';
+      $phpcsFile->addError($error, $stackPtr, 'HardcodedImage');
+    }
 
   }//end process()
 
