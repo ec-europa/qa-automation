@@ -35,11 +35,13 @@ class ScanPlatformProvidedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Find todos tags.
+        // @codingStandardsIgnoreStart
         $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-        $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
+        $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : null;
         $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
         $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
         $profile = !empty($input->getOption('profile')) ? $input->getOption('profile') : '@todo';
+        // @codingStandardsIgnoreEnd
 
         if (!empty($filename) && pathinfo($filename, PATHINFO_EXTENSION) !== 'make') {
             return;
@@ -75,6 +77,7 @@ class ScanPlatformProvidedCommand extends Command
                 }
                 // Print result.
                 if (!empty($duplicates[$search])) {
+                    // @codingStandardsIgnoreStart
                     $output->writeln('<comment>Platform ' . $subject . ' found: </comment><info>' . implode(', ', $duplicates[$search]) . '</info>');
                     $output->writeln('');
                 }
