@@ -22,7 +22,7 @@ class PhingPropertiesHelper
      *
      * @param OutputInterface $output
      */
-    function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output)
     {
         $this->output = $output;
     }
@@ -52,12 +52,16 @@ class PhingPropertiesHelper
                 return $this->findPhingBuildFile(dirname($path));
             } else {
                 throw new \Symfony\Component\Debug\Exception\FatalErrorException(
-                  "Reached filesystem root without finding '$filename'.", 0, 1, __FILE__, __LINE__
+                    "Reached filesystem root without finding '$filename'.",
+                    0,
+                    1,
+                    __FILE__,
+                    __LINE__
                 );
             }
         } else {
-          // If found return absolute path.
-          return "$path/build.xml";
+            // If found return absolute path.
+            return "$path/build.xml";
         }
     }
 
@@ -98,7 +102,6 @@ class PhingPropertiesHelper
             $property = trim(substr($line, 0, $pos));
             $value = trim(substr($line, $pos + 1));
             $properties[$property] = $this->inVal($value);
-
         } // for each line
 
         return $properties;
@@ -134,6 +137,7 @@ class PhingPropertiesHelper
                 if (!empty($matches)) {
                     foreach ($matches[0] as $subkey => $match) {
                         if (isset($properties[$matches[1][$subkey]])) {
+                            // @codingStandardsIgnoreLine
                             $properties[$key] = preg_replace("~" . preg_quote($match, "~") . "~", $properties[$matches[1][$subkey]], $properties[$key]);
                             if (preg_match_all('/\$\{([^\$}]+)\}/', $properties[$key], $submatches)) {
                                 $this->resolveProperties($properties);
@@ -157,7 +161,7 @@ class PhingPropertiesHelper
     {
         if ($xml = simplexml_load_string($contents)) {
             $json = json_encode($xml);
-            $array = json_decode($json, TRUE);
+            $array = json_decode($json, true);
             if (isset($array['property'])) {
                 foreach ($array['property'] as $property) {
                     if (isset($property['@attributes']['file'])) {
@@ -191,7 +195,7 @@ class PhingPropertiesHelper
 
             // This also needs to be recursified.
             if (isset($buildproperties['import'])) {
-                foreach($buildproperties['import'] as $import) {
+                foreach ($buildproperties['import'] as $import) {
                     if (isset($import['@attributes']['file'])) {
                         $contents = file_get_contents($root . '/' . $import['@attributes']['file']);
                         $this->setBuildProperties($contents, $buildproperties);
@@ -228,7 +232,11 @@ class PhingPropertiesHelper
                 $selection[$key] = $settings[$value];
             } else {
                 throw new \Symfony\Component\Debug\Exception\FatalErrorException(
-                  "Requested property ' . $value . ' not found.", 0, 1, __FILE__, __LINE__
+                    "Requested property ' . $value . ' not found.",
+                    0,
+                    1,
+                    __FILE__,
+                    __LINE__
                 );
             }
         }
@@ -247,30 +255,37 @@ class PhingPropertiesHelper
      * @return string
      *   Path leading from $frompath to $topath
      */
-    public function findRelativePath ( $frompath, $topath ) {
-        $from = explode( DIRECTORY_SEPARATOR, $frompath ); // Folders/File
-        $to = explode( DIRECTORY_SEPARATOR, $topath ); // Folders/File
+    public function findRelativePath($frompath, $topath)
+    {
+        $from = explode(DIRECTORY_SEPARATOR, $frompath); // Folders/File
+        $to = explode(DIRECTORY_SEPARATOR, $topath); // Folders/File
         $relpath = '';
 
         $i = 0;
         // Find how far the path is the same
-        while ( isset($from[$i]) && isset($to[$i]) ) {
-            if ( $from[$i] != $to[$i] ) break;
+        while (isset($from[$i]) && isset($to[$i])) {
+            if ($from[$i] != $to[$i]) {
+                break;
+            }
             $i++;
         }
-        $j = count( $from ) - 1;
-        // Add '..' until the path is the same
-        while ( $i <= $j ) {
-            if ( !empty($from[$j]) ) $relpath .= '..'.DIRECTORY_SEPARATOR;
+        $j = count($from) - 1;
+        // Add '..' until the path is the sam
+        while ($i <= $j) {
+            if (!empty($from[$j])) {
+                $relpath .= '..'.DIRECTORY_SEPARATOR;
+            }
             $j--;
         }
         // Go to folder from where it starts differing
-        while ( isset($to[$i]) ) {
-            if ( !empty($to[$i]) ) $relpath .= $to[$i].DIRECTORY_SEPARATOR;
+        while (isset($to[$i])) {
+            if (!empty($to[$i])) {
+                $relpath .= $to[$i].DIRECTORY_SEPARATOR;
+            }
             $i++;
         }
 
         // Strip last separator
         return substr($relpath, 0, -1);
     }
-  }
+}
