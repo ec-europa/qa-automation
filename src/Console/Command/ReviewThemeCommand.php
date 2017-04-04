@@ -20,38 +20,38 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReviewThemeCommand extends Command
 {
-  /**
-   * Command configuration.
-   */
-  protected function configure()
-  {
-    $this
-      ->setName('review:theme')
-      ->setDescription('Performs all required QA checks on the theme.')
-      ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'QA review type: platform or subsite.', 'subsite')
-      ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
-    ;
-  }
+    /**
+     * Command configuration.
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('review:theme')
+            ->setDescription('Performs all required QA checks on the theme.')
+            ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'QA review type: platform or subsite.', 'subsite')
+            ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
+        ;
+    }
 
-  /**
-   * Command execution.
-   *
-   * @param InputInterface $input
-   * @param OutputInterface $output
-   */
-  protected function execute(InputInterface $input, OutputInterface $output)
-  {
-    $phingPropertiesHelper = new PhingPropertiesHelper($output);
-    $properties = $phingPropertiesHelper->requestSettings(array(
-      'lib' => 'subsite.resources.lib.dir',
-    ));
-    // Get the application
-    $application = $this->getApplication();
-    // Setup the reviewCommandHelper.
-    $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
-    // Change the lib property to the current folder.
-    $reviewCommandHelper->setProperties(array('lib' => $properties['lib']));
-    // Start the review.
-    $reviewCommandHelper->startReview('theme');
-  }
+    /**
+     * Command execution.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $phingPropertiesHelper = new PhingPropertiesHelper($output);
+        $properties = $phingPropertiesHelper->requestSettings(array(
+            'lib' => 'subsite.resources.lib.dir',
+        ));
+        // Get the application
+        $application = $this->getApplication();
+        // Setup the reviewCommandHelper.
+        $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
+        // Change the lib property to the current folder.
+        $reviewCommandHelper->setProperties(array('lib' => $properties['lib']));
+        // Start the review.
+        $reviewCommandHelper->startReview('theme');
+    }
 }
