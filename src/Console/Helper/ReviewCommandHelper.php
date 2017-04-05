@@ -115,7 +115,7 @@ class ReviewCommandHelper
 
         // Stop for user input to select modules.
         $helperQuestion = new QuestionHelper();
-        $helperQuestionText = "Select features, modules and/or themes to QA (seperate with commas): ",
+        $helperQuestionText = "Select features, modules and/or themes to QA (seperate with commas): ";
         $question = new ChoiceQuestion($helperQuestionText, array_values($this->options), 0);
         $question->setMultiselect(true);
         $selection = $helperQuestion->ask($this->input, $this->output, $question);
