@@ -14,10 +14,10 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTes
   {
     // All the Error files have  errors.
     $errors = [
-      15 => 1,
-      16 => 1,
-      17 => 1,
-      18 => 1,
+      11 => 1,
+      12 => 1,
+      13 => 1,
+      14 => 1,
     ];
     return (strpos($testFile, 'Error') === false) ? [] : $errors;
   }
