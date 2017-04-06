@@ -25,6 +25,13 @@ class QualityAssurance_Helper_FunctionUtils
   protected $phpcsFile;
 
   /**
+   * The currently processed file tokens.
+   *
+   * @var array
+   */
+  protected $tokens;
+
+  /**
    * The token position of the function call.
    *
    * @var int
@@ -69,36 +76,33 @@ class QualityAssurance_Helper_FunctionUtils
    * @param array $arguments
    * @param bool $includeMethodCalls
    */
-  public function __construct(\PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens) {
+  public function __construct(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    $tokens = $phpcsFile->getTokens();
     $openBracket =  $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
     $this->phpcsFile = $phpcsFile;
     $this->stackPtr = $stackPtr;
     $this->openBracket = $openBracket;
     $this->closeBracket = $tokens[$openBracket]['parenthesis_closer'];
     $this->arguments = [];
+    $this->tokens = $tokens;
   }
 
   /**
    * Checks if this is a function call.
    *
-   * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-   * @param int                  $stackPtr  The position of the current token
-   *                                        in the stack passed in $tokens.
-   *
    * @return bool
    */
-  protected function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+  protected function isFunctionCall()
   {
-    $tokens = $phpcsFile->getTokens();
     // Find the next non-empty token.
-    $openBracket = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+    $openBracket = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($this->stackPtr + 1), null, true);
 
-    if ($tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
+    if ($this->tokens[$this->openBracket]['code'] !== T_OPEN_PARENTHESIS) {
       // Not a function call.
       return false;
     }
 
-    if (isset($tokens[$openBracket]['parenthesis_closer']) === false) {
+    if (isset($this->tokens[$openBracket]['parenthesis_closer']) === false) {
       // Not a function call.
       return false;
     }
@@ -106,18 +110,18 @@ class QualityAssurance_Helper_FunctionUtils
     // Find the previous non-empty token.
     $search   = PHP_CodeSniffer_Tokens::$emptyTokens;
     $search[] = T_BITWISE_AND;
-    $previous = $phpcsFile->findPrevious($search, ($stackPtr - 1), null, true);
-    if ($tokens[$previous]['code'] === T_FUNCTION) {
+    $previous = $this->phpcsFile->findPrevious($search, ($this->stackPtr - 1), null, true);
+    if ($this->tokens[$previous]['code'] === T_FUNCTION) {
       // It's a function definition, not a function call.
       return false;
     }
 
-    if ($tokens[$previous]['code'] === T_OBJECT_OPERATOR && $this->includeMethodCalls === false) {
+    if ($this->tokens[$previous]['code'] === T_OBJECT_OPERATOR && $this->includeMethodCalls === false) {
       // It's a method invocation, not a function call.
       return false;
     }
 
-    if ($tokens[$previous]['code'] === T_DOUBLE_COLON && $this->includeMethodCalls === false) {
+    if ($this->tokens[$previous]['code'] === T_DOUBLE_COLON && $this->includeMethodCalls === false) {
       // It's a static method invocation, not a function call.
       return false;
     }
@@ -141,7 +145,7 @@ class QualityAssurance_Helper_FunctionUtils
       return $this->arguments[$number];
     }
 
-    $tokens = $this->phpcsFile->getTokens();
+    $tokens = $this->tokens;
     // Start token of the first argument.
     $start = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($this->openBracket + 1), null, true);
     if ($start === $this->closeBracket) {
@@ -150,11 +154,11 @@ class QualityAssurance_Helper_FunctionUtils
     }
 
     // End token of the last argument.
-    $end           =  $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($this->closeBracket - 1), null, true);
+    $end = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($this->closeBracket - 1), null, true);
 
-    $lastArgEnd    = $end;
+    $lastArgEnd = $end;
     $nextSeperator = $this->openBracket;
-    $counter       = 1;
+    $counter = 1;
 
     while (($nextSeperator = $this->phpcsFile->findNext(T_COMMA, ($nextSeperator + 1), $this->closeBracket)) !== false) {
 
