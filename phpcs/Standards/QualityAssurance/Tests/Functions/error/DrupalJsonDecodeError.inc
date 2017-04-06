@@ -2,10 +2,6 @@
 
 /**
  * @file
- * Drupal needs this blank file.
- */
-
-/**
  * This is a function with forbidden use of json_decode.
  */
 function _example_json_decode_forbidden_functions() {

@@ -2,7 +2,6 @@
 
 class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTest extends CoderSniffUnitTest
 {
-
   /**
    * Returns the lines where errors should occur.
    *
@@ -21,7 +20,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTes
       18 => 1,
     ];
     return (strpos($testFile, 'Error') === false) ? [] : $errors;
-
   }//end getErrorList()
 
   /**
@@ -36,7 +34,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTes
   {
     // All the Warming files have  warnings.
     return (strpos($testFile, 'Warning') === false) ? [] : [1 => 1];
-
   }//end getWarningList()
 
   /**
