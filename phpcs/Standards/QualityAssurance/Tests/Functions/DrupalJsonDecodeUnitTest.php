@@ -20,7 +20,7 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTes
       18 => 1,
     ];
     return (strpos($testFile, 'Error') === false) ? [] : $errors;
-  }//end getErrorList()
+  }
 
   /**
    * Returns the lines where warnings should occur.
@@ -34,7 +34,7 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTes
   {
     // All the Warming files have  warnings.
     return (strpos($testFile, 'Warning') === false) ? [] : [1 => 1];
-  }//end getWarningList()
+  }
 
   /**
    * Returns a list of test files that should be checked.
@@ -48,6 +48,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecode_DrupalJsonDecodeUnitTes
     return array(
       'error/DrupalJsonDecodeError.inc' => '',
     );
-  }// end getTestFiles()
+  }
 
-}//end class
+}

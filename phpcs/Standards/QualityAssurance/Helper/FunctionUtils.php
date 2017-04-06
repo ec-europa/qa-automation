@@ -2,12 +2,6 @@
 /**
  * QualityAssurance_Helper_FunctionUtils.
  *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
-
-/**
  * Helper class to sniff for specific function calls.
  *
  * @category PHP
@@ -16,65 +10,20 @@
  */
 class QualityAssurance_Helper_FunctionUtils
 {
-
-  /**
-   * The currently processed file.
-   *
-   * @var PHP_CodeSniffer_File
-   */
+  protected $openBracket;
+  protected $arguments;
+  protected $closeBracket;
+  protected $functionCall;
+  protected $includeMethodCalls = false;
   protected $phpcsFile;
-
-  /**
-   * The currently processed file tokens.
-   *
-   * @var array
-   */
+  protected $stackPtr;
   protected $tokens;
 
   /**
-   * The token position of the function call.
-   *
-   * @var int
-   */
-  protected $functionCall;
-
-  /**
-   * The token position of the opening bracket of the function call.
-   *
-   * @var int
-   */
-  protected $openBracket;
-
-  /**
-   * The token position of the closing bracket of the function call.
-   *
-   * @var int
-   */
-  protected $closeBracket;
-
-  /**
-   * Internal cache to save the calculated arguments of the function call.
-   *
-   * @var array
-   */
-  protected $arguments;
-
-  /**
-   * Whether method invocations with the same function name should be processed,
-   * too.
-   *
-   * @var bool
-   */
-  protected $includeMethodCalls = false;
-
-  /**
    * QualityAssurance_Helper_FunctionCall constructor.
+   *
    * @param \PHP_CodeSniffer_File $phpcsFile
-   * @param int $functionCall
-   * @param int $openBracket
-   * @param int $closeBracket
-   * @param array $arguments
-   * @param bool $includeMethodCalls
+   * @param int $stackPtr
    */
   public function __construct(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
     $tokens = $phpcsFile->getTokens();
@@ -127,14 +76,14 @@ class QualityAssurance_Helper_FunctionUtils
     }
 
     return true;
-
-  }//end isFunctionCall()
+  }
 
   /**
    * Returns start and end token for a given argument number.
    *
-   * @param int $number Indicates which argument should be examined, starting with
-   *                    1 for the first argument.
+   * @param int $number
+   * Indicates which argument should be examined, starting with
+   * 1 for the first argument.
    *
    * @return array(string => int)
    */
@@ -197,6 +146,6 @@ class QualityAssurance_Helper_FunctionUtils
     );
     return $this->arguments[$counter];
 
-  }//end getArgument()
+  }
 
-}//end class
+}
