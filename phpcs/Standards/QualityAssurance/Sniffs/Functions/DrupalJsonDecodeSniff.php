@@ -53,28 +53,36 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff implements PHP_Cod
     }
 
     // Get our tokens.
-    $tokens = $phpcsFile->getTokens();
-    $token  = $tokens[$stackPtr];
+    $tokens   = $phpcsFile->getTokens();
+    $functionHelper = new QualityAssurance_Helper_FunctionUtils($phpcsFile, $stackPtr, $tokens);
+    $argument = $functionHelper->getArgument(2);
 
-    // json_decode is only accepted with 2nd parameter as FALSE.
-    if (
-      $token['content'] == 'json_decode' &&
-      $tokens[$stackPtr + 5]['type'] != 'T_FALSE'
-    ) {
-      $error = 'The function json_decode() is not allowed, use drupal_json_decode() instead.';
-      $phpcsFile->addError($error, $stackPtr, 'HardcodedImage');
+    if ($argument != false) {
+      // Function drupal_json_decode with 2nd parameter is error.
+      if (
+          $tokens[$stackPtr]['content'] == 'drupal_json_decode' &&
+          $argument != false
+      ) {
+        $error = 'The function drupal_json_decode() have no 2nd parameter.';
+        $phpcsFile->addError($error, $stackPtr, 'JSONDecode');
+      }
+
+      // Function json_encode only can have T_FALSE as second parameter.
+      if (
+        $tokens[$stackPtr]['content'] == 'json_decode' &&
+        (
+          $tokens[$argument['start']]['type'] != 'T_FALSE'
+        )
+      ) {
+        $error = 'The function json_decode() is not allowed, use drupal_json_decode() instead.';
+        $phpcsFile->addError($error, $stackPtr, 'JSONDecode');
+      }
     }
-
-    // drupal_json_encode accept no 2nd parameter.
-    if (
-      $token['content'] == 'drupal_json_decode' &&
-      (
-        $tokens[$stackPtr + 5]['type'] == 'T_FALSE' ||
-        $tokens[$stackPtr + 5]['type'] == 'T_TRUE'
-      )
-    ) {
-      $error = 'The function drupal_json_decode() have no 2nd parameter.';
-      $phpcsFile->addError($error, $stackPtr, 'HardcodedImage');
+    else {
+      if ($tokens[$stackPtr]['content'] == 'json_decode') {
+        $error = 'The function json_decode() is not allowed, use drupal_json_decode() instead.';
+        $phpcsFile->addError($error, $stackPtr, 'JSONDecode');
+      }
     }
 
   }//end process()
