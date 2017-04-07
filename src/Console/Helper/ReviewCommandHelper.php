@@ -23,14 +23,14 @@ use Symfony\Component\Finder\Finder;
 class ReviewCommandHelper
 {
     /**
-    * ReviewCommandHelper constructor.
-    *
-    * Setup our input output interfaces and other variables.
-    *
-    * @param InputInterface $input
-    * @param OutputInterface $output
-    * @param $application
-    */
+     * ReviewCommandHelper constructor.
+     *
+     * Setup our input output interfaces and other variables.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param $application
+     */
     public function __construct(InputInterface $input, OutputInterface $output, $application)
     {
         // Set construct properties.
@@ -41,11 +41,11 @@ class ReviewCommandHelper
     }
 
     /**
-    * Public helper function to set the properties before starting a review.
-    *
-    * @param array $overrides
-    *   An array of possible overrides.
-    */
+     * Public helper function to set the properties before starting a review.
+     *
+     * @param array $overrides
+     *   An array of possible overrides.
+     */
     public function setProperties($overrides = array())
     {
         // Start off by fetching the review type.
@@ -60,9 +60,9 @@ class ReviewCommandHelper
     }
 
     /**
-    * Start a review process.
-    */
-    public function startReview()
+     * Start a review process.
+     */
+    public function startReview($section = FALSE)
     {
         $failbuild = false;
 
@@ -79,7 +79,7 @@ class ReviewCommandHelper
         }
 
         // Ask for a selection of options if needed.
-        $selected = $this->getSelectedOptions();
+        $selected = $this->getSelectedOptions($section);
         // Setup a buffered output to capture results of command.
         $buffered_output = new BufferedOutput($this->output->getVerbosity(), true);
 
@@ -95,22 +95,27 @@ class ReviewCommandHelper
             $this->outputCommandlines($buffered_output, dirname($absolute_path));
         }
 
+        // Perform the theme conflict check.
+        if ($this->executeCommandlines($this->application, array('theme:conflict' => new ArrayInput(array())), $this->output)) {
+            return 1;
+        }
+
         if ($failbuild) {
             return 1;
         }
     }
 
     /**
-    * Helper function to ask users to select options if needed.
-    *
-    * @return array
-    *   An associative array of options keyed by absolute path and valued by filename.
-    */
-    private function getSelectedOptions()
+     * Helper function to ask users to select options if needed.
+     *
+     * @return array
+     *   An associative array of options keyed by absolute path and valued by filename.
+     */
+    protected function getSelectedOptions($section = false)
     {
         // Setup options if it hasn't happened yet.
         if (!isset($this->options)) {
-            $this->setOptions();
+            $this->setOptions($section);
         }
 
         // Stop for user input to select modules.
@@ -133,14 +138,14 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to build the commandlines.
-    *
-    * @param $absolute_path
-    *   The absolute path of the info file or make file.
-    * @return array
-    *   An associative array containing ArrayInput instances keyed by command name.
-    */
-    private function buildCommandlines($absolute_path)
+     * Helper function to build the commandlines.
+     *
+     * @param $absolute_path
+     *   The absolute path of the info file or make file.
+     * @return array
+     *   An associative array containing ArrayInput instances keyed by command name.
+     */
+    protected function buildCommandlines($absolute_path)
     {
         $pathinfo = pathinfo($absolute_path);
         $directory = $pathinfo['dirname'];
@@ -153,7 +158,7 @@ class ReviewCommandHelper
             'profile' => $this->properties['profile'],
             'standard' => $this->properties['phpcs-config'],
             'basedir' => $this->properties['basedir'],
-            );
+        );
         if ($exclude_directories = $this->getSubmoduleDirectories($filename, $directory)) {
             $command_options['exclude-dirs'] = implode(',', $exclude_directories);
         }
@@ -180,16 +185,16 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to execute the commmandlines array.
-    *
-    * @param $application
-    *   The application of which we need to execute commands.
-    * @param $commandlines
-    *   An associative array of commandlines keyed by name and valued by ArrayInput.
-    * @param $buffered_output
-    *   The buffered output on which we capture the results.
-    */
-    private function executeCommandlines($application, $commandlines, $buffered_output)
+     * Helper function to execute the commmandlines array.
+     *
+     * @param $application
+     *   The application of which we need to execute commands.
+     * @param $commandlines
+     *   An associative array of commandlines keyed by name and valued by ArrayInput.
+     * @param $buffered_output
+     *   The buffered output on which we capture the results.
+     */
+    protected function executeCommandlines($application, $commandlines, $buffered_output)
     {
         $failbuild = false;
         foreach ($commandlines as $name => $commandline) {
@@ -202,14 +207,14 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to output the commandlines results.
-    *
-    * @param $buffered_output
-    *  The buffered output where the results were captured.
-    * @param $path
-    *  The path to the folder that was reviewed.
-    */
-    private function outputCommandlines($buffered_output, $path)
+     * Helper function to output the commandlines results.
+     *
+     * @param $buffered_output
+     *  The buffered output where the results were captured.
+     * @param $path
+     *  The path to the folder that was reviewed.
+     */
+    protected function outputCommandlines($buffered_output, $path)
     {
         if ($content = $buffered_output->fetch()) {
             $title = str_replace(getcwd(), '.', $path);
@@ -228,25 +233,29 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to allow the user to make a selection of commands.
-    *
-    * @param $input
-    *   The command input.
-    * @param $output
-    *   The command output.
-    * @param $application
-    *   The application of which to select the commands.
-    * @return array
-    *   An array of commands.
-    */
-    private function getSelectedCommands($input, $output, $application)
+     * Helper function to allow the user to make a selection of commands.
+     *
+     * @param $input
+     *   The command input.
+     * @param $output
+     *   The command output.
+     * @param $application
+     *   The application of which to select the commands.
+     * @return array
+     *   An array of commands.
+     */
+    protected function getSelectedCommands($input, $output, $application)
     {
         // Get all application commands.
         $commands = $application->all();
         // Unset unwanted commands.
         $unwanted = array('help', 'list', 'check:ssk');
         foreach ($commands as $name => $command) {
-            if (in_array($name, $unwanted) || strpos($name, 'review:') === 0) {
+            if (
+                in_array($name, $unwanted) ||
+                strpos($name, 'review:') === 0 ||
+                strpos($name, 'theme:') === 0
+            ) {
                 unset($commands[$name]);
             }
         }
@@ -268,20 +277,31 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to set initial options.
-    *
-    * Also sets the ruler length.
-    */
-    private function setOptions()
+     * Helper function to set initial options.
+     *
+     * Also sets the ruler length.
+     */
+    protected function setOptions($section = false)
     {
         $properties = $this->properties;
-        // Fetch all modules, features and themes into an array.
-        $info_files = $this->getInfoFiles($properties['lib']);
-        // Fetch all make files into an array.
-        $make_files = $this->getMakeFiles($properties['resources']);
-        // Merge makes and infos into options.
-        $options = array_merge($make_files, $info_files);
-        // Add the "Select all" option.
+
+        switch ($section) {
+            case 'theme':
+                // Fetch all modules, features and themes into an array.
+                $options = $this->getThemeFiles($properties['lib']);
+                break;
+
+            default:
+                // Fetch all modules, features and themes into an array.
+                $info_files = $this->getInfoFiles($properties['lib']);
+                // Fetch all make files into an array.
+                $make_files = $this->getMakeFiles($properties['resources']);
+                // Merge makes and infos into options.
+                $options = array_merge($make_files, $info_files);
+                // Add the "Select all" option.
+                break;
+        }
+
         array_unshift($options, 'Select all');
         // Set the options.
         $this->options = $options;
@@ -290,16 +310,16 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to gather submodule directories to exclude.
-    *
-    * @param string $filename
-    *   The main module filename we don't want to match.
-    * @param string $directory
-    *   The directory of the module to search through.
-    * @return array
-    *   An array of submodule directory names.
-    */
-    private function getSubmoduleDirectories($filename, $directory)
+     * Helper function to gather submodule directories to exclude.
+     *
+     * @param string $filename
+     *   The main module filename we don't want to match.
+     * @param string $directory
+     *   The directory of the module to search through.
+     * @return array
+     *   An array of submodule directory names.
+     */
+    protected function getSubmoduleDirectories($filename, $directory)
     {
         $submodule_directories = array();
         $submodules = new Finder();
@@ -315,53 +335,53 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to return the needed build properties to target the QA on.
-    *
-    * @param string $type
-    *   The type of QA review: subsite or platform.
-    * @param InputInterface $this->input
-    *   The input of this command.
-    * @param OutputInterface $this->output
-    *   The output of this command.
-    * @return array
-    *   The required properties.
-    * @throws \Symfony\Component\Debug\Exception\FatalErrorException
-    */
-    private function getPhingProperties($type)
+     * Helper function to return the needed build properties to target the QA on.
+     *
+     * @param string $type
+     *   The type of QA review: subsite or platform.
+     * @param InputInterface $this->input
+     *   The input of this command.
+     * @param OutputInterface $this->output
+     *   The output of this command.
+     * @return array
+     *   The required properties.
+     * @throws \Symfony\Component\Debug\Exception\FatalErrorException
+     */
+    protected function getPhingProperties($type)
     {
         // Get required properties from the build properties depending on QA review type.
         $phingPropertiesHelper = new PhingPropertiesHelper($this->output);
         $properties = array();
         if ($this->input->getOption('type') == 'subsite') {
             $properties = $phingPropertiesHelper->requestSettings(array(
-            'lib' => 'subsite.resources.lib.dir',
-            'resources' => 'subsite.resources.dir',
-            'phpcs-config' => 'phpcs.config',
-            'profile' => 'platform.profile.name',
-            'basedir' => 'project.basedir',
-            'check-ssk' => 'qa.check.ssk',
+                'lib' => 'subsite.resources.lib.dir',
+                'resources' => 'subsite.resources.dir',
+                'phpcs-config' => 'phpcs.config',
+                'profile' => 'platform.profile.name',
+                'basedir' => 'project.basedir',
+                'check-ssk' => 'qa.check.ssk',
             ));
         } else {
             $properties = $phingPropertiesHelper->requestSettings(array(
-            'lib' => 'platform.resources.profiles.dir',
-            'resources' => 'platform.resources.dir',
-            'phpcs-config' => 'phpcs.config',
-            'profile' => 'platform.profile.name',
-            'basedir' => 'project.basedir',
+                'lib' => 'platform.resources.profiles.dir',
+                'resources' => 'platform.resources.dir',
+                'phpcs-config' => 'phpcs.config',
+                'profile' => 'platform.profile.name',
+                'basedir' => 'project.basedir',
             ));
         }
         return $properties;
     }
 
     /**
-    * Helper function to get info file select options.
-    *
-    * @param $path
-    *   The path in which to look for the info files.
-    * @return array
-    *   An associative array of filenames keyed with absolute filepath.
-    */
-    private function getInfoFiles($path)
+     * Helper function to get info file select options.
+     *
+     * @param $path
+     *   The path in which to look for the info files.
+     * @return array
+     *   An associative array of filenames keyed with absolute filepath.
+     */
+    protected function getInfoFiles($path)
     {
         $options = array();
         // Find all info files in provided path.
@@ -379,16 +399,42 @@ class ReviewCommandHelper
         }
         return $options;
     }
-
     /**
-    * Helper function to get make file select options.
+    * Helper function to get theme  file select options.
     *
     * @param $path
     *   The path in which to look for the make files.
     * @return array
     *   An associative array of filenames keyed with absolute filepath.
     */
-    private function getMakeFiles($path)
+    public function getThemeFiles($path)
+    {
+        $options = array();
+        // Find all info files in provided path.
+        $finder = new Finder();
+        $finder->files()
+              ->name('*.info')
+              ->in($path . "/themes")
+              ->exclude(array('contrib', 'contributed'))
+              ->sortByName();
+        // Loop over files and build an options array.
+        foreach ($finder as $file) {
+              $filepathname = $file->getRealPath();
+              $filename = basename($filepathname);
+              $options[$filepathname] = $filename;
+        }
+        return $options;
+    }
+
+    /**
+     * Helper function to get make file select options.
+     *
+     * @param $path
+     *   The path in which to look for the make files.
+     * @return array
+     *   An associative array of filenames keyed with absolute filepath.
+     */
+    protected function getMakeFiles($path)
     {
         $options = array();
         // Find all info files in provided path.
@@ -407,14 +453,14 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to the ruler length for the messages.
-    *
-    * @param array $options
-    *   Options array to check for longest value.
-    * @return int
-    *   An integer that represents the ruler length.
-    */
-    private function getRulerLength($options)
+     * Helper function to the ruler length for the messages.
+     *
+     * @param array $options
+     *   Options array to check for longest value.
+     * @return int
+     *   An integer that represents the ruler length.
+     */
+    protected function getRulerLength($options)
     {
         $ruler_length = 80;
         foreach ($options as $path => $filename) {
@@ -426,11 +472,11 @@ class ReviewCommandHelper
     }
 
     /**
-    * Helper function to set the ruler length.
-    *
-    * @param $options
-    */
-    private function setRulerLength($options)
+     * Helper function to set the ruler length.
+     *
+     * @param $options
+     */
+    protected function setRulerLength($options)
     {
         // Calculate the ruler length for header output.
         $this->ruler_length = $this->getRulerLength($options);
