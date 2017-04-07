@@ -18,8 +18,6 @@
  */
 class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_CodeSniffer_Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -101,6 +99,5 @@ class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_
         return $arrayEnd;
 
     }//end process()
-
 
 }//end class

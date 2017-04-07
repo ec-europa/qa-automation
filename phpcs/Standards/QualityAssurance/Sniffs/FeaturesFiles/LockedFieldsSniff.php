@@ -18,8 +18,6 @@
  */
 class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_CodeSniffer_Sniff
 {
-
-    
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -28,8 +26,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_Cod
     public function register()
     {
         return array(
-          T_ARRAY,
-          T_OPEN_SHORT_ARRAY,
+            T_ARRAY,
+            T_OPEN_SHORT_ARRAY,
         );
 
     }//end register()
@@ -63,10 +61,10 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_Cod
         }
 
         $lastItem = $phpcsFile->findPrevious(
-          PHP_CodeSniffer_Tokens::$emptyTokens,
-          ($tokens[$stackPtr][$parenthesis_closer] - 1),
-          $stackPtr,
-          true
+            PHP_CodeSniffer_Tokens::$emptyTokens,
+            ($tokens[$stackPtr][$parenthesis_closer] - 1),
+            $stackPtr,
+            true
         );
 
         // Empty array.
@@ -106,6 +104,5 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_Cod
         return $arrayEnd;
 
     }//end process()
-
 
 }//end class
