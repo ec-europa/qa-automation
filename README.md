@@ -29,6 +29,7 @@ Current included checks are:
 - check for hardcoded image tags
 - check for hardcoded link tags
 - check for hardcoded paths to modules, themes or libraries
+- check for empty (pathauto) strongarm settings
 
 ## 2 ./bin/qa
 This is the console application which you can use to perform analysis
@@ -43,6 +44,8 @@ file for changes.
 make file for changes.
 - [review:full](src/Console/Command/ReviewFullCommand.php): Performs all
 required QA checks on the entire codebase.
+- [review:theme](src/Console/Command/ReviewThemeCommand.php): Performs all
+required QA checks on the theme.
 - [review:this](src/Console/Command/ReviewThisCommand.php): Performs all
 required QA checks on the current folder.
 - [scan:csi](src/Console/Command/ScanCodingStandardsIgnoreCommand.php): 
@@ -55,6 +58,8 @@ implementations.
 for platform provided modules.
 - [scan:todo](src/Console/Command/ScanTodosCommand.php): Scan for
 pending refractoring tasks.
+- [theme:conflict](src/Console/Command/ScanThemeNameConflict.php): Scan for
+duplicated theme name in modules or features.
 
 ### 2.1 Documentation
 1. [Cronjobs](docs/cron.md): Check codebase for cronjob and verify it is running at
