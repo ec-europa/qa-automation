@@ -54,7 +54,7 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff implements PHP_Cod
         $tokens[$stackPtr]['content'] == 'drupal_json_decode' &&
          $argument != false
       ) {
-        $error = 'The function drupal_json_decode() have no 2nd parameter.';
+        $error = 'The function drupal_json_decode() does not take a 2nd parameter.';
         $phpcsFile->addError($error, $stackPtr, 'JSONDecode');
       }
 
