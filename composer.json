@@ -20,8 +20,10 @@
       "QualityAssurance\\Component\\Console\\": "src/Console"
     }
   },
+  "config": {
+    "bin-dir": "bin/"
+  },
   "bin": [
-    "bin/qa",
-    "vendor/bin/phpunit"
+    "bin/qa"
   ]
 }
