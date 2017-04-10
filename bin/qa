@@ -9,9 +9,11 @@ use QualityAssurance\Component\Console\Command\ScanCronCommand;
 use QualityAssurance\Component\Console\Command\CheckStarterkitCommand;
 use QualityAssurance\Component\Console\Command\ScanTodosCommand;
 use QualityAssurance\Component\Console\Command\ScanPlatformProvidedCommand;
+use QualityAssurance\Component\Console\Command\ScanThemeNameConflict;
 use QualityAssurance\Component\Console\Command\DiffUpdateHooksCommand;
 use QualityAssurance\Component\Console\Command\DiffMakeFilesCommand;
 use QualityAssurance\Component\Console\Command\ReviewThisCommand;
+use QualityAssurance\Component\Console\Command\ReviewThemeCommand;
 use QualityAssurance\Component\Console\Command\ReviewFullCommand;
 
 if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
@@ -34,12 +36,14 @@ if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
 $application = new Application('Quality Assurance', '@package_version@');
 $commands = array();
 $commands[] = new ReviewThisCommand();
+$commands[] = new ReviewThemeCommand();
 $commands[] = new ReviewFullCommand();
 $commands[] = new CheckCodingStandardsCommand();
 $commands[] = new ScanCodingStandardsIgnoreCommand();
 $commands[] = new ScanCronCommand();
 $commands[] = new ScanCommentedCodeCommand();
 $commands[] = new ScanTodosCommand();
+$commands[] = new ScanThemeNameConflict();
 $commands[] = new CheckStarterkitCommand();
 $commands[] = new ScanPlatformProvidedCommand();
 $commands[] = new DiffUpdateHooksCommand();
