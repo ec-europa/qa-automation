@@ -19,6 +19,11 @@
 
 ## Version 2.5
 
+### Bug fixes:
+  * MULTISITE-15888 - Make qa-automation compatible with platform-dev
+
+## Version 2.6
+
 ### New features:
   * MULTISITE-15705 - Added sniff for empty (pathauto) strongarm settings
   * MULTISITE-15680 - Added theme checks
