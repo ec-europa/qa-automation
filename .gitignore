@@ -1,9 +1,7 @@
 .idea
 .DS_Store
-
 bin/phpcbf
 bin/phpcs
 bin/phpunit
-
 composer.lock
 vendor/
