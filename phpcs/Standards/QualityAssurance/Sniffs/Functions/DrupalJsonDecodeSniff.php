@@ -30,7 +30,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends Drupal_Sni
             'json_decode',
             'drupal_json_decode',
         );
-
     }//end registerFunctionNames()
 
     /**
