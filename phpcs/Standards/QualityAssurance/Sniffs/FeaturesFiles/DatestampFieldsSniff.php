@@ -28,8 +28,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff implements PHP_
     public function register()
     {
         return array(
-          T_ARRAY,
-          T_OPEN_SHORT_ARRAY,
+            T_ARRAY,
+            T_OPEN_SHORT_ARRAY,
         );
 
     }//end register()
@@ -63,10 +63,10 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff implements PHP_
         }
 
         $lastItem = $phpcsFile->findPrevious(
-          PHP_CodeSniffer_Tokens::$emptyTokens,
-          ($tokens[$stackPtr][$parenthesis_closer] - 1),
-          $stackPtr,
-          true
+            PHP_CodeSniffer_Tokens::$emptyTokens,
+            ($tokens[$stackPtr][$parenthesis_closer] - 1),
+            $stackPtr,
+            true
         );
 
         // Empty array.
@@ -113,5 +113,4 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff implements PHP_
         return $arrayEnd;
 
     }//end process()
-
 }//end class

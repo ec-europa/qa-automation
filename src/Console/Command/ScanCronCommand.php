@@ -24,31 +24,32 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ScanCronCommand extends Command
 {
-  protected function configure()
-  {
-    $this
-      ->setName('scan:cron')
-      ->setDescription('Scan for cron implementations.')
-      ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
-      ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
-      ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'Modulename.')
-    ;
-  }
-
-  protected function execute(InputInterface $input, OutputInterface $output)
-  {
-    // Find todos tags.
-    $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
-    $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : NULL;
-    $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
-    $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
-
-    $search_pattern = $filename . '_cron';
-    if (exec("grep -IPrino  $exclude_dir'{$search_pattern}' {$dirname}", $results)) {
-      $output->writeln("<comment>Cron implementation: </comment><info>hook found.</info>");
-      foreach ($results as $result) {
-        $output->writeln(str_replace($dirname, '.', $result));
-      }
+    protected function configure()
+    {
+        $this
+          ->setName('scan:cron')
+          ->setDescription('Scan for cron implementations.')
+          ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
+          ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
+          ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'Modulename.');
     }
-  }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        // Find todos tags.
+        $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
+        // @codingStandardsIgnoreStart
+        $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? explode(',', $input->getOption('exclude-dirs')) : null;
+        $exclude_dir = is_array($exclude_dirs) ? '--exclude-dir=' . implode(' --exclude-dir=', $exclude_dirs) . ' ' : '';
+        // @codingStandardsIgnoreEnd
+        $filename = !empty($input->getOption('filename')) ? $input->getOption('filename') : '@todo';
+
+        $search_pattern = $filename . '_cron';
+        if (exec("grep -IPrino  $exclude_dir'{$search_pattern}' {$dirname}", $results)) {
+            $output->writeln("<comment>Cron implementation: </comment><info>hook found.</info>");
+            foreach ($results as $result) {
+                $output->writeln(str_replace($dirname, '.', $result));
+            }
+        }
+    }
 }

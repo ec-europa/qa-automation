@@ -1,7 +1,7 @@
 {
     "name": "ec-europa/qa-automation",
     "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-    "git-version": "2.0",
+    "git-version": "package_version",
     "require": {
         "cpliakas/git-wrapper": "^1.7",
         "drupal/coder": "8.2.7",
@@ -22,8 +22,10 @@
             "QualityAssurance\\Component\\Console\\": "src/Console"
         }
     },
+    "config": {
+        "bin-dir": "bin/"
+    },
     "bin": [
-        "bin/qa",
-        "vendor/bin/phpunit"
+        "bin/qa"
     ]
 }

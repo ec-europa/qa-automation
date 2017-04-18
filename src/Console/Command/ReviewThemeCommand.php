@@ -2,22 +2,23 @@
 
 /**
  * @file
- * Contains QualityAssurance\Component\Console\Command\ReviewThisCommand.
+ * Contains QualityAssurance\Component\Console\Command\ReviewThemeCommand.
  */
 
 namespace QualityAssurance\Component\Console\Command;
 
-use QualityAssurance\Component\Console\Helper\ReviewCommandHelper;
+use QualityAssurance\Component\Console\Helper\ReviewCommandThemeHelper;
+use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ReviewThisCommand
+ * Class ReviewThemeCommand
  * @package QualityAssurance\Component\Console\Command
  */
-class ReviewThisCommand extends Command
+class ReviewThemeCommand extends Command
 {
     /**
      * Command configuration.
@@ -25,10 +26,11 @@ class ReviewThisCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('review:this')
-            ->setDescription('Performs all required QA checks on the current folder.')
+            ->setName('review:theme')
+            ->setDescription('Performs all required QA checks on the theme.')
             ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'QA review type: platform or subsite.', 'subsite')
-            ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.');
+            ->addOption('select', null, InputOption::VALUE_NONE, 'Allows you to set which commands to run.')
+        ;
     }
 
     /**
@@ -39,13 +41,17 @@ class ReviewThisCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $phingPropertiesHelper = new PhingPropertiesHelper($output);
+        $properties = $phingPropertiesHelper->requestSettings(array(
+            'lib' => 'subsite.resources.lib.dir',
+        ));
         // Get the application
         $application = $this->getApplication();
         // Setup the reviewCommandHelper.
-        $reviewCommandHelper = new ReviewCommandHelper($input, $output, $application);
+        $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
         // Change the lib property to the current folder.
-        $reviewCommandHelper->setProperties(array('lib' => getcwd()));
+        $reviewCommandHelper->setProperties(array('lib' => $properties['lib']));
         // Start the review.
-        $reviewCommandHelper->startReview();
+        $reviewCommandHelper->startReview('theme');
     }
 }

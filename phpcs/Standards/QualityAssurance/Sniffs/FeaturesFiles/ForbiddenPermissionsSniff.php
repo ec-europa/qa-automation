@@ -18,8 +18,6 @@
  */
 class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements PHP_CodeSniffer_Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -28,8 +26,8 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
     public function register()
     {
         return array(
-          T_ARRAY,
-          T_OPEN_SHORT_ARRAY,
+            T_ARRAY,
+            T_OPEN_SHORT_ARRAY,
         );
 
     }//end register()
@@ -63,10 +61,10 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
         }
 
         $lastItem = $phpcsFile->findPrevious(
-          PHP_CodeSniffer_Tokens::$emptyTokens,
-          ($tokens[$stackPtr][$parenthesis_closer] - 1),
-          $stackPtr,
-          true
+            PHP_CodeSniffer_Tokens::$emptyTokens,
+            ($tokens[$stackPtr][$parenthesis_closer] - 1),
+            $stackPtr,
+            true
         );
 
         // Empty array.
@@ -88,15 +86,15 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
             if ($tokens[$arrayStart]['content'] === "'name'") {
                 $permissionName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($arrayStart + 1), ($arrayStart + 5));
                 $riskyPermissions = array(
-                  'administer modules',
-                  'administer software updates',
-                  'administer features',
-                  'manage features',
-                  'administer ckeditor_lite',
-                  'administer jquery update',
-                  'access devel information',
-                  'execute php code',
-                  'manage feature nexteuropa_dgt_connector'
+                    'administer modules',
+                    'administer software updates',
+                    'administer features',
+                    'manage features',
+                    'administer ckeditor_lite',
+                    'administer jquery update',
+                    'access devel information',
+                    'execute php code',
+                    'manage feature nexteuropa_dgt_connector'
                 );
                 // If it's a risky permission, trow an error.
                 if (in_array(str_replace("'", '', $tokens[$permissionName]['content']), $riskyPermissions)) {
@@ -112,6 +110,5 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
         return $arrayEnd;
 
     }//end process()
-
 
 }//end class

@@ -59,6 +59,7 @@ class CheckStarterkitCommand extends Command
         // Prepare option variables for future usage.
         $branch = !empty($input->getOption('branch')) ? $input->getOption('branch') : $options['branch'];
         $remote = !empty($input->getOption('remote')) ? $input->getOption('remote') : $options['remote'];
+        // @codingStandardsIgnoreLine
         $repository = !empty($input->getOption('repository')) ? $input->getOption('repository') : $options['repository'];
         $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $options['basedir'];
 
@@ -71,7 +72,7 @@ class CheckStarterkitCommand extends Command
             // $log('Adding remote repository.');
             // Only track the given branch, and don't download any tags.
             $options = [
-              '--no-tags' => TRUE,
+              '--no-tags' => true,
               '-t' => [$branch],
             ];
             $subsiteRepository->addRemote($remote, $repository, $options);
@@ -80,8 +81,7 @@ class CheckStarterkitCommand extends Command
         // Check if the tracking branch exists and create it if it doesn't.
         try {
             $subsiteRepository->run(array('rev-parse', $remote_branch));
-        }
-        catch (GitException $e) {
+        } catch (GitException $e) {
             // $log('Adding tracking branch.');
             $subsiteRepository->remote('set-branches', '--add', $remote, $branch);
         }
@@ -100,7 +100,8 @@ class CheckStarterkitCommand extends Command
         // the repository is not up-to-date.
         if ($merge_base !== $latest_commit) {
             $output->writeln('');
-            $request_tags = $subsiteRepository->run(array('ls-remote', '--tags', 'git://github.com/ec-europa/subsite-starterkit.git'));
+            $repositoryUrl = 'git://github.com/ec-europa/subsite-starterkit.git';
+            $request_tags = $subsiteRepository->run(array('ls-remote', '--tags', $repositoryUrl));
             $tags = array_filter(explode("\n", $request_tags->getOutput()));
             $last_tag = array_pop($tags);
             preg_match('/([0-9a-f]{5,40}).*?(starterkit\/\d+\.\d+\.[\*|\d+])$/', $last_tag, $release);
@@ -109,6 +110,7 @@ class CheckStarterkitCommand extends Command
                 $release_tag = $release[2];
             }
             // Inform user on failure and give solution.
+            // @codingStandardsIgnoreStart
             $output->writeln(array(
               "<comment>  Your current branch is not up to date with the latest starterkit release: $release_tag. </comment>",
               "<comment>  To update your starterkit please execute the following commands and solve any conflicts:    </comment>",
@@ -124,10 +126,10 @@ class CheckStarterkitCommand extends Command
               "<comment>  Please verify that your site.make file has not been altered or renamed by the merge.</comment>",
               "",
             ));
+            // @codingStandardsIgnoreEnd
             // Exit with error code.
             return 1;
-        }
-        else {
+        } else {
             // Inform user he or she is up to date.
             $output->writeln('<info>The starterkit is up to date.</info>');
         }
@@ -139,7 +141,8 @@ class CheckStarterkitCommand extends Command
      * @return \GitWrapper\GitWrapper
      *   The git wrapper.
      */
-    protected function getGitWrapper() {
+    protected function getGitWrapper()
+    {
         if (empty($this->gitWrapper)) {
             $this->gitWrapper = new GitWrapper();
         }
