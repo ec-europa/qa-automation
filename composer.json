@@ -15,12 +15,16 @@
     },
     "autoload": {
         "classmap": [
-            "phpcs/Standards/QualityAssurance/Sniffs/",
-            "vendor/drupal/coder/coder_sniffer/Drupal/Sniffs/"
+            "phpcs/Standards/QualityAssurance/Sniffs/"
         ],
         "psr-4": {
             "QualityAssurance\\Component\\Console\\": "src/Console"
         }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "vendor/drupal/coder/coder_sniffer/Drupal/Sniffs/"
+        ]
     },
     "config": {
         "bin-dir": "bin/"
