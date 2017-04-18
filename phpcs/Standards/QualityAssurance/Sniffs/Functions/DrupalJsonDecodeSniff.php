@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff.
  *
@@ -21,7 +19,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends Drupal_Sni
      */
     protected $includeMethodCalls = true;
 
-
     /**
      * Returns an array of function names this test wants to listen for.
      *
@@ -36,7 +33,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends Drupal_Sni
 
     }//end registerFunctionNames()
 
-
     /**
      * Returns start and end token for a given argument number.
      *
@@ -46,56 +42,6 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends Drupal_Sni
      *
      * @return array(string => int)
      */
-    public function getArgument($number)
-    {
-        // Check if we already calculated the tokens for this argument.
-        if (isset($this->arguments[$number]) === true) {
-            return $this->arguments[$number];
-        }
-        $tokens = $this->phpcsFile->getTokens();    // Start token of the first argument.
-        $start = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($this->openBracket + 1), null, true);
-        if ($start === $this->closeBracket) {
-            // Function call has no arguments, so return false.
-            return false;
-        }
-        // End token of the last argument.
-        $end = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($this->closeBracket - 1), null, true);
-        $lastArgEnd = $end;
-        $nextSeperator = $this->openBracket;
-        $counter = 1;
-        while (($nextSeperator = $this->phpcsFile->findNext(T_COMMA, ($nextSeperator + 1), $this->closeBracket)) !== false) {
-            // Make sure the comma belongs directly to this function call,
-            // and is not inside a nested function call or array.
-            $brackets    = $tokens[$nextSeperator]['nested_parenthesis'];
-            $lastBracket = array_pop($brackets);
-            if ($lastBracket !== $this->closeBracket) {
-                continue;
-            }
-            // Update the end token of the current argument.
-            $end =  $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($nextSeperator - 1), null, true);
-            // Save the calculated findings for the current argument.
-            $this->arguments[$counter] = array(
-                'start' => $start,
-                'end'   => $end,
-            );
-            if ($counter === $number) {
-                break;
-            }
-            $counter++;
-            $start =  $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($nextSeperator + 1), null, true);
-            $end   = $lastArgEnd;
-        }//end while
-        // If the counter did not reach the passed number something is wrong.
-        if ($counter !== $number) {
-            return false;
-        }
-        $this->arguments[$counter] = array(
-            'start' => $start,
-            'end'   => $end,
-        );
-        return $this->arguments[$counter];
-    }
-
 
     /**
      * Processes this function call.
@@ -147,4 +93,3 @@ class QualityAssurance_Sniffs_Functions_DrupalJsonDecodeSniff extends Drupal_Sni
     }//end process()
 
 }//end class
-
