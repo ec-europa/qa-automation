@@ -3,18 +3,19 @@
 
 use Symfony\Component\Console\Application;
 use QualityAssurance\Component\Console\Command\CheckCodingStandardsCommand;
-use QualityAssurance\Component\Console\Command\ScanCodingStandardsIgnoreCommand;
-use QualityAssurance\Component\Console\Command\ScanCommentedCodeCommand;
-use QualityAssurance\Component\Console\Command\ScanCronCommand;
+use QualityAssurance\Component\Console\Command\CheckBehatCoverageCommand;
 use QualityAssurance\Component\Console\Command\CheckStarterkitCommand;
-use QualityAssurance\Component\Console\Command\ScanTodosCommand;
-use QualityAssurance\Component\Console\Command\ScanPlatformProvidedCommand;
-use QualityAssurance\Component\Console\Command\ScanThemeNameConflict;
 use QualityAssurance\Component\Console\Command\DiffUpdateHooksCommand;
 use QualityAssurance\Component\Console\Command\DiffMakeFilesCommand;
 use QualityAssurance\Component\Console\Command\ReviewThisCommand;
 use QualityAssurance\Component\Console\Command\ReviewThemeCommand;
 use QualityAssurance\Component\Console\Command\ReviewFullCommand;
+use QualityAssurance\Component\Console\Command\ScanCodingStandardsIgnoreCommand;
+use QualityAssurance\Component\Console\Command\ScanCommentedCodeCommand;
+use QualityAssurance\Component\Console\Command\ScanCronCommand;
+use QualityAssurance\Component\Console\Command\ScanTodosCommand;
+use QualityAssurance\Component\Console\Command\ScanPlatformProvidedCommand;
+use QualityAssurance\Component\Console\Command\ScanThemeNameConflict;
 
 if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
   require $autoload;
@@ -39,6 +40,7 @@ $commands[] = new ReviewThisCommand();
 $commands[] = new ReviewThemeCommand();
 $commands[] = new ReviewFullCommand();
 $commands[] = new CheckCodingStandardsCommand();
+$commands[] = new CheckBehatCoverageCommand();
 $commands[] = new ScanCodingStandardsIgnoreCommand();
 $commands[] = new ScanCronCommand();
 $commands[] = new ScanCommentedCodeCommand();
