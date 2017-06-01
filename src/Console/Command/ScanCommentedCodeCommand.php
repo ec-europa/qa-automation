@@ -52,7 +52,7 @@ class ScanCommentedCodeCommand extends Command
         //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
         $show = $input->getOption('show') ? true : false;
         ob_start();
-        $executable = $basedir . "/bin/phpcs";
+        $executable = $basedir . "/ssk/phpcs";
         // @codingStandardsIgnoreLine
         passthru($executable . " --standard=" . $basedir . "/resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
         $phpcs = ob_get_contents();
