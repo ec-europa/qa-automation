@@ -30,6 +30,7 @@ Current included checks are:
 - check for hardcoded link tags
 - check for hardcoded paths to modules, themes or libraries
 - check for empty (pathauto) strongarm settings
+- check Behat coverage
 
 ## 2 ./bin/qa
 This is the console application which you can use to perform analysis
@@ -38,6 +39,8 @@ and review of your code. It contains various commands:
 Perform a phpcs run with provided phpcs.xml standard.
 - [check:ssk](src/Console/Command/CheckStarterkitCommand.php): Check if
 the starterkit is up to date.
+- [check:behate](src/Console/Command/CheckBehatCoverageCommand.php): Check the
+Behat coverage.
 - [diff:make](src/Console/Command/DiffMakeFilesCommand.php): Check make
 file for changes.
 - [diff:updb](src/Console/Command/DiffUpdateHooksCommand.php) : Check
