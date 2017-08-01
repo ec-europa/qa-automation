@@ -13,9 +13,6 @@
         "phpunit/phpunit": ">=3.7 <5.0"
     },
     "autoload": {
-        "classmap": [
-            "phpcs/Standards/QualityAssurance/Sniffs/"
-        ],
         "psr-4": {
             "QualityAssurance\\Component\\Console\\": "src/Console"
         }
