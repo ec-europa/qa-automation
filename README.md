@@ -6,6 +6,7 @@ analysis and/or reviews on subsite projects.
 
 ## Installation
 Add the composer package to the require-dev section of your composer project.
+After this run composer install to fetch the package and it's dependencies.
 
 ```json
 "ec-europa/qa-automation": "~3.0.0"
