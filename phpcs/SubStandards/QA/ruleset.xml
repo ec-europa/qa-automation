@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- PHP_CodeSniffer standard for NextEuropa subsites. -->
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<ruleset name="Subsite">
+
+    <description>Drupal coding standard for NextEuropa subsites</description>
+
+    <!-- QA-Automation Rulesets. -->
+    <rule ref="Drupal" /> 
+    <rule ref="DrupalPractice" />
+    <rule ref="../../Standards/DrupalSecure/ruleset.xml" />
+    <rule ref="../../Standards/QualityAssurance/ruleset.xml" />
+
+    <!-- Minified files don't have to comply with coding standards. -->
+    <exclude-pattern>*\.min\.css</exclude-pattern>
+    <exclude-pattern>*\.min\.js</exclude-pattern>
+
+    <!-- Exclude files that do not contain PHP, Javascript or CSS code. -->
+    <exclude-pattern>*\.json</exclude-pattern>
+    <exclude-pattern>*\.sh</exclude-pattern>
+    <exclude-pattern>*\.xml</exclude-pattern>
+    <exclude-pattern>*\.yml</exclude-pattern>
+    <exclude-pattern>composer.lock</exclude-pattern>
+
+    <!-- Views handlers not strictly follow Drupal class name conventions. -->
+    <rule ref="Drupal.NamingConventions.ValidClassName">
+        <exclude-pattern>**/views/*.inc</exclude-pattern>
+    </rule>
+
+    <!-- Views handlers not strictly follow Drupal function name conventions. -->
+    <rule ref="Drupal.NamingConventions.ValidFunctionName">
+        <exclude-pattern>**/views/*.inc</exclude-pattern>
+    </rule>
+
+    <!-- Phing tasks require to use CamelCaps for argument names. -->
+    <rule ref="Drupal.NamingConventions.ValidVariableName">
+        <exclude-pattern>src/Phing</exclude-pattern>
+    </rule>
+
+    <!-- Features export comments often do not have a trailing period. -->
+    <rule ref="Drupal.Commenting.InlineComment.InvalidEndChar">
+        <!-- Remove once https://www.drupal.org/node/2724173 is in. -->
+        <exclude-pattern>*.features.wysiwyg.inc</exclude-pattern>
+        <!-- Remove once https://www.drupal.org/node/2855159 is in. -->
+        <exclude-pattern>*.features.og_features_permission.inc</exclude-pattern>
+    </rule>
+
+    <!-- Features generated files do not backslash quoted text. -->
+    <rule ref="Drupal.Semantics.FunctionT.BackslashSingleQuote">
+        <exclude-pattern>*.features.*.inc</exclude-pattern>
+    </rule>
+
+    <!-- Features generated files often have too long comment strings. -->
+    <rule ref="Drupal.Files.LineLength.TooLong">
+        <!-- Remove once https://www.drupal.org/node/2855180 is in. -->
+        <exclude-pattern>*.features.menu_links.inc</exclude-pattern>
+        <exclude-pattern>*.features.user_permission.inc</exclude-pattern>
+        <!-- Remove once https://www.drupal.org/node/2855162 is in. -->
+        <exclude-pattern>*.features.og_features_permission.inc</exclude-pattern>
+    </rule>
+
+    <!-- Disable DrupalPractice rules that do not apply to non-contribs. -->
+    <rule ref="DrupalPractice">
+        <exclude name="DrupalPractice.Commenting.AuthorTag" />
+    </rule>
+
+</ruleset>

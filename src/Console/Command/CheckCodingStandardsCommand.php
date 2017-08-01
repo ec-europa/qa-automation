@@ -54,7 +54,7 @@ class CheckCodingStandardsCommand extends Command
         //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
         $show = $input->getOption('show') ? true : false;
         ob_start();
-        $executable = $basedir . "/bin/phpcs";
+        $executable = $basedir . "/ssk/phpcs";
         passthru($executable . " --standard=$standard $exclude_dirs --report=emacs -qvs " . $dirname, $error);
         $phpcs = ob_get_contents();
         ob_end_clean();

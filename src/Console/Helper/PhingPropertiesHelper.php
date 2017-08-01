@@ -152,10 +152,17 @@ class PhingPropertiesHelper
      *
      * @param string $contents
      *   The contents of the build xml
+     * @param array $settings
+     *   The root paths.
      * @param string $buildproperties
      *   The (relative?) path to the build properties file.
      */
-    private function setBuildProperties($contents, &$buildproperties) {
+    private function setBuildProperties($contents, $settings, &$buildproperties) {
+
+        // Replace root paths.
+        $contents = str_replace('${project.basedir}', $settings['project.basedir'], $contents);
+        $contents = str_replace('${project.starterkit.root}', $settings['project.starterkit.root'], $contents);
+
         if ($xml = simplexml_load_string($contents)) {
             $json = json_encode($xml);
             $array = json_decode($json, TRUE);
@@ -182,27 +189,31 @@ class PhingPropertiesHelper
         }
         if ($buildfile) {
             $root = dirname($buildfile);
-            $settings = array('project.basedir' => dirname($buildfile));
+            $sskRoot = $root . '/vendor/ec-europa/ssk';
+            $settings = array(
+                'project.basedir' => $root,
+                'project.starterkit.root' => $sskRoot,
+            );
             // Array that will gather the build.properties files.
             $buildproperties = array();
             // Start by parsing the main build file.
-            $contents = file_get_contents($buildfile);
+            $contents = file_get_contents($sskRoot . '/build.xml');
             // Gather build properties from within found files.
-            $this->setBuildProperties($contents, $buildproperties);
+            $this->setBuildProperties($contents, $settings, $buildproperties);
 
             // This also needs to be recursified.
             if (isset($buildproperties['import'])) {
                 foreach($buildproperties['import'] as $import) {
                     if (isset($import['@attributes']['file'])) {
-                        $contents = file_get_contents($root . '/' . $import['@attributes']['file']);
-                        $this->setBuildProperties($contents, $buildproperties);
+                        $contents = file_get_contents($import['@attributes']['file']);
+                        $this->setBuildProperties($contents, $settings, $buildproperties);
                     }
                 }
             }
 
             foreach ($buildproperties as $propertiesfile) {
-                if (is_file($root . '/' . $propertiesfile)) {
-                    $settings += $this->parsefile($root . '/' . $propertiesfile);
+                if (is_file($propertiesfile)) {
+                    $settings += $this->parsefile($propertiesfile);
                 }
             }
         }
