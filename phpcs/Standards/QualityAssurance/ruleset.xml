@@ -2,7 +2,16 @@
 <ruleset name="QualityAssurance">
  <description>Quality assurance checks for FPFIS.</description>
 
-    <!-- Installed Paths of these rulesets. -->
-    <config name="installed_paths" value="../../drupal/coder/coder_sniffer" />
+ <!-- All Drupal code files must be UTF-8 encoded and we treat them as such. -->
+ <arg name="encoding" value="utf-8"/>
+
+ <rule ref="Internal.NoCodeFound">
+  <!-- Usually there is no code in txt or info files, so we suppress warnings about
+    PHP short tags and what not. -->
+  <exclude-pattern>*.txt</exclude-pattern>
+  <exclude-pattern>*.md</exclude-pattern>
+  <exclude-pattern>*.info</exclude-pattern>
+  <exclude-pattern>*.yml</exclude-pattern>
+ </rule>
 
 </ruleset>
