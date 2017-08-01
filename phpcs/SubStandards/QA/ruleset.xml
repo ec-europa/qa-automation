@@ -5,9 +5,12 @@
 
     <description>Drupal coding standard for NextEuropa subsites</description>
 
-    <!-- QA-Automation Rulesets. -->
-    <rule ref="Drupal" /> 
+    <!-- Drupal Rulesets. -->
+    <config name="installed_paths" value="../../drupal/coder/coder_sniffer" />
     <rule ref="DrupalPractice" />
+    <rule ref="Drupal" />
+
+    <!-- QA-Automation Rulesets. -->
     <rule ref="../../Standards/DrupalSecure/ruleset.xml" />
     <rule ref="../../Standards/QualityAssurance/ruleset.xml" />
 
