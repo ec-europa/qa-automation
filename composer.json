@@ -4,7 +4,6 @@
     "git-version": "package_version",
     "require": {
         "cpliakas/git-wrapper": "^1.7",
-        "drupal/coder": "8.2.7",
         "php": ">=5.2.0",
         "symfony/console": "~2.3.10|^2.4.2|~3.0",
         "symfony/finder": "^3.2"
