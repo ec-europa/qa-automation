@@ -1,13 +1,13 @@
 # QA-Automation
 
-* [1. Installation](#1-installation)<br>
-  * [1.1 Install through composer.json](#11-install-through-composerjson)<br>
-  * [1.2 Install with composer command](#12-install-with-composer-command)<br>
-* [2. Usage for PHPCS](#2-usage-for-phpcs)<br>
-  * [2.1 Four different sets of standards](#21-four-different-sets-of-standards)<br>
-    * [2.1.1 Full manual usage example](#211-full-manual-usage-example)<br>
-    * [2.1.2 Configured usage example](#212-configured-usage-example)<br>
-    * [2.1.3 NextEuropa Platform usage example](#213-nexteuropa-platform-usage-example)<br>
+ 1. [Installation](#1-installation)<br>
+   1.1 [Install through composer.json](#11-install-through-composerjson)<br>
+   1.2 [Install with composer command](#12-install-with-composer-command)<br>
+ 2. [Usage for PHPCS](#2-usage-for-phpcs)<br>
+   2.1 [Four different sets of standards](#21-four-different-sets-of-standards)<br>
+     2.1.1 [Full manual usage example](#211-full-manual-usage-example)<br>
+     2.1.2 [Configured usage example](#212-configured-usage-example)<br>
+     2.1.3 [NextEuropa Platform usage example](#213-nexteuropa-platform-usage-example)<br>
   
 Holds all quality assurance automation tools. It currently consists of 2
 parts. The PHP CodeSniffer sniffs that contain standards regarding the
