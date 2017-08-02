@@ -25,7 +25,7 @@ analysis and/or reviews on subsite projects.
     <summary>execute <code>composer install</code></summary>
     <p>
 
-```bash
+```java
 Loading composer repositories with package information
 Updating dependencies (including require-dev)
   - Installing symfony/yaml (v3.3.6)
@@ -80,7 +80,7 @@ Generating autoload files
     <summary>execute <code>composer require "ec-europa/qa-automation:~3.0.0"</code></summary>
     <p>
 
-```bash
+```java
 ./composer.json has been created
 Loading composer repositories with package information
 Updating dependencies (including require-dev)
@@ -174,7 +174,7 @@ $phpCodeSnifferConfig = array(
     <summary>execute <code>./bin/phpcs -i</code></summary>
     <p>
 
-```bash
+```java
 The installed coding standards are PHPCS, Zend, PSR2, PSR1, MySource, PEAR, Squiz,
 DrupalPractice, Drupal, QualityAssurance, DrupalSecure, QA, Platform and Subsite
 ```
@@ -183,7 +183,7 @@ DrupalPractice, Drupal, QualityAssurance, DrupalSecure, QA, Platform and Subsite
     <summary>execute <code>./bin/phpcs --standard=Subsite lib/</code></summary>
     <p>
 
-```bash
+```java
 FILE: /var/www/html/lib/modules/example_module/example_module.info
 ----------------------------------------------------------------------
 FOUND 2 ERRORS AFFECTING 1 LINE
@@ -222,7 +222,7 @@ $phpCodeSnifferConfig = array(
     <summary>execute <code>./bin/phpcs</code></summary>
     <p>
 
-```bash
+```java
 FILE: /var/www/html/lib/modules/example_module/example_module.info
 ----------------------------------------------------------------------
 FOUND 2 ERRORS AFFECTING 1 LINE
@@ -245,7 +245,7 @@ Time: 206ms; Memory: 10Mb
 <details>
     <summary>execute <code>./bin/phing setup-php-codesniffer</code></summary><p>
 
-```bash
+```java
 Buildfile: /platform-dev/build.xml
  [property] Loading /platform-dev/build.properties.local
  [property] Loading /platform-dev/build.properties
@@ -272,7 +272,7 @@ Total time: 0.1581 seconds
     <summary>execute <code>./bin/phpcs</code></summary>
     <p>
 
-```bash
+```java
 .EEEEEE.E..E.E.E.WE.E..EEEEE.EEEEEEEEEEE.E.EE.EE.EEEE.WEE.EE   60 / 1224 (5%)
 EE..EE.EEEEEWEEEEEE.E.EE.EEEE.EEEEE.EEEEEEE.EEEEEEEEEEE.EEE.  120 / 1224 (10%)
 EEEE.E.E..EEEEEEEE..E.EEEEEEE.EEEEE.E.EE.E.EEE.EEEEEEEEEE.EE  180 / 1224 (15%)
