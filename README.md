@@ -53,16 +53,68 @@ or the starterkit you can either manually add the installed_paths configuration 
 ```
 </p></details></big>
 
+
 ## Coding Standards
-This package provides 4 different sets of standards.
+This package provides 4 different sets of standards. Two internal and
+two external.
     
 |Type|Provided by package|Location in package|Provided Standards|
 |:---|:---|:---|:---|
-|Main|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/Standards](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/Standards/*)|DrupalSecure and QualityAssurance|
-|Sub|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/SubStandards](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/SubStandards/*)|Platform, Subsite and QA|
+|Main|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/Standards/*](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/Standards)|DrupalSecure and QualityAssurance|
+|Sub|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/SubStandards/*](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/SubStandards)|Platform, Subsite and QA|
 |Main|[drupal/coder](https://github.com/klausi/coder)|[/coder_sniffer/*](https://github.com/klausi/coder/tree/master/coder_sniffer)|Drupal and DrupalPractice|
 |Main|[squizlabs/php_codesniffer](https://github.com/squizlabs/PHP_CodeSniffer)|[/src/Standards/*](https://github.com/squizlabs/PHP_CodeSniffer/tree/master/src/Standards)|PHPCS, Zend, PSR2, PSR1, MySource, PEAR and Squiz|
 
 * Each set is either a main or sub standard:
   * Main standards contain actual sniffs and possibly ruleset.
   * Sub standards are compilations of main standards and only contain a ruleset.
+
+
+## Usage
+
+For full manual usage perform the following steps:
+
+<big><details>
+    <summary>add the installed_paths to <code>CodeSniffer.conf</code></summary>
+    <p>
+
+```php
+<?php
+// Put paths into array for readability.
+// Using relative paths in regard to the location of this file:
+// vendor/squizlabs/php_codesniffer/CodeSniffer.conf
+$installedPaths = array(
+   '../../drupal/coder/coder_sniffer',
+   '../../ec-europa/qa-automation/phpcs/Standards',
+   '../../ec-europa/qa-automation/phpcs/SubStandards',
+ );
+// Add the paths comma seperated to the installed_paths setting.
+$phpCodeSnifferConfig = array(
+  'installed_paths' => implode(',', $installedPaths),
+);
+```
+</p></details>
+<details>
+    <summary>execute <code>./bin/phpcs -i</code></summary>
+    <p>
+
+```bash
+The installed coding standards are PHPCS, Zend, PSR2, PSR1, MySource, PEAR, Squiz,
+DrupalPractice, Drupal, QualityAssurance, DrupalSecure, QA, Platform and Subsite
+```
+</p></details>
+<details>
+    <summary>execute <code>./bin/phpcs --standard=Subsite lib/</code></summary>
+    <p>
+
+```bash
+FILE: /var/www/html/lib/modules/example_module/example_module.info
+----------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 1 LINE
+----------------------------------------------------------------------
+ 1 | ERROR | "php" property is missing in the info file
+ 1 | ERROR | "multisite_version" property is missing in the info file
+----------------------------------------------------------------------
+Time: 206ms; Memory: 10Mb
+```
+</p></details></big>
