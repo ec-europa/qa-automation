@@ -1,4 +1,13 @@
 # QA-Automation
+1. [Installation](#1-installation)<br>
+1.1 [Install through composer.json](#11-install-through-composerjson)<br>
+1.2 [Install with composer command](#12-install-with-composer-command)<br>
+2. [Usage for PHPCS](#2-usage-for-phpcs)<br>
+2.1 [Four different sets of standards](#21-four-different-sets-of-standards)<br>
+2.1.1 [Full manual usage example](#211-full-manual-usage-example)<br>
+2.1.2 [Configured usage example](#212-configured-usage-example)<br>
+2.1.3 [NextEuropa Platform usage example](#213-nexteuropa-platform-usage-example)<br>
+  
 Holds all quality assurance automation tools. It currently consists of 2
 parts. The PHP CodeSniffer sniffs that contain standards regarding the
 FPFIS platform. And a symfony console implementation for running QA
@@ -6,14 +15,13 @@ analysis and/or reviews on subsite projects.
 
 ## 1. Installation
 
-### 1.1 Install Methods
 The QA-Automation is a package created to QA the platform-dev and subsites
 that are part of the FPFIS project. This package can be found at:
 
 - https://github.com/ec-europa/platform-dev/blob/QA/NEPT-804/composer.json#L7
 - https://github.com/ec-europa/ssk/blob/master/includes/composer/composer.json#L22
 
-#### 1.1.1 Install through composer.json
+### 1.1 Install through composer.json
 
 <big><details>
     <summary>add package to <code>composer.json</code></summary>
@@ -79,7 +87,7 @@ Generating autoload files
 </p></details></big>
 
 
-#### 1.1.2 Install with composer command
+### 1.2 Install with composer command
 
 <big><details>
     <summary>execute <code>composer require "ec-europa/qa-automation:~3.0.0"</code></summary>
@@ -134,9 +142,9 @@ Generating autoload files
 ```
 </p></details></big>
 
-## 2. Usage
+## 2. Usage for PHPCS
 
-### 2.1 This package provides four different sets of standards.
+### 2.1 Four different sets of standards
 
 <big><details>
     <summary>Two internal and two external:</summary>
