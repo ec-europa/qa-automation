@@ -73,6 +73,62 @@ Generating autoload files
 ```
 </p></details></big>
 
+
+#### 1.1.2 Install with composer command
+
+<big><details>
+    <summary>execute <code>composer require "ec-europa/qa-automation:~3.0.0</code></summary>
+    <p>
+
+```bash
+./composer.json has been created
+Loading composer repositories with package information
+Updating dependencies (including require-dev)
+  - Installing symfony/yaml (v3.3.6)
+    Loading from cache
+
+  - Installing squizlabs/php_codesniffer (2.9.1)
+    Loading from cache
+
+  - Installing drupal/coder (8.2.12)
+    Loading from cache
+
+  - Installing symfony/finder (v3.3.6)
+    Loading from cache
+
+  - Installing psr/log (1.0.2)
+    Loading from cache
+
+  - Installing symfony/debug (v3.3.6)
+    Loading from cache
+
+  - Installing symfony/polyfill-mbstring (v1.4.0)
+    Loading from cache
+
+  - Installing symfony/console (v3.3.6)
+    Loading from cache
+
+  - Installing symfony/event-dispatcher (v3.3.6)
+    Loading from cache
+
+  - Installing symfony/process (v3.3.6)
+    Loading from cache
+
+  - Installing cpliakas/git-wrapper (1.7.0)
+    Loading from cache
+
+  - Installing ec-europa/qa-automation (dev-release/3.0 dd8b20d)
+    Cloning dd8b20d1f4f9663b3940829d5af311b0af7f3d4b
+
+symfony/console suggests installing symfony/filesystem ()
+symfony/event-dispatcher suggests installing symfony/dependency-injection ()
+symfony/event-dispatcher suggests installing symfony/http-kernel ()
+cpliakas/git-wrapper suggests installing monolog/monolog (Enables logging of executed git commands)
+Writing lock file
+Generating autoload files
+```
+</p></details></big>
+
 ## 2. Usage
 
 ### 2.1 This package provides four different sets of standards.
