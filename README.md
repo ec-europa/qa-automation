@@ -102,7 +102,7 @@ $phpCodeSnifferConfig = array(
 ```
 </p></details>
 <details>
-    <summary>create <code>phpcs.xml</code> file in project root.</summary><p>
+    <summary>create <code>phpcs.xml</code> file in project root</summary><p>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
