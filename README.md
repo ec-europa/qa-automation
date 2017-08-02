@@ -26,7 +26,7 @@ https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 
 ## 2. Usage
 
-### 2.1 This package provides 4 different sets of standards.
+### 2.1 This package provides four different sets of standards.
 
 <big><details>
     <summary>Two internal and two external:</summary>
@@ -43,10 +43,10 @@ https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
   * Sub standards are compilations of main standards and only contain a ruleset.
 </details></big>
 
-#### 2.1.1 For full manual usage perform the following steps:
+#### 2.1.1 Full manual usage example:
 
 <big><details>
-    <summary>add the installed_paths to <code>CodeSniffer.conf</code></summary>
+    <summary>add <b>installed_paths</b> to <code>CodeSniffer.conf</code></summary>
     <p>
 
 ```php
@@ -90,9 +90,9 @@ Time: 206ms; Memory: 10Mb
 ```
 </p></details></big>
 
-#### 2.1.2 For configured usage perform the following steps:
+#### 2.1.2 Configured usage example:
 <big><details>
-    <summary>add the default standard to <code>CodeSniffer.conf</code></summary><p>
+    <summary>add <b>default_standard</b> to <code>CodeSniffer.conf</code></summary><p>
 
 ```php
 <?php
@@ -102,7 +102,7 @@ $phpCodeSnifferConfig = array(
 ```
 </p></details>
 <details>
-    <summary>create a custom <code>phpcs.xml</code> file in the root of your project.</summary><p>
+    <summary>create <code>phpcs.xml</code> file in project root.</summary><p>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
