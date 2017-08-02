@@ -7,6 +7,11 @@ analysis and/or reviews on subsite projects.
 ## 1. Installation
 
 ### 1.1 Install Methods
+The QA-Automation is a package created to QA the platform-dev and subsites
+that are part of the FPFIS project. This package can be found at:
+
+- https://github.com/ec-europa/platform-dev/blob/QA/NEPT-804/composer.json#L7
+- https://github.com/ec-europa/ssk/blob/master/includes/composer/composer.json#L22
 
 #### 1.1.1 Install through composer.json
 
@@ -174,7 +179,7 @@ $phpCodeSnifferConfig = array(
     <summary>execute <code>./bin/phpcs -i</code></summary>
     <p>
 
-```java
+```json
 The installed coding standards are PHPCS, Zend, PSR2, PSR1, MySource, PEAR, Squiz,
 DrupalPractice, Drupal, QualityAssurance, DrupalSecure, QA, Platform and Subsite
 ```
@@ -183,7 +188,7 @@ DrupalPractice, Drupal, QualityAssurance, DrupalSecure, QA, Platform and Subsite
     <summary>execute <code>./bin/phpcs --standard=Subsite lib/</code></summary>
     <p>
 
-```java
+```json
 FILE: /var/www/html/lib/modules/example_module/example_module.info
 ----------------------------------------------------------------------
 FOUND 2 ERRORS AFFECTING 1 LINE
@@ -222,7 +227,7 @@ $phpCodeSnifferConfig = array(
     <summary>execute <code>./bin/phpcs</code></summary>
     <p>
 
-```java
+```json
 FILE: /var/www/html/lib/modules/example_module/example_module.info
 ----------------------------------------------------------------------
 FOUND 2 ERRORS AFFECTING 1 LINE
@@ -238,7 +243,7 @@ Time: 206ms; Memory: 10Mb
 <big><details>
     <summary>execute <code>composer install</code> in your project</summary><p>
 
-```bash
+```json
 
 ```
 </p></details>
@@ -272,7 +277,7 @@ Total time: 0.1581 seconds
     <summary>execute <code>./bin/phpcs</code></summary>
     <p>
 
-```java
+```json
 .EEEEEE.E..E.E.E.WE.E..EEEEE.EEEEEEEEEEE.E.EE.EE.EEEE.WEE.EE   60 / 1224 (5%)
 EE..EE.EEEEEWEEEEEE.E.EE.EEEE.EEEEE.EEEEEEE.EEEEEEEEEEE.EEE.  120 / 1224 (10%)
 EEEE.E.E..EEEEEEEE..E.EEEEEEE.EEEEE.E.EE.E.EEE.EEEEEEEEEE.EE  180 / 1224 (15%)
