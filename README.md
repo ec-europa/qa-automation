@@ -24,36 +24,6 @@ https://github.com/ec-europa/ssk/blob/master/src/Phing/PhpCodeSnifferConfigurati
 https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 </pre></big>
 
-If you wish to use the qa-automation provided standards outside of the platform
-or the starterkit you can either manually add the installed_paths configuration to:
-
-<big><details>
-   <summary>the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project.</summary>
-    <p>
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="NextEuropa_default">
-  <config name="installed_paths" value="../../ec-europa/qa-automation/phpcs/SubStandards" />
-  <rule ref="Subsite"/>
-</ruleset>
-```
-</p></details>
-<details>
-    <summary>the <code>CodeSniffer.conf</code>file located in the <code>vendor/squizlabs/php_codesniffer/</code> folder.</summary>
-    <p>
-
-```php
-<?php
- $phpCodeSnifferConfig = array (
-  'default_standard' => '/var/www/html/phpcs.xml',
-  'installed_paths' => '../../ec-europa/qa-automation/phpcs/SubStandards'
-  'ignore_warnings_on_exit' => '0',
-);
-```
-</p></details></big>
-
-
 ## Coding Standards
 This package provides 4 different sets of standards.
 
@@ -75,7 +45,7 @@ This package provides 4 different sets of standards.
 
 ## Usage
 
-For full manual usage perform the following steps:
+#### For full manual usage perform the following steps:
 
 <big><details>
     <summary>add the installed_paths to <code>CodeSniffer.conf</code></summary>
@@ -119,5 +89,28 @@ FOUND 2 ERRORS AFFECTING 1 LINE
  1 | ERROR | "multisite_version" property is missing in the info file
 ----------------------------------------------------------------------
 Time: 206ms; Memory: 10Mb
+```
+</p></details></big>
+
+#### For configured usage perform the following steps:
+<big><details>
+    <summary>add the default standard to <code>CodeSniffer.conf</code></summary><p>
+
+```php
+<?php
+$phpCodeSnifferConfig = array(
+  'default_standard' => '/var/www/html/phpcs.xml',
+);
+```
+</p></details>
+<details>
+    <summary>create a <code>phpcs.xml</code> file in the root of your project.</summary><p>
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="NextEuropa_default">
+  <config name="installed_paths" value="../../ec-europa/qa-automation/phpcs/SubStandards" />
+  <rule ref="Subsite"/>
+</ruleset>
 ```
 </p></details></big>
