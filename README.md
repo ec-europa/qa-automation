@@ -5,13 +5,73 @@ FPFIS platform. And a symfony console implementation for running QA
 analysis and/or reviews on subsite projects.
 
 ## 1. Installation
-Add the composer package to the require-dev section of your composer project.
-After this run composer install to fetch the package and it's dependencies.
-Example at:
 
-<big><pre>
-["ec-europa/qa-automation": "~3.0.0"](https://github.com/ec-europa/ssk/blob/master/includes/composer/composer.json#L22)
-</pre></big>
+### 1.1 Install Methods
+
+#### 1.1.1 Install through composer.json
+
+<big><details>
+    <summary>add package to <code>composer.json</code></summary>
+    <p>
+
+```json
+{
+  "require-dev": {
+    "ec-europa/qa-automation": "~3.0.0"
+}
+```
+</p></details>
+<details>
+    <summary>execute <code>composer install</code></summary>
+    <p>
+
+```bash
+Loading composer repositories with package information
+Updating dependencies (including require-dev)
+  - Installing symfony/yaml (v3.3.6)
+    Loading from cache
+
+  - Installing squizlabs/php_codesniffer (2.9.1)
+    Loading from cache
+
+  - Installing drupal/coder (8.2.12)
+    Downloading: 100%
+
+  - Installing symfony/finder (v3.3.6)
+    Loading from cache
+
+  - Installing psr/log (1.0.2)
+    Loading from cache
+
+  - Installing symfony/debug (v3.3.6)
+    Loading from cache
+
+  - Installing symfony/polyfill-mbstring (v1.4.0)
+    Loading from cache
+
+  - Installing symfony/console (v3.3.6)
+    Loading from cache
+
+  - Installing symfony/event-dispatcher (v3.3.6)
+    Loading from cache
+
+  - Installing symfony/process (v3.3.6)
+    Loading from cache
+
+  - Installing cpliakas/git-wrapper (1.7.0)
+    Downloading: 100%
+
+  - Installing ec-europa/qa-automation (dev-release/3.0 e8e1b7c)
+    Cloning e8e1b7cacd2aca92390d92219467dcf282c65287
+
+symfony/console suggests installing symfony/filesystem ()
+symfony/event-dispatcher suggests installing symfony/dependency-injection ()
+symfony/event-dispatcher suggests installing symfony/http-kernel ()
+cpliakas/git-wrapper suggests installing monolog/monolog (Enables logging of executed git commands)
+Writing lock file
+Generating autoload files
+```
+</p></details></big>
 
 ## 2. Usage
 
