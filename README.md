@@ -77,7 +77,7 @@ Generating autoload files
 #### 1.1.2 Install with composer command
 
 <big><details>
-    <summary>execute <code>composer require "ec-europa/qa-automation:~3.0.0</code></summary>
+    <summary>execute <code>composer require "ec-europa/qa-automation:~3.0.0"</code></summary>
     <p>
 
 ```bash
