@@ -13,17 +13,6 @@ Example at:
 ["ec-europa/qa-automation": "~3.0.0"](https://github.com/ec-europa/ssk/blob/master/includes/composer/composer.json#L22)
 </pre></big>
 
-Both the platform and starterkit provide a phing task to generate a phpcs.xml
-file that contains the necessary configurations to run the standards provided
-by the qa-automation package. References from 
-
-<big><pre>
-https://github.com/ec-europa/ssk
-https://github.com/ec-europa/ssk/blob/master/includes/build/build.test.xml#L78-L110
-https://github.com/ec-europa/ssk/blob/master/src/Phing/PhpCodeSnifferConfigurationTask.php#L109-L129
-https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
-</pre></big>
-
 ## 2. Usage
 
 ### 2.1 This package provides four different sets of standards.
