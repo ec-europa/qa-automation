@@ -1,4 +1,7 @@
 # QA-Automation
+<big><details id="test"><summary>Test</summary>
+    <p>test</p>
+</details></big>
 Holds all quality assurance automation tools. It currently consists of 2
 parts. The PHP CodeSniffer sniffs that contain standards regarding the
 FPFIS platform. And a symfony console implementation for running QA
@@ -27,12 +30,7 @@ https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 If you wish to use the qa-automation provided standards outside of the platform
 or the starterkit you can either manually add the installed_paths configuration to:
 
-<big><details>
-    <summary>[test](#test)</summary>
-    <p></p>
-</details></big>
-
-<big><details>
+<big><details id="test">
     <summary>the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project.</summary>
     <p><a name="test"></a>
 
