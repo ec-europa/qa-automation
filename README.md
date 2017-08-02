@@ -46,7 +46,7 @@ https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 #### 2.1.1 Full manual usage example:
 
 <big><details>
-    <summary>add <b>installed_paths</b> to <code>CodeSniffer.conf</code></summary>
+    <summary>add installed_paths to <code>CodeSniffer.conf</code></summary>
     <p>
 
 ```php
@@ -92,7 +92,7 @@ Time: 206ms; Memory: 10Mb
 
 #### 2.1.2 Configured usage example:
 <big><details>
-    <summary>add <b>default_standard</b> to <code>CodeSniffer.conf</code></summary><p>
+    <summary>add default_standard to <code>CodeSniffer.conf</code></summary><p>
 
 ```php
 <?php
