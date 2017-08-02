@@ -29,9 +29,9 @@ https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 If you wish to use the qa-automation provided standards outside of the platform
 or the starterkit you can either manually add the installed_paths configuration to:
 
-<big><details id="test">
-    <summary>the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project.</summary>
-    <p><a name="test"></a>
+<big><details>
+   <summary id="test">the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project.</summary>
+    <p>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
