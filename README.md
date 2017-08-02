@@ -25,10 +25,11 @@ https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 </pre></big>
 
 If you wish to use the qa-automation provided standards outside of the platform
-or the starterkit you can either manually add the installed_paths configuration to
-the:
+or the starterkit you can either manually add the installed_paths configuration to:
 
-<big><details><summary>`phpcs.xml` file located in the `root/` folder of your project:</summary>
+<big><details>
+    <summary>the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project:</summary>
+    <p>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -37,10 +38,10 @@ the:
   <rule ref="Subsite"/>
 </ruleset>
 ```
-
-</summary></details></big>
-
-<big><details><summary>`CodeSniffer.conf` file located in the `vendor/squizlabs/php_codesniffer/` folder:</summary>
+</p></details>
+<details>
+    <summary>the <code>CodeSniffer.conf</code>file located in the <code>vendor/squizlabs/php_codesniffer/</code> folder:</summary>
+    <p>
 
 ```php
 <?php
@@ -49,7 +50,5 @@ the:
   'installed_paths' => '../../ec-europa/qa-automation/phpcs/SubStandards'
   'ignore_warnings_on_exit' => '0',
 );
-
 ```
-
-</summary></details></big>
+</p></details></big>
