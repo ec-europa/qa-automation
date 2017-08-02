@@ -118,7 +118,7 @@ Time: 206ms; Memory: 10Mb
 ```
 </p></details></big>
 
-#### 2.1.3 NextEuropa Platfrom usage example:
+#### 2.1.3 NextEuropa Platform usage example:
 <big><details>
     <summary>execute <code>composer install</code> in your project</summary><p>
 
