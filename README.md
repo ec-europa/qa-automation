@@ -1,7 +1,6 @@
 # QA-Automation
-<big><details id="test"><summary>Test</summary>
-    <p>test</p>
-</details></big>
+[test](#test)
+
 Holds all quality assurance automation tools. It currently consists of 2
 parts. The PHP CodeSniffer sniffs that contain standards regarding the
 FPFIS platform. And a symfony console implementation for running QA
