@@ -28,7 +28,7 @@ If you wish to use the qa-automation provided standards outside of the platform
 or the starterkit you can either manually add the installed_paths configuration to:
 
 <big><details>
-    <summary>the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project:</summary>
+    <summary>the <code>phpcs.xml</code> file located in the <code>root/</code> folder of your project.</summary>
     <p>
 
 ```xml
@@ -40,7 +40,7 @@ or the starterkit you can either manually add the installed_paths configuration 
 ```
 </p></details>
 <details>
-    <summary>the <code>CodeSniffer.conf</code>file located in the <code>vendor/squizlabs/php_codesniffer/</code> folder:</summary>
+    <summary>the <code>CodeSniffer.conf</code>file located in the <code>vendor/squizlabs/php_codesniffer/</code> folder.</summary>
     <p>
 
 ```php
@@ -52,3 +52,17 @@ or the starterkit you can either manually add the installed_paths configuration 
 );
 ```
 </p></details></big>
+
+## Coding Standards
+This package provides 4 different sets of standards.
+    
+|Type|Provided by package|Location in package|Provided Standards|
+|:---|:---|:---|:---|
+|Main|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/Standards](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/Standards/*)|DrupalSecure and QualityAssurance|
+|Sub|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/SubStandards](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/SubStandards/*)|Platform, Subsite and QA|
+|Main|[drupal/coder](https://github.com/klausi/coder)|[/coder_sniffer/*](https://github.com/klausi/coder/tree/master/coder_sniffer)|Drupal and DrupalPractice|
+|Main|[squizlabs/php_codesniffer](https://github.com/squizlabs/PHP_CodeSniffer)|[/src/Standards/*](https://github.com/squizlabs/PHP_CodeSniffer/tree/master/src/Standards)|PHPCS, Zend, PSR2, PSR1, MySource, PEAR and Squiz|
+
+* Each set is either a main or sub standard:
+  * Main standards contain actual sniffs and possibly ruleset.
+  * Sub standards are compilations of main standards and only contain a ruleset.
