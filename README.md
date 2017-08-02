@@ -24,8 +24,9 @@ https://github.com/ec-europa/ssk/blob/master/src/Phing/PhpCodeSnifferConfigurati
 https://github.com/ec-europa/ssk/blob/master/build.properties.dist#L269-L311)
 </pre></big>
 
-## Coding Standards
-This package provides 4 different sets of standards.
+## Usage
+
+#### This package provides 4 different sets of standards.
 
 <big><details>
     <summary>Two internal and two external:</summary>
@@ -41,9 +42,6 @@ This package provides 4 different sets of standards.
   * Main standards contain actual sniffs and possibly ruleset.
   * Sub standards are compilations of main standards and only contain a ruleset.
 </details></big>
-
-
-## Usage
 
 #### For full manual usage perform the following steps:
 
