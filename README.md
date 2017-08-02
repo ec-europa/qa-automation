@@ -55,9 +55,11 @@ or the starterkit you can either manually add the installed_paths configuration 
 
 
 ## Coding Standards
-This package provides 4 different sets of standards. Two internal and
-two external.
-    
+This package provides 4 different sets of standards.
+
+<big><details>
+    <summary>Two internal and two external:</summary>
+
 |Type|Provided by package|Location in package|Provided Standards|
 |:---|:---|:---|:---|
 |Main|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/Standards/*](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/Standards)|DrupalSecure and QualityAssurance|
@@ -68,6 +70,7 @@ two external.
 * Each set is either a main or sub standard:
   * Main standards contain actual sniffs and possibly ruleset.
   * Sub standards are compilations of main standards and only contain a ruleset.
+</details></big>
 
 
 ## Usage
