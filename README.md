@@ -102,13 +102,29 @@ $phpCodeSnifferConfig = array(
 ```
 </p></details>
 <details>
-    <summary>create a <code>phpcs.xml</code> file in the root of your project.</summary><p>
+    <summary>create a custom <code>phpcs.xml</code> file in the root of your project.</summary><p>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset name="NextEuropa_default">
   <config name="installed_paths" value="../../ec-europa/qa-automation/phpcs/SubStandards" />
   <rule ref="Subsite"/>
+  <file>/var/www/html/lib</file>
 </ruleset>
+```
+</p></details>
+<details>
+    <summary>execute <code>./bin/phpcs</code></summary>
+    <p>
+
+```bash
+FILE: /var/www/html/lib/modules/example_module/example_module.info
+----------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 1 LINE
+----------------------------------------------------------------------
+ 1 | ERROR | "php" property is missing in the info file
+ 1 | ERROR | "multisite_version" property is missing in the info file
+----------------------------------------------------------------------
+Time: 206ms; Memory: 10Mb
 ```
 </p></details></big>
