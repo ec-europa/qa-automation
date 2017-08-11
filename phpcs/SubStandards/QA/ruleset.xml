@@ -66,5 +66,10 @@
     <rule ref="DrupalPractice">
         <exclude name="DrupalPractice.Commenting.AuthorTag" />
     </rule>
+    
+    <!-- Disable mandatory DrupalWrapper functions for tests. -->
+    <rule ref="QualityAssurance.Functions.DrupalWrappers">
+        <exclude-pattern>**/tests/*</exclude-pattern>
+    </rule>
 
 </ruleset>
