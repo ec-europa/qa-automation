@@ -33,3 +33,29 @@ interface YouTouchMy {
 
   public function Tralala();
 }
+
+function plop($super, $cali, $fragilistic, $expialidocious) {
+  if ($super == $cali) {
+    return 'Marry';
+  }
+  if ($fragilistic == $expialidocious) {
+    return 'Poppins';
+  }
+}
+
+function roll() {
+  for($i = 0; $i < 100; $i++) {
+    echo 'Never gonna give you up, never gonna give you up';
+  }
+  for($i = 0; $i < 100; $i++) {
+    echo 'Never gonna tell a lie and hurt you';
+  }
+}
+
+function guessWhosBack($c, $o, $r, $e, $t, $e, $a, $m) {
+  if ($c == $o) {
+    return $c.$o.$r.$e;
+  } else {
+    return $t.$e.$a.$m;
+  }
+}

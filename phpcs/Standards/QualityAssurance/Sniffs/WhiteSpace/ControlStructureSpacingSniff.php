@@ -20,10 +20,7 @@ class QualityAssurance_Sniffs_WhiteSpace_ControlStructureSpacingSniff extends Sq
    */
   public function register()
   {
-    return array_merge(
-      parent::register(),
-      array(T_FUNCTION, T_CLASS, T_INTERFACE)
-    );
+    return array(T_FUNCTION, T_CLASS, T_INTERFACE);
   }//end register()
 
 }//end class
