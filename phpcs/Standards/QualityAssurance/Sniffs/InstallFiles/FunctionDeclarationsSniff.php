@@ -54,6 +54,7 @@ class QualityAssurance_Sniffs_InstallFiles_FunctionDeclarationsSniff implements 
 
         $allowedHooks = array(
           $fileName . '_install',
+          $fileName . '_install_tasks',
           $fileName . '_uninstall',
           $fileName . '_enable',
           $fileName . '_disable',
