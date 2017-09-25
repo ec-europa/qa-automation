@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- PHP_CodeSniffer standard for NextEuropa subsites. -->
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<ruleset name="Subsite">
+
+    <description>Drupal coding standard for NextEuropa subsites</description>
+
+    <!-- Subsite ruleset is extended on QA Ruleset. -->
+    <rule ref="../QA/ruleset.xml" />
+
+    <!-- Exclude contrib folders. -->
+    <exclude-pattern>contrib</exclude-pattern>
+    <exclude-pattern>contributed</exclude-pattern>
+
+    <!-- Exclude folders of example modules. -->
+    <exclude-pattern>**/example_module</exclude-pattern>
+    <exclude-pattern>**/myproject_core</exclude-pattern>
+    <exclude-pattern>**/example_theme</exclude-pattern>
+    
+</ruleset>
