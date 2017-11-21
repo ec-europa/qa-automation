@@ -16,5 +16,11 @@
     <exclude-pattern>**/example_module</exclude-pattern>
     <exclude-pattern>**/myproject_core</exclude-pattern>
     <exclude-pattern>**/example_theme</exclude-pattern>
+
+    <!-- Temporarily disable for upgrade to toolkit. -->
+    <rule ref="Drupal">
+        <exclude name="Drupal.WhiteSpace.OpenTagNewline.BlankLine" />
+        <exclude name="Drupal.Commenting.FunctionComment.TypeHintMissing" />
+    </rule>
     
 </ruleset>
