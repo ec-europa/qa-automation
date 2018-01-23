@@ -58,7 +58,7 @@ class ReviewCommandHelper
             $this->properties = $phingProperties;
         }
     }
-
+    
     /**
      * Start a review process.
      */

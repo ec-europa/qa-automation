@@ -130,29 +130,6 @@ class PhingPropertiesHelper
     }
 
     /**
-     * Helper function to resolve all variable references in the properties array.
-     *
-     * @param array $properties
-     */
-    private function resolveProperties(&$properties)
-    {
-        foreach ($properties as $key => $value) {
-            if (preg_match_all('/\$\{([^\$}]+)\}/', $value, $matches)) {
-                if (!empty($matches)) {
-                    foreach ($matches[0] as $subkey => $match) {
-                        if (isset($properties[$matches[1][$subkey]])) {
-                            $properties[$key] = preg_replace("~" . preg_quote($match, "~") . "~", $properties[$matches[1][$subkey]], $properties[$key]);
-                            if (preg_match_all('/\$\{([^\$}]+)\}/', $properties[$key], $submatches)) {
-                                $this->resolveProperties($properties);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Helper function to extract the build properties files from the build xml files.
      *
      * @param string $contents
@@ -187,7 +164,7 @@ class PhingPropertiesHelper
      * @param $buildfile
      *   Absolute path to the main build file (build.xml).
      */
-    private function getAllSettings($buildfile = '')
+    public function getAllSettings($buildfile = '')
     {
         if (empty($buildfile)) {
             $buildfile = $this->findPhingBuildFile();
@@ -201,38 +178,7 @@ class PhingPropertiesHelper
             $project->init();
             \ProjectConfigurator::configureProject($project, new \PhingFile($buildfile));
             $settings = $project->getProperties();
-
-            /*
-            $root = dirname($buildfile);
-            $tkRoot = $root . '/vendor/ec-europa/toolkit';
-            $settings = array(
-                'project.basedir' => $root,
-                'toolkit.dir' => $tkRoot,
-            );
-            // Array that will gather the build.properties files.
-            $buildproperties = array();
-            // Start by parsing the main build file.
-            $contents = file_get_contents($tkRoot . '/includes/phing/build/boot/properties.xml');
-            // Gather build properties from within found files.
-            $this->setBuildProperties($contents, $settings, $buildproperties);
-
-            // This also needs to be recursified.
-            if (isset($buildproperties['import'])) {
-                foreach($buildproperties['import'] as $import) {
-                    if (isset($import['@attributes']['file'])) {
-                        $contents = file_get_contents($import['@attributes']['file']);
-                        $this->setBuildProperties($contents, $settings, $buildproperties);
-                    }
-                }
-            }
-
-            foreach ($buildproperties as $propertiesfile) {
-                if (is_file($propertiesfile)) {
-                    $settings += $this->parsefile($propertiesfile);
-                }
-            } */
         }
-//        $this->resolveProperties($settings);
         return $settings;
     }
 

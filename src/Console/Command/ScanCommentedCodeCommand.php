@@ -8,6 +8,7 @@
 namespace QualityAssurance\Component\Console\Command;
 
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
+use QualityAssurance\Component\Console\Application\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,9 +26,8 @@ class ScanCommentedCodeCommand extends Command
     protected function configure()
     {
         $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
-        $properties = $phingPropertiesHelper->requestSettings(array(
-            'project.basedir' => 'project.basedir',
-        ));
+        $properties = $phingPropertiesHelper->getAllSettings();
+
         // @codingStandardsIgnoreStart
         $this
             ->setName('scan:coco')
@@ -36,6 +36,7 @@ class ScanCommentedCodeCommand extends Command
             ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
             ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
             ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
+            ->addOption('toolkit.dir.bin', null, InputOption::VALUE_REQUIRED, 'The binary to phpcs.', $properties['toolkit.dir.bin'])
             ->addOption('project.basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.', $properties['project.basedir']);
         // @codingStandardsIgnoreEnd
     }
@@ -52,7 +53,7 @@ class ScanCommentedCodeCommand extends Command
         //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
         $show = $input->getOption('show') ? true : false;
         ob_start();
-        $executable = $basedir . "/toolkit/phpcs";
+        $executable = $input->getOption('toolkit.dir.bin') . '/phpcs';
         // @codingStandardsIgnoreLine
         passthru($executable . " --standard=" . $basedir . "/resources/custom-rulesets/coco-50.xml $exclude_dirs --report=emacs -qvs " . $dirname, $error);
         $phpcs = ob_get_contents();

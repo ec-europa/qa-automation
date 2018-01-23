@@ -26,11 +26,7 @@ class ScanPlatformProvidedCommand extends Command
     protected function configure()
     {
         $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
-        $properties = $phingPropertiesHelper->requestSettings(array(
-          'profile' => 'profile',
-          'resources.dir.site.make' => 'resources.dir.site.make',
-          'project.basedir' => 'project.basedir',
-        ));
+        $properties = $phingPropertiesHelper->getAllSettings();
 
         $this
             ->setName('scan:mkpd')
