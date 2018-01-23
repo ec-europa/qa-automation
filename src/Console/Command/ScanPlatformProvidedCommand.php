@@ -7,11 +7,13 @@
 
 namespace QualityAssurance\Component\Console\Command;
 
+use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use QualityAssurance\Component\Console\Helper\DrupalInfoFormatHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -23,13 +25,20 @@ class ScanPlatformProvidedCommand extends Command
 {
     protected function configure()
     {
+        $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
+        $properties = $phingPropertiesHelper->requestSettings(array(
+          'profile' => 'profile',
+          'resources.dir.site.make' => 'resources.dir.site.make',
+          'project.basedir' => 'project.basedir',
+        ));
+
         $this
             ->setName('scan:mkpd')
             ->setDescription('Scan for platform provided modules.')
             ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to recursively check.')
             ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
-            ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'Modulename.')
-            ->addOption('profile', null, InputOption::VALUE_OPTIONAL, 'Profile.');
+            ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'Modulename.', $properties['resources.dir.site.make'])
+            ->addOption('profile', null, InputOption::VALUE_OPTIONAL, 'Profile.', $properties['profile']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
