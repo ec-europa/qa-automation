@@ -31,7 +31,7 @@ class CheckStarterkitCommand extends Command
             ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Starterkit branch.')
             ->addOption('remote', null, InputOption::VALUE_OPTIONAL, 'Starterkit remote.')
             ->addOption('repository', null, InputOption::VALUE_OPTIONAL, 'Starterkit repository on github.')
-            ->addOption('basedir', null, InputOption::VALUE_OPTIONAL, 'Project base directory.')
+            ->addOption('project.basedir', null, InputOption::VALUE_OPTIONAL, 'Project base directory.')
         ;
     }
 
@@ -44,7 +44,7 @@ class CheckStarterkitCommand extends Command
         if (empty($input->getOption('branch'))
           || empty($input->getOption('remote'))
           || empty($input->getOption('repository'))
-          || empty($input->getOption('basedir'))
+          || empty($input->getOption('project.basedir'))
         ) {
             // Get the needed options for if the call came from console and not from phing.
             $phingPropertiesHelper = new PhingPropertiesHelper($output);
@@ -52,7 +52,7 @@ class CheckStarterkitCommand extends Command
               'branch' => 'starterkit.branch',
               'remote' => 'starterkit.remote',
               'repository' => 'starterkit.repository',
-              'basedir' => 'project.basedir',
+              'project.basedir' => 'project.basedir',
             ));
         }
 
@@ -61,7 +61,7 @@ class CheckStarterkitCommand extends Command
         $remote = !empty($input->getOption('remote')) ? $input->getOption('remote') : $options['remote'];
         // @codingStandardsIgnoreLine
         $repository = !empty($input->getOption('repository')) ? $input->getOption('repository') : $options['repository'];
-        $basedir = !empty($input->getOption('basedir')) ? $input->getOption('basedir') : $options['basedir'];
+        $basedir = !empty($input->getOption('project.basedir')) ? $input->getOption('project.basedir') : $options['project.basedir'];
 
         $subsiteRepository = $this->getGitWrapper()->workingCopy($basedir);
         // Add the remote for the starterkit if it doesn't exist yet.

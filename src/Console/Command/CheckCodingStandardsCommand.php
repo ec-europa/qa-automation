@@ -26,8 +26,8 @@ class CheckCodingStandardsCommand extends Command
     {
         $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
         $properties = $phingPropertiesHelper->requestSettings(array(
-          'phpcs-config' => 'phpcs.config',
-          'basedir' => 'project.basedir',
+          'phpcs.config' => 'phpcs.config',
+          'project.basedir' => 'project.basedir',
         ));
 
         // @codingStandardsIgnoreStart
@@ -35,11 +35,11 @@ class CheckCodingStandardsCommand extends Command
             ->setName('phpcs:run')
             ->setDescription('Perform a phpcs run with provided phpcs.xml standard.')
             ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'Path to run PHPCS on.')
-            ->addOption('standard', null, InputOption::VALUE_OPTIONAL, 'PHPCS standard.', $properties['phpcs-config'])
+            ->addOption('standard', null, InputOption::VALUE_OPTIONAL, 'PHPCS standard.', $properties['phpcs.config'])
             ->addOption('exclude-dirs', null, InputOption::VALUE_OPTIONAL, 'Directories to exclude.')
             ->addOption('width', null, InputOption::VALUE_OPTIONAL, 'Width of the report.')
             ->addOption('show', null, InputOption::VALUE_NONE, 'If option is given description is shown.')
-            ->addOption('basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.', $properties['basedir']);
+            ->addOption('project.basedir', null, InputOption::VALUE_REQUIRED, 'The project basedir to find phpcs.', $properties['project.basedir']);
         // @codingStandardsIgnoreEnd
     }
 
@@ -48,13 +48,13 @@ class CheckCodingStandardsCommand extends Command
         $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : getcwd();
         // @codingStandardsIgnoreLine
         $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
-        $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : $properties['phpcs-config'];
-        $basedir = $input->getOption('basedir');
+        $standard = !empty($input->getOption('standard')) ? $input->getOption('standard') : $properties['phpcs.config'];
+        $basedir = $input->getOption('project.basedir');
 
         //$width = !empty($input->getOption('width')) ? $input->getOption('width') : 80;
         $show = $input->getOption('show') ? true : false;
         ob_start();
-        $executable = $basedir . "/ssk/phpcs";
+        $executable = $basedir . "/toolkit/phpcs";
         passthru($executable . " --standard=$standard $exclude_dirs --report=emacs -qvs " . $dirname, $error);
         $phpcs = ob_get_contents();
         ob_end_clean();

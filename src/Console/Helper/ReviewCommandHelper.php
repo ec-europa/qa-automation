@@ -156,8 +156,8 @@ class ReviewCommandHelper
             'directory' => $directory,
             'filename' => $filename,
             'profile' => $this->properties['profile'],
-            'standard' => $this->properties['phpcs-config'],
-            'basedir' => $this->properties['basedir'],
+            'standard' => $this->properties['phpcs.config'],
+            'project.basedir' => $this->properties['project.basedir'],
         );
         if ($exclude_directories = $this->getSubmoduleDirectories($filename, $directory)) {
             $command_options['exclude-dirs'] = implode(',', $exclude_directories);
@@ -288,14 +288,14 @@ class ReviewCommandHelper
         switch ($section) {
             case 'theme':
                 // Fetch all modules, features and themes into an array.
-                $options = $this->getThemeFiles($properties['lib']);
+                $options = $this->getThemeFiles($properties['lib.dir']);
                 break;
 
             default:
                 // Fetch all modules, features and themes into an array.
-                $info_files = $this->getInfoFiles($properties['lib']);
+                $info_files = $this->getInfoFiles($properties['lib.dir']);
                 // Fetch all make files into an array.
-                $make_files = $this->getMakeFiles($properties['resources']);
+                $make_files = $this->getMakeFiles($properties['resources.dir']);
                 // Merge makes and infos into options.
                 $options = array_merge($make_files, $info_files);
                 // Add the "Select all" option.
@@ -354,20 +354,19 @@ class ReviewCommandHelper
         $properties = array();
         if ($this->input->getOption('type') == 'subsite') {
             $properties = $phingPropertiesHelper->requestSettings(array(
-                'lib' => 'subsite.resources.lib.dir',
-                'resources' => 'subsite.resources.dir',
-                'phpcs-config' => 'phpcs.config',
-                'profile' => 'platform.profile.name',
-                'basedir' => 'project.basedir',
-                'check-ssk' => 'qa.check.ssk',
+                'lib.dir' => 'lib.dir',
+                'resources.dir' => 'resources.dir',
+                'phpcs.config' => 'phpcs.config',
+                'profile' => 'profile',
+                'project.basedir' => 'project.basedir',
             ));
         } else {
             $properties = $phingPropertiesHelper->requestSettings(array(
-                'lib' => 'platform.resources.profiles.dir',
-                'resources' => 'platform.resources.dir',
-                'phpcs-config' => 'phpcs.config',
-                'profile' => 'platform.profile.name',
-                'basedir' => 'project.basedir',
+                'lib.dir' => 'lib.dir',
+                'resources.dir' => 'resources.dir',
+                'phpcs.config' => 'phpcs.config',
+                'profile' => 'profile',
+                'project.basedir' => 'project.basedir',
             ));
         }
         return $properties;

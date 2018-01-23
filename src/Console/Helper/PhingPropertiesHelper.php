@@ -9,6 +9,11 @@ namespace QualityAssurance\Component\Console\Helper;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
+require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/Phing.php';
+require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/Project.php';
+require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/parser/ProjectConfigurator.php';
+require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/system/io/PhingFile.php';
+
 /**
  * Class PhingPropertiesHelper
  * @package QualityAssurance\Component\Console\Helper
@@ -161,7 +166,7 @@ class PhingPropertiesHelper
 
         // Replace root paths.
         $contents = str_replace('${project.basedir}', $settings['project.basedir'], $contents);
-        $contents = str_replace('${project.starterkit.root}', $settings['project.starterkit.root'], $contents);
+        $contents = str_replace('${toolkit.dir}', $settings['toolkit.dir'], $contents);
 
         if ($xml = simplexml_load_string($contents)) {
             $json = json_encode($xml);
@@ -188,16 +193,26 @@ class PhingPropertiesHelper
             $buildfile = $this->findPhingBuildFile();
         }
         if ($buildfile) {
+            \Phing::startup();
+            $project = new \Project();
+            $project->setUserProperty("phing.file", $buildfile);
+            $project->setUserProperty("phing.dir", dirname($buildfile));
+            $project->fireBuildStarted();
+            $project->init();
+            \ProjectConfigurator::configureProject($project, new \PhingFile($buildfile));
+            $settings = $project->getProperties();
+
+            /*
             $root = dirname($buildfile);
-            $sskRoot = $root . '/vendor/ec-europa/ssk';
+            $tkRoot = $root . '/vendor/ec-europa/toolkit';
             $settings = array(
                 'project.basedir' => $root,
-                'project.starterkit.root' => $sskRoot,
+                'toolkit.dir' => $tkRoot,
             );
             // Array that will gather the build.properties files.
             $buildproperties = array();
             // Start by parsing the main build file.
-            $contents = file_get_contents($sskRoot . '/build.xml');
+            $contents = file_get_contents($tkRoot . '/includes/phing/build/boot/properties.xml');
             // Gather build properties from within found files.
             $this->setBuildProperties($contents, $settings, $buildproperties);
 
@@ -215,9 +230,9 @@ class PhingPropertiesHelper
                 if (is_file($propertiesfile)) {
                     $settings += $this->parsefile($propertiesfile);
                 }
-            }
+            } */
         }
-        $this->resolveProperties($settings);
+//        $this->resolveProperties($settings);
         return $settings;
     }
 
@@ -236,14 +251,7 @@ class PhingPropertiesHelper
         $settings = $this->getAllSettings();
         $selection = array();
         foreach ($options as $key => $value) {
-            if (isset($settings[$value])) {
-                $selection[$key] = $settings[$value];
-            }
-            else {
-                throw new \Symfony\Component\Debug\Exception\FatalErrorException(
-                    "Requested property ' . $value . ' not found.", 0, 1, __FILE__, __LINE__
-                );
-            }
+            $selection[$key] = $settings[$key];
         }
         return $selection;
     }
