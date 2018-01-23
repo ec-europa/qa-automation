@@ -26,7 +26,7 @@
         "bin/qa"
     ],
     "scripts": {
-        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths '../../drupal/coder/coder_sniffer,../../wimg/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'",
-        "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths '../../drupal/coder/coder_sniffer,../../wimg/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'"
+        "post-install-cmd": "../../../bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../wimg/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'",
+        "post-update-cmd" : "../../../bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../wimg/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'"
     }
 }
