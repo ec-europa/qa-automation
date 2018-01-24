@@ -14,8 +14,7 @@ use QualityAssurance\Component\Console\Command\DiffMakeFilesCommand;
 use QualityAssurance\Component\Console\Command\ReviewThisCommand;
 use QualityAssurance\Component\Console\Command\ReviewThemeCommand;
 use QualityAssurance\Component\Console\Command\ReviewFullCommand;
-use QualityAssurance\Component\Console\Application;
-
+use Symfony\Component\Console\Application;
 
 if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
   require $autoload;
@@ -33,8 +32,7 @@ if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
   );
   exit(1);
 }
-
-$application = new Application('Quality Assurance', '@package_version@');
+$application = new Application();
 $commands = array();
 $commands[] = new ReviewThisCommand();
 $commands[] = new ReviewThemeCommand();
@@ -49,11 +47,6 @@ $commands[] = new ScanThemeNameConflict();
 $commands[] = new ScanPlatformProvidedCommand();
 $commands[] = new DiffUpdateHooksCommand();
 $commands[] = new DiffMakeFilesCommand();
-
-foreach ($commands as $command) {
-  $command->setApplication($application);
-}
-
 $application->addCommands($commands);
 
 $application->run();
