@@ -9,7 +9,7 @@ namespace QualityAssurance\Component\Console\Command;
 
 use QualityAssurance\Component\Console\Helper\PhingPropertiesHelper;
 use Symfony\Component\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,19 +21,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Class CheckCodingStandardsCommand
  * @package QualityAssurance\Component\Console\Command
  */
-class CheckCodingStandardsCommand extends ContainerAwareCommand
+class CheckCodingStandardsCommand extends Command
 {
-    public function __construct($name = null)
-    {
-        parent::__construct();
-    }
-
     protected function configure()
     {
         $phingPropertiesHelper = new PhingPropertiesHelper(new NullOutput());
         $properties = $phingPropertiesHelper->getAllSettings();
-        $app = $this->getApplication();
-        var_dump($app);
 
         // @codingStandardsIgnoreStart
         $this
@@ -51,6 +44,7 @@ class CheckCodingStandardsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         $dirname = !empty($input->getOption('directory')) ? $input->getOption('directory') : '';
         // @codingStandardsIgnoreLine
         $exclude_dirs = !empty($input->getOption('exclude-dirs')) ? '--ignore=' . $input->getOption('exclude-dirs') . ' ' : '';
