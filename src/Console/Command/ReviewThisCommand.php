@@ -44,7 +44,7 @@ class ReviewThisCommand extends Command
         // Setup the reviewCommandHelper.
         $reviewCommandHelper = new ReviewCommandHelper($input, $output, $application);
         // Change the lib property to the current folder.
-        $reviewCommandHelper->setProperties(array('lib' => getcwd()));
+        $reviewCommandHelper->setProperties(array('lib.dir' => getcwd()));
         // Start the review.
         $reviewCommandHelper->startReview();
     }

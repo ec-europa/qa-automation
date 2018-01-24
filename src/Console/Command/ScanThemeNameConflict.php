@@ -42,7 +42,7 @@ class ScanThemeNameConflict extends Command
   {
     $phingPropertiesHelper = new PhingPropertiesHelper($output);
     $properties = $phingPropertiesHelper->requestSettings(array(
-      'lib' => 'subsite.resources.lib.dir',
+      'lib.dir' => 'lib.dir',
     ));
 
     // Get the current theme name.
@@ -50,7 +50,7 @@ class ScanThemeNameConflict extends Command
     if (!$theme_name) {
       $application = $this->getApplication();
       $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
-      $options = $reviewCommandHelper->getThemeFiles($properties['lib']);
+      $options = $reviewCommandHelper->getThemeFiles($properties['lib.dir']);
     }
     else {
       $options[] = $theme_name;
@@ -65,7 +65,7 @@ class ScanThemeNameConflict extends Command
       $finder = new Finder();
       $finder->files()
         ->name($theme_name . '.info')
-        ->in($properties['lib'])
+        ->in($properties['lib.dir'])
         ->exclude(array('themes'))
         ->sortByName();
 
