@@ -9,10 +9,11 @@ namespace QualityAssurance\Component\Console\Helper;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/Phing.php';
-require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/Project.php';
-require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/parser/ProjectConfigurator.php';
-require_once 'vendor/ec-europa/toolkit/vendor/phing/phing/classes/phing/system/io/PhingFile.php';
+// turn off html errors
+ini_set('html_errors', 'off');
+
+// Require composer autoload.
+require_once dirname(__FILE__) . '/../../../../../autoload.php';
 
 /**
  * Class PhingPropertiesHelper
