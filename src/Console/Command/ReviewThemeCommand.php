@@ -43,14 +43,14 @@ class ReviewThemeCommand extends Command
     {
         $phingPropertiesHelper = new PhingPropertiesHelper($output);
         $properties = $phingPropertiesHelper->requestSettings(array(
-            'lib' => 'subsite.resources.lib.dir',
+            'lib.dir' => 'lib.dir',
         ));
         // Get the application
         $application = $this->getApplication();
         // Setup the reviewCommandHelper.
         $reviewCommandHelper = new ReviewCommandThemeHelper($input, $output, $application);
         // Change the lib property to the current folder.
-        $reviewCommandHelper->setProperties(array('lib' => $properties['lib']));
+        $reviewCommandHelper->setProperties(array('lib.dir' => $properties['lib.dir']));
         // Start the review.
         $reviewCommandHelper->startReview('theme');
     }

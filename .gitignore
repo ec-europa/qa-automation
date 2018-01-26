@@ -3,5 +3,6 @@
 bin/phpcbf
 bin/phpcs
 bin/phpunit
+bin/phing
 composer.lock
 vendor/
