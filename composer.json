@@ -1,7 +1,7 @@
 {
     "name": "ec-europa/qa-automation",
     "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-    "license": "EUPL-1.2",
+    "license": "EUPL-1.1",
     "git-version": "package_version",
     "require": {
         "cpliakas/git-wrapper": "^1.7",
