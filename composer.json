@@ -9,7 +9,7 @@
         "symfony/console": "~2.3.10|^2.4.2|~3.0",
         "symfony/finder": "^3.2",
         "squizlabs/php_codesniffer": "2.9.0",
-        "wimg/php-compatibility": "^8.1",
+        "phpcompatibility/php-compatibility": "^8.1",
         "phing/phing": "~2.16.0"
     },
     "require-dev": {
@@ -27,7 +27,7 @@
         "bin/qa"
     ],
     "scripts": {
-        "post-install-cmd": "$(pwd)/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../wimg/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'",
-        "post-update-cmd" : "$(pwd)/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../wimg/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'"
+        "post-install-cmd": "$(pwd)/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'",
+        "post-update-cmd" : "$(pwd)/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs/SubStandards'"
     }
 }
