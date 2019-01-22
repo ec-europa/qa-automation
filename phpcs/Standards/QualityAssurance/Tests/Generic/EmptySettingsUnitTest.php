@@ -53,7 +53,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettings_EmptySettingsUnitTest extend
      */
     public function getTestFiles() {
         return array(
-          'BrokenMissingHandler.views_default.inc' => '',
+          'EmptySettingsError.strongarm.inc' => '',
         );
     }// end getTestFiles()
 
