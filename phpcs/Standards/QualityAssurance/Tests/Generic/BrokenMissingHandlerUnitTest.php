@@ -15,7 +15,8 @@ class QualityAssurance_Sniffs_Generic_BrokenMissingHandler_BrokenMissingHandlerU
     {
       // All the warning-free  files have no errors.
       $errors = [
-        31 => 1,
+        100 => 1,
+        108 => 1,
       ];
 
       return (strpos($testFile, 'Error') === false) ? [] : $errors;
@@ -35,7 +36,6 @@ class QualityAssurance_Sniffs_Generic_BrokenMissingHandler_BrokenMissingHandlerU
     {
       // All the warning-free  files have no errors.
       $errors = [
-        31 => 1,
       ];
 
       return (strpos($testFile, 'Warning') === false) ? [] : $errors;
