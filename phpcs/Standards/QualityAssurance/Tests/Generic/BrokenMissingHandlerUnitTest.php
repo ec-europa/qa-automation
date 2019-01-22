@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_Generic_EmptySettings_EmptySettingsUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Generic_BrokenMissingHandler_BrokenMissingHandlerUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -53,7 +53,7 @@ class QualityAssurance_Sniffs_Generic_EmptySettings_EmptySettingsUnitTest extend
      */
     public function getTestFiles() {
         return array(
-          'BrokenMissingHandler.views_default.inc' => '',
+          'BrokenMissingHandlerError.views_default.inc' => '',
         );
     }// end getTestFiles()
 
