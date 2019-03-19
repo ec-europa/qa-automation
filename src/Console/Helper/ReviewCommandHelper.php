@@ -288,7 +288,7 @@ class ReviewCommandHelper
         switch ($section) {
             case 'theme':
                 // Fetch all modules, features and themes into an array.
-                $options = $this->getThemeFiles($properties['lib.dir']);
+                $options = $this->getThemeFiles($properties['theme.dir']);
                 break;
 
             default:
@@ -355,6 +355,7 @@ class ReviewCommandHelper
         if ($this->input->getOption('type') == 'subsite') {
             $properties = $phingPropertiesHelper->requestSettings(array(
                 'lib.dir' => 'lib.dir',
+                'theme.dir' => 'theme.dir',
                 'resources.dir' => 'resources.dir',
                 'phpcs.config' => 'phpcs.config',
                 'profile' => 'profile',
@@ -363,6 +364,7 @@ class ReviewCommandHelper
         } else {
             $properties = $phingPropertiesHelper->requestSettings(array(
                 'lib.dir' => 'lib.dir',
+                'theme.dir' => 'theme.dir',
                 'resources.dir' => 'resources.dir',
                 'phpcs.config' => 'phpcs.config',
                 'profile' => 'profile',
