@@ -19,7 +19,6 @@
 class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer_Sniff
 {
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -28,7 +27,6 @@ class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer
     public function register()
     {
         return array(T_INLINE_HTML);
-
     }//end register()
 
 
@@ -64,15 +62,19 @@ class QualityAssurance_Sniffs_InfoFiles_FeaturesSniff implements PHP_CodeSniffer
             $phpcsFile->addWarning($warning, $stackPtr, 'FeaturesAPI');
         }
 
-        // Check if it may be just a custom module in the wrong directory.
-        if (!isset($info['features']['features_api']) && strpos($fileName, '/features/') !== FALSE) {
-            $error = 'Please move this "custom" module out of the features folder.';
-            $phpcsFile->addError($error, $stackPtr, 'CustomModule');
+        $parsedFilename = explode('/', $fileName);
+        if (!isset($info['features']['features_api']) && in_array('features', $parsedFilename)) {
+            // There is an exception, it can be a sub-module of some feature.
+            $ffl = array_search('features', $parsedFilename);
+            $mfl = array_search('modules', $parsedFilename);
+            if (isset($mfl) && $mfl > $ffl) {
+                // Found the exception **/features/**/modules/**, ignore module location.
+            } else {
+                $error = 'Please move this "custom" module out of the features folder.';
+                $phpcsFile->addError($error, $stackPtr, 'CustomModule');
+            }
         }
 
         return $end;
-
     }//end process()
-
-
 }//end class

@@ -27,3 +27,13 @@
 ### New features:
   * MULTISITE-15705 - Added sniff for empty (pathauto) strongarm settings
   * MULTISITE-15680 - Added theme checks
+
+## Version 3.0.10
+
+### Improvements:
+  * MULTISITE-19378 - Added sniff for detecting broken handlers in exported views
+  * MULTISITE-20745 - Added sniff for detecting PHP code in exported views
+
+### Bug fixes:
+  * MULTISITE-21105 - Added a variable to configure the theme path
+  
