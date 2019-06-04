@@ -24,7 +24,11 @@ pipeline:
       - composer install
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+  phpcs:
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    commands:
+      - ./bin/phpcs
   phpunit:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
-      - ./bin/phpunit phpcs/
+      - ./bin/phpunit phpcs/ --testdox
