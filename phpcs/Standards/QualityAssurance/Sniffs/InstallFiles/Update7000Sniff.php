@@ -28,7 +28,6 @@ class QualityAssurance_Sniffs_InstallFiles_Update7000Sniff implements PHP_CodeSn
     public function register()
     {
         return array(T_FUNCTION);
-
     }//end register()
 
 
@@ -55,8 +54,5 @@ class QualityAssurance_Sniffs_InstallFiles_Update7000Sniff implements PHP_CodeSn
         if ($functionName === $fileName . '_update_7000') {
             $phpcsFile->addError('Update schema 7000 is reserved for upgrading from D6 to D7 and will not run otherwise.', $stackPtr, "Update7000NotAllowed");
         }
-
     }//end process()
-
-
 }//end class

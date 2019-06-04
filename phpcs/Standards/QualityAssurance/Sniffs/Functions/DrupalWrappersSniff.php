@@ -123,11 +123,11 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
         if ($this->patternMatch === true) {
             $count   = 0;
             $pattern = preg_replace(
-              $this->forbiddenFunctionNames,
-              $this->forbiddenFunctionNames,
-              $function,
-              1,
-              $count
+                $this->forbiddenFunctionNames,
+                $this->forbiddenFunctionNames,
+                $function,
+                1,
+                $count
             );
 
             if ($count === 0) {
@@ -143,7 +143,6 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
         }//end if
 
         $this->addError($phpcsFile, $stackPtr, $function, $pattern);
-
     }//end process()
 
 
@@ -158,7 +157,7 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
      *
      * @return void
      */
-    protected function addError($phpcsFile, $stackPtr, $function, $pattern=null)
+    protected function addError($phpcsFile, $stackPtr, $function, $pattern = null)
     {
         $data  = array($function);
         $error = 'The use of function %s() is ';
@@ -192,7 +191,5 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
             $phpcsFile->fixer->replaceToken($stackPtr, $this->forbiddenFunctions[$pattern]);
             $phpcsFile->fixer->endChangeset();
         }
-
     }//end addError()
-
 }//end class

@@ -32,7 +32,6 @@ abstract class DrupalSecure_Sniffs_General_AbstractVariable implements PHP_CodeS
         // We do not listen for tokens, but for specific function calls.
         DrupalSecure_Sniffs_General_HelperSniff::registerVariableListener($this);
         return array();
-
     }//end register()
 
 
@@ -48,7 +47,6 @@ abstract class DrupalSecure_Sniffs_General_AbstractVariable implements PHP_CodeS
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         // Empty default implementation, because processFunctionCall() is used.
-
     }//end process()
 
 
@@ -69,8 +67,5 @@ abstract class DrupalSecure_Sniffs_General_AbstractVariable implements PHP_CodeS
      *
      * @return void
      */
-    public abstract function processVariable(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr);
-
+    abstract public function processVariable(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr);
 }//end class
-
-?>

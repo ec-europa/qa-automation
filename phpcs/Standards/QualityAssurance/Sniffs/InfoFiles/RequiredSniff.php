@@ -29,7 +29,6 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
     public function register()
     {
         return array(T_INLINE_HTML);
-
     }//end register()
 
 
@@ -65,7 +64,7 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
         if (!isset($info['multisite_version']) || empty($info['multisite_version'])) {
             $error = '"multisite_version" property is missing in the info file';
             $phpcsFile->addError($error, $stackPtr, 'MultisiteVersion');
-        } else if ($info['multisite_version'] === '2.2'
+        } elseif ($info['multisite_version'] === '2.2'
             && isset($info['php']) === true
             && $info['php'] <= '5.2'
         ) {
@@ -75,8 +74,5 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
         }
 
         return $end;
-
     }//end process()
-
-
 }//end class

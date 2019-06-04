@@ -12,15 +12,13 @@
 
 class DrupalSecure_Sniffs_General_OutputTokensSniff implements PHP_CodeSniffer_Sniff
 {
-  public function register()
-  {
+    public function register()
+    {
         return array(T_DOUBLE_ARROW);
-  }
+    }
     
-  public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-  {
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         //print_r($phpcsFile->getTokens());
-  }
+    }
 }
-
-?>

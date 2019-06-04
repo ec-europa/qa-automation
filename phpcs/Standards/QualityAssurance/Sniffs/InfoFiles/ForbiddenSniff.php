@@ -28,7 +28,6 @@ class QualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeSniffe
     public function register()
     {
         return array(T_INLINE_HTML);
-
     }//end register()
 
 
@@ -77,8 +76,5 @@ class QualityAssurance_Sniffs_InfoFiles_ForbiddenSniff implements PHP_CodeSniffe
         }
 
         return $end;
-
     }//end process()
-
-
 }//end class

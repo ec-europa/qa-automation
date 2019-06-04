@@ -28,7 +28,6 @@ class QualityAssurance_Sniffs_InstallFiles_FunctionDeclarationsSniff implements 
     public function register()
     {
         return array(T_FUNCTION);
-
     }//end register()
 
 
@@ -68,8 +67,5 @@ class QualityAssurance_Sniffs_InstallFiles_FunctionDeclarationsSniff implements 
             $warning = 'Move the "%s" function declaration in to a file named %s.install.inc and include that file in %s.install.';
             $phpcsFile->addError($warning, $stackPtr, 'NonHookFound', array($functionName, $fileName, $fileName));
         }
-
     }//end process()
-
-
 }//end class
