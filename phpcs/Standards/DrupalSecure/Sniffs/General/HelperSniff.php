@@ -65,25 +65,22 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
         $this->tokens = $phpcsFile->getTokens();
         //print_r($this->tokens[$stackPtr]);
         if ($this->tokens[$stackPtr]['code'] == T_STRING) {
-          $this->processString($stackPtr);
-        }
-        elseif (in_array($this->tokens[$stackPtr]['code'], array(T_ECHO, T_PRINT))) {
-          $this->processOutput($stackPtr);
-        }
-        elseif ($this->tokens[$stackPtr]['code'] == T_VARIABLE) {
-          $this->processVariable($stackPtr);
-        }
-        elseif ($this->tokens[$stackPtr]['code'] == T_CONSTANT_ENCAPSED_STRING || $this->tokens[$stackPtr]['code'] == T_DOUBLE_QUOTED_STRING) {
-          $this->processEncapsedString($stackPtr);
-        }
-        elseif ($this->tokens[$stackPtr]['code'] == T_OBJECT_OPERATOR) {
-          $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-          $this->processObjectProperty($nextPtr);
+            $this->processString($stackPtr);
+        } elseif (in_array($this->tokens[$stackPtr]['code'], array(T_ECHO, T_PRINT))) {
+            $this->processOutput($stackPtr);
+        } elseif ($this->tokens[$stackPtr]['code'] == T_VARIABLE) {
+            $this->processVariable($stackPtr);
+        } elseif ($this->tokens[$stackPtr]['code'] == T_CONSTANT_ENCAPSED_STRING || $this->tokens[$stackPtr]['code'] == T_DOUBLE_QUOTED_STRING) {
+            $this->processEncapsedString($stackPtr);
+        } elseif ($this->tokens[$stackPtr]['code'] == T_OBJECT_OPERATOR) {
+            $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+            $this->processObjectProperty($nextPtr);
         }
     }
     
-    private function processEncapsedString($stackPtr) {
-      $activeListeners = array();
+    private function processEncapsedString($stackPtr)
+    {
+        $activeListeners = array();
         foreach (self::$stringListeners as $listener) {
             $types = $listener->registerString();
             if (in_array($this->stripString($this->tokens[$stackPtr]['content']), $types) === true) {
@@ -102,7 +99,7 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
     
     private function processVariable($stackPtr)
     {
-      $activeListeners = array();
+        $activeListeners = array();
         foreach (self::$variableListeners as $listener) {
             $types = $listener->registerVariable();
             if (in_array($this->tokens[$stackPtr]['content'], $types) === true) {
@@ -119,8 +116,9 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
         }
     }
     
-    private function processOutput($stackPtr) {
-      $activeListeners = array();
+    private function processOutput($stackPtr)
+    {
+        $activeListeners = array();
         foreach (self::$outputListeners as $listener) {
             $types = $listener->registerOutput();
             if (in_array($this->tokens[$stackPtr]['code'], $types) === true) {
@@ -158,7 +156,7 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
         $openBracket = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         if (!$this->isFunctionCall($stackPtr)) {
-          return;
+            return;
         }
 
         // Find the previous non-empty token.
@@ -185,11 +183,11 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
         foreach ($activeListeners as $listener) {
             $listener->processFunctionCall($this, $stackPtr);
         }
-
     }
   
-    private function processObjectProperty($stackPtr) {
-      $activeListeners = array();
+    private function processObjectProperty($stackPtr)
+    {
+        $activeListeners = array();
         foreach (self::$objectPropertyListeners as $listener) {
             $types = $listener->registerObjectProperty();
             if (in_array($this->tokens[$stackPtr]['content'], $types) === true) {
@@ -209,48 +207,53 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
     /**
      * Remove quote and double-quote characters from beginning and end of string.
      */
-    public function stripString($string) {
-      return trim($string, '\'"');
+    public function stripString($string)
+    {
+        return trim($string, '\'"');
     }
   
-    public function isVariableUserInput($stackPtr) {
-      switch ($this->tokens[$stackPtr]['content']) {
-        case '$_GET':
-          return true;
-        case '$_POST':
-          return true;
-        default:
-          return false;
-      }
+    public function isVariableUserInput($stackPtr)
+    {
+        switch ($this->tokens[$stackPtr]['content']) {
+            case '$_GET':
+                return true;
+            case '$_POST':
+                return true;
+            default:
+                return false;
+        }
     }
     
-    public function isFunctionUserInput($stackPtr) {
-      switch ($this->tokens[$stackPtr]['content']) {
-        case 'variable_get':
-          return true;
-        default:
-          return false;
-      }
+    public function isFunctionUserInput($stackPtr)
+    {
+        switch ($this->tokens[$stackPtr]['content']) {
+            case 'variable_get':
+                return true;
+            default:
+                return false;
+        }
     }
     
   //protected function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens) {
-    public function isFunctionCall($stackPtr) {
-        $openBracket = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true); 
+    public function isFunctionCall($stackPtr)
+    {
+        $openBracket = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($this->tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
-           return false;
+            return false;
         }
         if (isset($this->tokens[$openBracket]['parenthesis_closer']) === false) {
-           return false;
+            return false;
         }
         return true;
     }
     
-    public function isVariableArray($stackPtr) {
-      $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
-      if ($this->tokens[$nextPtr]['code'] === T_OPEN_SQUARE_BRACKET) {
-        return $nextPtr;
-      }
-      return false;
+    public function isVariableArray($stackPtr)
+    {
+        $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        if ($this->tokens[$nextPtr]['code'] === T_OPEN_SQUARE_BRACKET) {
+            return $nextPtr;
+        }
+        return false;
     }
     
     /**
@@ -260,14 +263,14 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return boolean
      */
-    public function isBeingPrinted($stackPtr) {
-      $prevPtr = $this->phpcsFile->findPrevious(array(T_PRINT, T_ECHO), $stackPtr - 1, null, false, null, true);
-      if ($prevPtr !== false) {
-        return true;
-      }
-      else {
-        return false;
-      }
+    public function isBeingPrinted($stackPtr)
+    {
+        $prevPtr = $this->phpcsFile->findPrevious(array(T_PRINT, T_ECHO), $stackPtr - 1, null, false, null, true);
+        if ($prevPtr !== false) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
@@ -278,19 +281,19 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer or false Stack pointer within print statement or false.
      */
-    public function isPrinted($stackPtr, $end = null) {
+    public function isPrinted($stackPtr, $end = null)
+    {
       // print $foo; echo "bar " . $foo; print "$foo"; print foo();
       // @todo finish
-      $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, $end, true, $this->tokens[$stackPtr]['content']);
-      if ($nextPtr === false) {
-        return false;
-      }
-      if ($this->isBeingPrinted($nextPtr)) {
-        return $nextPtr;
-      }
-      else {
-        return $this->isPrinted($nextPtr, $end);
-      }
+        $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, $end, true, $this->tokens[$stackPtr]['content']);
+        if ($nextPtr === false) {
+            return false;
+        }
+        if ($this->isBeingPrinted($nextPtr)) {
+            return $nextPtr;
+        } else {
+            return $this->isPrinted($nextPtr, $end);
+        }
       /*if ($this->tokens[$nextPtr]['code'] == T_EQUAL) {
         $nextPtr = $this->phpcsFile->findNext(array(T_PRINT, T_ECHO), $nextPtr + 1, null, true);
         return $nextPtr;
@@ -308,21 +311,21 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer or false Function stack pointer or false.
      */
-    public function isAnArgument($stackPtr, $end = null) {
+    public function isAnArgument($stackPtr, $end = null)
+    {
       // foo($bar); foo(array('foo', bar()), $bar);
-      $prevPtr = $this->phpcsFile->findPrevious(T_OPEN_PARENTHESIS, $stackPtr - 1, $end, false, null, true);
-      if ($prevPtr !== false) {
-        $prevPtr = $this->phpcsFile->findPrevious(T_STRING, $prevPtr - 1, $end, false, null, true);
+        $prevPtr = $this->phpcsFile->findPrevious(T_OPEN_PARENTHESIS, $stackPtr - 1, $end, false, null, true);
         if ($prevPtr !== false) {
-          if ($this->tokens[$prevPtr]['code'] == T_STRING) {
-            return $prevPtr;
-          }
-          elseif ($this->tokens[$prevPtr]['code'] == T_ARRAY) {
-            // @todo figure out what to do with this.
-          }
+            $prevPtr = $this->phpcsFile->findPrevious(T_STRING, $prevPtr - 1, $end, false, null, true);
+            if ($prevPtr !== false) {
+                if ($this->tokens[$prevPtr]['code'] == T_STRING) {
+                    return $prevPtr;
+                } elseif ($this->tokens[$prevPtr]['code'] == T_ARRAY) {
+                    // @todo figure out what to do with this.
+                }
+            }
         }
-      }
-      return false;
+        return false;
     }
     
     /**
@@ -332,19 +335,20 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer or false Assigned stack pointer or false if not.
      */
-    public function isBeingAssigned($stackPtr) {
-      $prevPtr = $stackPtr;
-      $prevPtr = $this->phpcsFile->findPrevious(T_EQUAL, $stackPtr - 1, null, false, null, true);
-      if ($prevPtr !== false) {
-        return true;
-      }
+    public function isBeingAssigned($stackPtr)
+    {
+        $prevPtr = $stackPtr;
+        $prevPtr = $this->phpcsFile->findPrevious(T_EQUAL, $stackPtr - 1, null, false, null, true);
+        if ($prevPtr !== false) {
+            return true;
+        }
       /*while (($prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true, null, true)) !== false) {
         if ($this->tokens[$prevPtr]['code'] == T_EQUAL) {
           $prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true);
           return $prevPtr;
         }
       }*/
-      return false;
+        return false;
       /*$prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
       if ($this->tokens[$prevPtr]['code'] == T_EQUAL) {
         $prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true);
@@ -362,16 +366,16 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer or false Assigned stack pointer or false if not.
      */
-    public function isAssignment($stackPtr) {
-      $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
-      if ($this->tokens[$nextPtr]['code'] == T_EQUAL) {
-        $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $nextPtr + 1, null, true);
-        // @todo logic of assignment?
-        return $nextPtr;
-      }
-      else {
-        return false;
-      }
+    public function isAssignment($stackPtr)
+    {
+        $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        if ($this->tokens[$nextPtr]['code'] == T_EQUAL) {
+            $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $nextPtr + 1, null, true);
+            // @todo logic of assignment?
+            return $nextPtr;
+        } else {
+            return false;
+        }
     }
     
     /**
@@ -381,14 +385,14 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return boolean True if pointer is within return statement.
      */
-    public function isBeingReturned($stackPtr) {
-      $prevPtr = $this->phpcsFile->findPrevious(T_RETURN, $stackPtr - 1, null, false, null, true);
-      if ($this->tokens[$prevPtr]['code'] == T_RETURN) {
-        return true;
-      }
-      else {
-        return false;
-      }
+    public function isBeingReturned($stackPtr)
+    {
+        $prevPtr = $this->phpcsFile->findPrevious(T_RETURN, $stackPtr - 1, null, false, null, true);
+        if ($this->tokens[$prevPtr]['code'] == T_RETURN) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
@@ -399,17 +403,17 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer for assigned stack pointer or false if not.
      */
-    public function isReturned($stackPtr, $end = null) {
-      $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, $end, true, $this->tokens[$stackPtr]['content']);
-      if ($nextPtr === false) {
-        return false;
-      }
-      if ($this->isBeingReturned($nextPtr)) {
-        return $nextPtr;
-      }
-      else {
-        return $this->isReturned($nextPtr, $end);
-      }
+    public function isReturned($stackPtr, $end = null)
+    {
+        $nextPtr = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, $end, true, $this->tokens[$stackPtr]['content']);
+        if ($nextPtr === false) {
+            return false;
+        }
+        if ($this->isBeingReturned($nextPtr)) {
+            return $nextPtr;
+        } else {
+            return $this->isReturned($nextPtr, $end);
+        }
     }
     
     /**
@@ -419,17 +423,17 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer or false Function definition stack pointer or false.
      */
-    public function isWithinFunction($stackPtr) {
+    public function isWithinFunction($stackPtr)
+    {
       // traverse up previous tokens looking for function definition
-      $prevPtr = $this->phpcsFile->findPrevious(array(T_OPEN_CURLY_BRACKET, T_CLOSE_CURLY_BRACKET), $stackPtr - 1);
-      if ($this->tokens[$prevPtr]['code'] == T_OPEN_CURLY_BRACKET) {
-        // @todo check if function/method or class?
-        $prevPtr = $this->phpcsFile->findPrevious(T_FUNCTION, $prevPtr - 1);
-        return $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr + 1, null, true);
-      }
-      elseif ($this->tokens[$prevPtr]['code'] == T_CLOSE_CURLY_BRACKET) {
-        return false;
-      }
+        $prevPtr = $this->phpcsFile->findPrevious(array(T_OPEN_CURLY_BRACKET, T_CLOSE_CURLY_BRACKET), $stackPtr - 1);
+        if ($this->tokens[$prevPtr]['code'] == T_OPEN_CURLY_BRACKET) {
+            // @todo check if function/method or class?
+            $prevPtr = $this->phpcsFile->findPrevious(T_FUNCTION, $prevPtr - 1);
+            return $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr + 1, null, true);
+        } elseif ($this->tokens[$prevPtr]['code'] == T_CLOSE_CURLY_BRACKET) {
+            return false;
+        }
     }
     
     /**
@@ -439,57 +443,56 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      *
      * @return integer or False Array value for key pointer or false.
      */
-    public function isArrayKeyAssigned($stackPtr) {
-      $next = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-      if ($this->tokens[$next]['code'] === T_DOUBLE_ARROW) {
-        return $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
-      }
-      elseif ($this->tokens[$next]['code'] === T_CLOSE_SQUARE_BRACKET) {
-        $next = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
-        if ($this->tokens[$next]['code'] === T_EQUAL) {
-          return $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
+    public function isArrayKeyAssigned($stackPtr)
+    {
+        $next = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        if ($this->tokens[$next]['code'] === T_DOUBLE_ARROW) {
+            return $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
+        } elseif ($this->tokens[$next]['code'] === T_CLOSE_SQUARE_BRACKET) {
+            $next = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
+            if ($this->tokens[$next]['code'] === T_EQUAL) {
+                return $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
+            } elseif ($this->tokens[$next]['code'] === T_OPEN_SQUARE_BRACKET) {
+                return $next;
+            }
+        } elseif ($this->tokens[$next]['code'] === T_COMMA) {
+            return false;
         }
-        elseif ($this->tokens[$next]['code'] === T_OPEN_SQUARE_BRACKET) {
-          return $next;
-        }
-      }
-      elseif ($this->tokens[$next]['code'] === T_COMMA) {
-        return FALSE;
-      }
     }
     
-    public function sanitizationFunctions() {
-      $functions = array(
+    public function sanitizationFunctions()
+    {
+        $functions = array(
         'check_plain',
         'check_markup',
         'filter_xss',
         'filter_xss_admin',
         'strip_tags',
-      );
-      return $functions;
+        );
+        return $functions;
     }
 
     /**
      * Determine if $stackPtr is part of sanitization process.
      */
-    public function isBeingSanitized($stackPtr) {
+    public function isBeingSanitized($stackPtr)
+    {
       //$prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true);
-      $prevPtr = $stackPtr;
+        $prevPtr = $stackPtr;
       //$parens = 0;
-      while (($prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true, null, true)) !== false) {
-        if ($this->tokens[$prevPtr]['code'] === T_OPEN_PARENTHESIS) {// && $parens > 0) {
-          $prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true, null, true);
-          if ($this->tokens[$prevPtr]['code'] === T_STRING) {
-            if (in_array($this->tokens[$prevPtr]['content'], $this->sanitizationFunctions())) {
-              return true;
+        while (($prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true, null, true)) !== false) {
+            if ($this->tokens[$prevPtr]['code'] === T_OPEN_PARENTHESIS) {// && $parens > 0) {
+                $prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true, null, true);
+                if ($this->tokens[$prevPtr]['code'] === T_STRING) {
+                    if (in_array($this->tokens[$prevPtr]['content'], $this->sanitizationFunctions())) {
+                        return true;
+                    }
+                }
+            } elseif ($this->tokens[$prevPtr]['code'] === T_CLOSE_PARENTHESIS) {
+                // @todo do something fancy
             }
-          }
         }
-        elseif ($this->tokens[$prevPtr]['code'] === T_CLOSE_PARENTHESIS) {
-          // @todo do something fancy
-        }
-      }
-      return false;
+        return false;
       /*if ($this->tokens[$prevPtr]['code'] === T_OPEN_PARENTHESIS) {
         $prevPtr = $this->phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $prevPtr - 1, null, true, null, true);
         if ($this->tokens[$prevPtr]['code'] === T_STRING) {
@@ -512,8 +515,8 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
     /**
      *
      */
-    public function wasSanitized($stackPtr) {
-      
+    public function wasSanitized($stackPtr)
+    {
     }
     
     /*
@@ -612,43 +615,46 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
         return $this->functionCalls[$stackPtr][$counter];
     }
     
-    public function getFunctionReturn($functionString, $start = null) {
-      $defPtr = $this->getFunctionDefinition($functionString);
-      if (empty($defPtr)) {
-        return false;
-      }
-      $returnPtr = $this->phpcsFile->findNext(T_RETURN, $defPtr + 1);
-      $nextPos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $returnPtr + 1, null, true, null, true);
-      return $nextPos;
-    }
-    
-    function getFunctionDefinition($functionString) {
-      foreach ($this->tokens as $pos => $token) {
-        if ($token['code'] == T_FUNCTION) {
-          $defPtr = $this->phpcsFile->findNext(T_STRING, $pos, null, false, $functionString);
-          if ($defPtr) {
-            break;
-          }
+    public function getFunctionReturn($functionString, $start = null)
+    {
+        $defPtr = $this->getFunctionDefinition($functionString);
+        if (empty($defPtr)) {
+            return false;
         }
-      }
-      if (empty($defPtr)) {
-        return false;
-      }
-      // @todo further verify this is a function definition.
-      return $defPtr;
+        $returnPtr = $this->phpcsFile->findNext(T_RETURN, $defPtr + 1);
+        $nextPos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $returnPtr + 1, null, true, null, true);
+        return $nextPos;
     }
     
-    function getFunctionDefinitionArguments($stackPtr) {
-      $openBracket = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-      $closeBracket = isset($this->tokens[$openBracket]['parenthesis_closer']) ? $this->tokens[$openBracket]['parenthesis_closer'] : false;
+    function getFunctionDefinition($functionString)
+    {
+        foreach ($this->tokens as $pos => $token) {
+            if ($token['code'] == T_FUNCTION) {
+                $defPtr = $this->phpcsFile->findNext(T_STRING, $pos, null, false, $functionString);
+                if ($defPtr) {
+                    break;
+                }
+            }
+        }
+        if (empty($defPtr)) {
+            return false;
+        }
+      // @todo further verify this is a function definition.
+        return $defPtr;
+    }
+    
+    function getFunctionDefinitionArguments($stackPtr)
+    {
+        $openBracket = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $closeBracket = isset($this->tokens[$openBracket]['parenthesis_closer']) ? $this->tokens[$openBracket]['parenthesis_closer'] : false;
 
-      if ($this->tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
-        return false;
-      }
+        if ($this->tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
+            return false;
+        }
 
-      if (isset($this->tokens[$openBracket]['parenthesis_closer']) === false) {
-        return false;
-      }
+        if (isset($this->tokens[$openBracket]['parenthesis_closer']) === false) {
+            return false;
+        }
       
       // Start token of the first argument.
         $start = $this->phpcsFile->findNext(T_VARIABLE, ($openBracket + 1), $closeBracket);
@@ -659,8 +665,8 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
 
         $arguments = array($start);
         while (($nextArgument = $this->phpcsFile->findNext(T_VARIABLE, ($start + 1), $closeBracket)) !== false) {
-          $arguments[] = $nextArgument;
-          $start = $nextArgument;
+            $arguments[] = $nextArgument;
+            $start = $nextArgument;
         }
         return $arguments;
     }
@@ -671,48 +677,47 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
      * @param integer $stackPtr
      * @return integer Stack pointer to closing bracket.
      */
-    public function getFunctionCloseBracket($stackPtr) {
+    public function getFunctionCloseBracket($stackPtr)
+    {
       //$closingBracket = $this->phpcsFile->findNext(T_COMMA, $stackPtr + 1, null
       //$prevPtr = $this->phpcsFile->findPrevious(array(T_OPEN_CURLY_BRACKET, T_CLOSE_CURLY_BRACKET), $stackPtr - 1);
     }
     
     public function getVariableAssignment($stackPtr, $variable, $element = null)
     {
-      print 'Getting assignment for variable ' . $variable . "\n";
-       $found = false;
-       while ($found !== true) {
+        print 'Getting assignment for variable ' . $variable . "\n";
+        $found = false;
+        while ($found !== true) {
                 $pos = $this->phpcsFile->findPrevious(T_VARIABLE, $stackPtr - 1, null, false, $variable);
                 //print_r($this->tokens[$pos]). "\n";
-                if ($pos !== false) {
-                    $nextPos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $pos + 1, null, true);
-                    //print_r($this->tokens[$nextPos]). "\n";
-                    if ($this->tokens[$nextPos]['code'] === T_OPEN_SQUARE_BRACKET) {
-                      if (isset($element) && $element == $nextPos) {
+            if ($pos !== false) {
+                $nextPos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $pos + 1, null, true);
+                //print_r($this->tokens[$nextPos]). "\n";
+                if ($this->tokens[$nextPos]['code'] === T_OPEN_SQUARE_BRACKET) {
+                    if (isset($element) && $element == $nextPos) {
                         // Find where array element was set.
-                      }
                     }
-                    // @todo method operator
-                    elseif ($this->tokens[$nextPos]['code'] !== T_EQUAL) {
-                      // not assigning the variable
-                      return;///continue;
-                    }
-                    elseif ($this->tokens[$nextPos]['code'] === T_CLOSE_PARENTHESIS) {
-                      if ($this->isFunctionArgument($nextPos)) {
+                } // @todo method operator
+                elseif ($this->tokens[$nextPos]['code'] !== T_EQUAL) {
+                  // not assigning the variable
+                    return;///continue;
+                } elseif ($this->tokens[$nextPos]['code'] === T_CLOSE_PARENTHESIS) {
+                    if ($this->isFunctionArgument($nextPos)) {
                         //
-                      }
                     }
-                    $pos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $nextPos + 1, null, true);
-                    //print_r($this->tokens[$pos]). "\n";
-                    return $pos;
                 }
-                else {
-                    // Hit the stack beginning, don't continue.
-                    return false; // @todo make exception
-                }
+                $pos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $nextPos + 1, null, true);
+                //print_r($this->tokens[$pos]). "\n";
+                return $pos;
+            } else {
+                // Hit the stack beginning, don't continue.
+                return false; // @todo make exception
             }
+        }
     }
     
-    public function stringContainsVariable($stackPtr) {
+    public function stringContainsVariable($stackPtr)
+    {
       //print "looking for variable in " . $this->tokens[$stackPtr]['content'] . "\n";
       // @todo figure this out
     }

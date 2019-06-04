@@ -30,7 +30,7 @@ class PhingPropertiesHelper
      */
     function __construct(OutputInterface $output)
     {
-      $this->output = $output;
+        $this->output = $output;
     }
 
     /**
@@ -56,14 +56,16 @@ class PhingPropertiesHelper
             // If we haven't reached root yet, retry in parent folder.
             if (dirname($path) != $path) {
                 return $this->findPhingBuildFile(dirname($path));
-            }
-            else {
+            } else {
                 throw new \Symfony\Component\Debug\Exception\FatalErrorException(
-                    "Reached filesystem root without finding '$filename'.", 0, 1, __FILE__, __LINE__
+                    "Reached filesystem root without finding '$filename'.",
+                    0,
+                    1,
+                    __FILE__,
+                    __LINE__
                 );
             }
-        }
-        // If found return absolute path.
+        } // If found return absolute path.
         else {
             return "$path/build.xml";
         }
@@ -106,7 +108,6 @@ class PhingPropertiesHelper
             $property = trim(substr($line, 0, $pos));
             $value = trim(substr($line, $pos + 1));
             $properties[$property] = $this->inVal($value);
-
         } // for each line
 
         return $properties;
@@ -140,7 +141,8 @@ class PhingPropertiesHelper
      * @param string $buildproperties
      *   The (relative?) path to the build properties file.
      */
-    private function setBuildProperties($contents, $settings, &$buildproperties) {
+    private function setBuildProperties($contents, $settings, &$buildproperties)
+    {
 
         // Replace root paths.
         $contents = str_replace('${project.basedir}', $settings['project.basedir'], $contents);
@@ -148,7 +150,7 @@ class PhingPropertiesHelper
 
         if ($xml = simplexml_load_string($contents)) {
             $json = json_encode($xml);
-            $array = json_decode($json, TRUE);
+            $array = json_decode($json, true);
             if (isset($array['property'])) {
                 foreach ($array['property'] as $property) {
                     if (isset($property['@attributes']['file'])) {
@@ -193,7 +195,8 @@ class PhingPropertiesHelper
      *   the property value.
      * @throws \Symfony\Component\Debug\Exception\FatalErrorException
      */
-    public function requestSettings($options) {
+    public function requestSettings($options)
+    {
 
         $settings = $this->getAllSettings();
         $selection = array();
@@ -215,32 +218,37 @@ class PhingPropertiesHelper
      * @return string
      *   Path leading from $frompath to $topath
      */
-    public function findRelativePath ( $frompath, $topath )
+    public function findRelativePath($frompath, $topath)
     {
-        $from = explode( DIRECTORY_SEPARATOR, $frompath ); // Folders/File
-        $to = explode( DIRECTORY_SEPARATOR, $topath ); // Folders/File
+        $from = explode(DIRECTORY_SEPARATOR, $frompath); // Folders/File
+        $to = explode(DIRECTORY_SEPARATOR, $topath); // Folders/File
         $relpath = '';
 
         $i = 0;
         // Find how far the path is the same
-        while ( isset($from[$i]) && isset($to[$i]) ) {
-            if ( $from[$i] != $to[$i] ) break;
+        while (isset($from[$i]) && isset($to[$i])) {
+            if ($from[$i] != $to[$i]) {
+                break;
+            }
             $i++;
         }
-        $j = count( $from ) - 1;
+        $j = count($from) - 1;
         // Add '..' until the path is the same
-        while ( $i <= $j ) {
-            if ( !empty($from[$j]) ) $relpath .= '..'.DIRECTORY_SEPARATOR;
+        while ($i <= $j) {
+            if (!empty($from[$j])) {
+                $relpath .= '..'.DIRECTORY_SEPARATOR;
+            }
             $j--;
         }
         // Go to folder from where it starts differing
-        while ( isset($to[$i]) ) {
-              if ( !empty($to[$i]) ) $relpath .= $to[$i].DIRECTORY_SEPARATOR;
+        while (isset($to[$i])) {
+            if (!empty($to[$i])) {
+                $relpath .= $to[$i].DIRECTORY_SEPARATOR;
+            }
               $i++;
         }
 
         // Strip last separator
         return substr($relpath, 0, -1);
     }
-
 }

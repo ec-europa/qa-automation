@@ -28,7 +28,6 @@ class QualityAssurance_Sniffs_InstallFiles_HookUpdateNSniff implements PHP_CodeS
     public function register()
     {
         return array(T_FUNCTION);
-
     }//end register()
 
 
@@ -103,8 +102,5 @@ class QualityAssurance_Sniffs_InstallFiles_HookUpdateNSniff implements PHP_CodeS
         if (preg_match('/^[\s]*Implement[^\n]+?hook_update_N[^\n]+/i', $shortContent, $matches)) {
             $phpcsFile->addError('Replace "' . $matches[0] . '" with a short description on the hooks functionality.', $short, "UpdateNDescription");
         }//end if
-
     }//end process()
-
-
 }//end class

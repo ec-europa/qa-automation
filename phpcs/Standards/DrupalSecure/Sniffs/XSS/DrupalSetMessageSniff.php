@@ -17,18 +17,20 @@ class DrupalSecure_Sniffs_XSS_DrupalSetMessageSniff extends DrupalSecure_Sniffs_
      *
      * @return array
      */
-    public function registerFunctionNames() {
+    public function registerFunctionNames()
+    {
         // Register the Drupal output functions to scan.
         return array('drupal_set_message');
     }
 
-    public function processFunctionCall(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr) {
+    public function processFunctionCall(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr)
+    {
         return;
         #print "processing " . $sniff->tokens[$stackPtr]['content'] . "\n";
         
         // check if token content is function call and function we care about
         // Get function arguments and determine if it's user input and has not been
-        // sanitized or filtered. 
+        // sanitized or filtered.
 
         // Functions have different arguments that need to be checked.
         $argument = $sniff->getFunctionCallArgument($stackPtr, 1);
@@ -36,17 +38,15 @@ class DrupalSecure_Sniffs_XSS_DrupalSetMessageSniff extends DrupalSecure_Sniffs_
             if ($sniff->isFunctionUserInput($argument['start'])) {
                 $error = 'Input to %s is unsanitized from %s';
                 $sniff->phpcsFile->addError($error, $stackPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), trim($sniff->tokens[$argument['start']]['content'])));
+            } else {
+                $this->processFunctionCall($sniff, $argument['start']);
             }
-            else {
-              $this->processFunctionCall($sniff, $argument['start']);
-            }
-        }
-        elseif ($sniff->tokens[$argument['start']]['code'] === T_VARIABLE) {
+        } elseif ($sniff->tokens[$argument['start']]['code'] === T_VARIABLE) {
             if ($sniff->isVariableUserInput($argument['start'])) {
                 $error = 'Input to %s is unsanitized from %s';
                 $sniff->phpcsFile->addError($error, $stackPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), trim($sniff->tokens[$argument['start']]['content'])));
                 return;
-            } 
+            }
             $value = $sniff->tokens[$argument['start']]['content'];
             $assignment = $sniff->getVariableAssignment($argument['start'], $value);
             if (empty($assignment)) {
@@ -54,34 +54,29 @@ class DrupalSecure_Sniffs_XSS_DrupalSetMessageSniff extends DrupalSecure_Sniffs_
                 return;
             }
             switch ($sniff->tokens[$assignment]['code']) {
-              case T_VARIABLE:
-                // determine if variable is specific input
-                if ($sniff->isVariableUserInput($assignment)) {
-                  $error = 'Input to %s is unsanitized from %s';
-                  $sniff->phpcsFile->addError($error, $stackPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), trim($sniff->tokens[$assignment]['content'])));
-                }       
-                // @todo call checkVariable again
-                return;
-              case T_CONSTANT_ENCAPSED_STRING:
-              case T_DOUBLE_QUOTED_STRING:
-                // @todo hard-coded value
-                return;
-              case T_STRING:
-                if ($sniff->isFunctionCall($assignment)) { 
-                  if ($sniff->isFunctionUserInput($assignment)) {
+                case T_VARIABLE:
+                    // determine if variable is specific input
+                    if ($sniff->isVariableUserInput($assignment)) {
                         $error = 'Input to %s is unsanitized from %s';
                         $sniff->phpcsFile->addError($error, $stackPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), trim($sniff->tokens[$assignment]['content'])));
                     }
-                    else {
-                      $this->processFunctionCall($sniff, $argument['start']);
+                    // @todo call checkVariable again
+                    return;
+                case T_CONSTANT_ENCAPSED_STRING:
+                case T_DOUBLE_QUOTED_STRING:
+                    // @todo hard-coded value
+                    return;
+                case T_STRING:
+                    if ($sniff->isFunctionCall($assignment)) {
+                        if ($sniff->isFunctionUserInput($assignment)) {
+                              $error = 'Input to %s is unsanitized from %s';
+                              $sniff->phpcsFile->addError($error, $stackPtr, 'DangerousUserInput', array(trim($sniff->tokens[$stackPtr]['content']), trim($sniff->tokens[$assignment]['content'])));
+                        } else {
+                            $this->processFunctionCall($sniff, $argument['start']);
+                        }
                     }
-                }
-                return;
+                    return;
             }
         }
     }
-
 }
-
-?>
-

@@ -31,7 +31,6 @@ class QualityAssurance_Sniffs_Functions_HardcodedImageSniff implements PHP_CodeS
           T_CONSTANT_ENCAPSED_STRING,
           T_INLINE_HTML
         );
-
     }//end register()
 
 
@@ -60,12 +59,9 @@ class QualityAssurance_Sniffs_Functions_HardcodedImageSniff implements PHP_CodeS
         $regexp = '<img.*?src\s*=.*?>';
 
         // If image is found.
-        if(preg_match("/$regexp/", $token['content'], $matches)) {
+        if (preg_match("/$regexp/", $token['content'], $matches)) {
             $error = 'Hardcoded image not allowed in template file, use theme(\'image\') function instead.';
             $phpcsFile->addError($error, $stackPtr, 'HardcodedImage');
         }
-
     }//end process()
-
-
 }//end class

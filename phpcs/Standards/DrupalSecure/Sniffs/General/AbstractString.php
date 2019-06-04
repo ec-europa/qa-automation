@@ -30,7 +30,6 @@ abstract class DrupalSecure_Sniffs_General_AbstractString implements PHP_CodeSni
         // We do not listen for tokens, but for specific strings.
         DrupalSecure_Sniffs_General_HelperSniff::registerStringListener($this);
         return array();
-
     }//end register()
 
 
@@ -46,7 +45,6 @@ abstract class DrupalSecure_Sniffs_General_AbstractString implements PHP_CodeSni
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         // Empty default implementation, because processFunctionCall() is used.
-
     }//end process()
 
 
@@ -67,8 +65,5 @@ abstract class DrupalSecure_Sniffs_General_AbstractString implements PHP_CodeSni
      *
      * @return void
      */
-    public abstract function processString(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr);
-
+    abstract public function processString(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr);
 }//end class
-
-?>

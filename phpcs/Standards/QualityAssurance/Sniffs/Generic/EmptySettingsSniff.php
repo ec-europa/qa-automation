@@ -23,14 +23,13 @@ class QualityAssurance_Sniffs_Generic_EmptySettingsSniff implements PHP_CodeSnif
    *
    * @return array
    */
-  public function register()
-  {
-    return array(
-      T_STRING,
-      T_CONSTANT_ENCAPSED_STRING,
-    );
-
-  }//end register()
+    public function register()
+    {
+        return array(
+        T_STRING,
+        T_CONSTANT_ENCAPSED_STRING,
+        );
+    }//end register()
 
 
   /**
@@ -42,40 +41,37 @@ class QualityAssurance_Sniffs_Generic_EmptySettingsSniff implements PHP_CodeSnif
    *
    * @return void
    */
-  public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-  {
-    // Only run this sniff once per strongarm exported file.
-    $end = (count($phpcsFile->getTokens()) + 1);
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        // Only run this sniff once per strongarm exported file.
+        $end = (count($phpcsFile->getTokens()) + 1);
 
-    // If the file extension is diferent from strongarm.inc return.
-    $fileName = $phpcsFile->getFilename();
-    $fileExtension = strtolower(substr($fileName, -13));
-    if ($fileExtension !== 'strongarm.inc') {
-      return $end;
-    }
+        // If the file extension is diferent from strongarm.inc return.
+        $fileName = $phpcsFile->getFilename();
+        $fileExtension = strtolower(substr($fileName, -13));
+        if ($fileExtension !== 'strongarm.inc') {
+            return $end;
+        }
 
-    // Check whole project for string "pathauto".
-    $file_content = file_get_contents($phpcsFile->getFilename());
-    // If no pathauto setting found return.
-    if (strpos($file_content, 'pathauto') === false) {
-      return $end;
-    }
+        // Check whole project for string "pathauto".
+        $file_content = file_get_contents($phpcsFile->getFilename());
+        // If no pathauto setting found return.
+        if (strpos($file_content, 'pathauto') === false) {
+            return $end;
+        }
 
-    // Get our tokens.
-    $tokens = $phpcsFile->getTokens();
-    $token  = $tokens[$stackPtr];
+        // Get our tokens.
+        $tokens = $phpcsFile->getTokens();
+        $token  = $tokens[$stackPtr];
 
-    // If our token have the keyword pathauto, check next property and value.
-    if (strpos($token['content'], 'pathauto') !== false) {
-      if (
-        $tokens[$stackPtr + 10]['content'] == "''" &&
-        $tokens[$stackPtr + 6]['content'] == 'value'
-      ) {
-        $error = "Empty strongarm settings for " . $token['content'] . " are not allowed.";
-        $phpcsFile->addError($error, $stackPtr, 'Strongarm');
-      }
-    }
-
-  }//end process()
-
+        // If our token have the keyword pathauto, check next property and value.
+        if (strpos($token['content'], 'pathauto') !== false) {
+            if ($tokens[$stackPtr + 10]['content'] == "''" &&
+            $tokens[$stackPtr + 6]['content'] == 'value'
+            ) {
+                $error = "Empty strongarm settings for " . $token['content'] . " are not allowed.";
+                $phpcsFile->addError($error, $stackPtr, 'Strongarm');
+            }
+        }
+    }//end process()
 }//end class

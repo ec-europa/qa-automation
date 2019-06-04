@@ -28,7 +28,6 @@ class QualityAssurance_Sniffs_InstallFiles_InstallUpdateCallbacksSniff implement
     public function register()
     {
         return array(T_FUNCTION);
-
     }//end register()
 
 
@@ -58,17 +57,17 @@ class QualityAssurance_Sniffs_InstallFiles_InstallUpdateCallbacksSniff implement
 
         // Search in the function body for drupal_add_css() calls.
         $string = $phpcsFile->findNext(
-          T_STRING,
-          $tokens[$stackPtr]['scope_opener'],
-          $tokens[$stackPtr]['scope_closer']
+            T_STRING,
+            $tokens[$stackPtr]['scope_opener'],
+            $tokens[$stackPtr]['scope_closer']
         );
         while ($string !== false) {
             if (preg_match('/^' . $fileName . '_update_7\d{3}$/', $tokens[$string]['content'])) {
                 $opener = $phpcsFile->findNext(
-                  PHP_CodeSniffer_Tokens::$emptyTokens,
-                  ($string + 1),
-                  null,
-                  true
+                    PHP_CodeSniffer_Tokens::$emptyTokens,
+                    ($string + 1),
+                    null,
+                    true
                 );
                 if ($opener !== false
                   && $tokens[$opener]['code'] === T_OPEN_PARENTHESIS
@@ -79,13 +78,10 @@ class QualityAssurance_Sniffs_InstallFiles_InstallUpdateCallbacksSniff implement
             }
 
             $string = $phpcsFile->findNext(
-              T_STRING,
-              ($string + 1),
-              $tokens[$stackPtr]['scope_closer']
+                T_STRING,
+                ($string + 1),
+                $tokens[$stackPtr]['scope_closer']
             );
         }//end while
-
     }//end process()
-
-
 }//end class

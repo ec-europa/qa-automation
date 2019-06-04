@@ -29,7 +29,6 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_Cod
             T_ARRAY,
             T_OPEN_SHORT_ARRAY,
         );
-
     }//end register()
 
 
@@ -102,7 +101,5 @@ class QualityAssurance_Sniffs_FeaturesFiles_LockedFieldsSniff implements PHP_Cod
 
         // If we have checked level one, exit the array.
         return $arrayEnd;
-
     }//end process()
-
 }//end class
