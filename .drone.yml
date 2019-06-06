@@ -27,8 +27,8 @@ pipeline:
   phpcs:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
-      - ./bin/phpcs
+      - ./vendor/bin/phpcs -p
   phpunit:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
-      - ./bin/phpunit phpcs/
+      - ./vendor/bin/phpunit phpcs/
