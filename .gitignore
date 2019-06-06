@@ -1,8 +1,0 @@
-.idea
-.DS_Store
-bin/phpcbf
-bin/phpcs
-bin/phpunit
-bin/phing
-composer.lock
-vendor/

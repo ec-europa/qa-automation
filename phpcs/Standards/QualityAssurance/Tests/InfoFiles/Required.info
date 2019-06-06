@@ -1,4 +1,0 @@
-; missing php and multisite_version properties
-name = MyProject Core
-description = Core feature of the MyProject site.
-core = 7.x
