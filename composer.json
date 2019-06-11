@@ -13,8 +13,8 @@
         "code review"
     ],
     "require": {
-        "drupal/coder": "^8.3",
-        "squizlabs/php_codesniffer": "^3.4.0"
+        "openeuropa/code-review": "^1.0@beta",
+        "phpcompatibility/php-compatibility": "^9.1"
     },
     "autoload": {
         "psr-0": {
