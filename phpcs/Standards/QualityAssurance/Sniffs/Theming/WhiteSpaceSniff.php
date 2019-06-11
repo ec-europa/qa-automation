@@ -78,7 +78,10 @@ class QualityAssurance_Sniffs_Theming_WhiteSpaceSniff implements PHP_CodeSniffer
             // Check if element 3 positions before closing PHP tag is a whitespace.
             if ($nonSpace['type'] === 'T_WHITESPACE') {
                 $error = "There shouldn't be any whitespace found before the colon.";
-                $phpcsFile->addError($error, $stackPtr, 'WhiteSpaceFound', true);
+                $fix   = $phpcsFile->addFixableError($error, ($tagClose - 3), 'WhiteSpaceFound');
+                if ($fix === true) {
+                    $phpcsFile->fixer->replaceToken(($tagClose - 3), '');
+                }
             }
         }
     }//end process()
