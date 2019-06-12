@@ -60,6 +60,8 @@ class QualityAssurance_Sniffs_Theming_WhiteSpaceSniff implements PHP_CodeSniffer
     // Find PHP close tag.    
     $tagClose = $phpcsFile->findNext(T_CLOSE_TAG, $stackPtr, null);
     $beforeClosePhp = $tokens[$tagClose - 1];
+    // Get element before whitespace.
+    $tagBeforeWhtsp = $phpcsFile->findPrevious(T_WHITESPACE, $tagClose - 1, null, TRUE);
 
     // Check for missing whitespace before closing PHP tag.
     if ($beforeClosePhp['type'] !== 'T_WHITESPACE') {
@@ -67,7 +69,9 @@ class QualityAssurance_Sniffs_Theming_WhiteSpaceSniff implements PHP_CodeSniffer
         $phpcsFile->addError($error, $stackPtr, 'MissingWhiteSpace', TRUE);
     }
     // Check for existent whitespace lenght.
-    if ($beforeClosePhp['type'] === 'T_WHITESPACE' && $beforeClosePhp['length'] > 1) {
+    if ($beforeClosePhp['type'] === 'T_WHITESPACE' &&
+        $beforeClosePhp['line'] === $tokens[$tagBeforeWhtsp]['line'] &&
+        $beforeClosePhp['length'] > 1) {
         $error = "There should be just one white space before the closing php tag.";
         $phpcsFile->addError($error, $stackPtr, 'MultipleWhiteSpaces', TRUE);            
     }
