@@ -1,0 +1,34 @@
+clone:
+  git:
+    image: plugins/git:next
+
+workspace:
+  base: /test
+  path: qa-automation
+
+matrix:
+  PHP_VERSION:
+    - 5.6
+    - 7.1
+
+services:
+  web:
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    environment:
+      - DOCUMENT_ROOT=/test/qa-automation
+
+pipeline:
+  composer:
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    commands:
+      - composer install --no-suggest
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+  phpcs:
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    commands:
+      - ./bin/phpcs
+  phpunit:
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    commands:
+      - ./bin/phpunit phpcs/

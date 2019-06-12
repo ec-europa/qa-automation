@@ -12,12 +12,13 @@
  */
 class DrupalSecure_Sniffs_CSRF_QuerySniff extends DrupalSecure_Sniffs_General_AbstractFunction
 {
-  public function registerFunctionNames() {
-    return array('db_query');
-  }
+    public function registerFunctionNames()
+    {
+        return array('db_query');
+    }
 
-  public function processFunctionCall(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr) {
-    return;
-  }
-
+    public function processFunctionCall(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr)
+    {
+        return;
+    }
 }

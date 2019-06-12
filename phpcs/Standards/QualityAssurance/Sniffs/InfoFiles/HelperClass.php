@@ -90,8 +90,5 @@ class QualityAssurance_Sniffs_InfoFiles_HelperClass
         }//end if
 
         return $info;
-
     }//end drupalParseInfoFormat()
-
-
 }//end class

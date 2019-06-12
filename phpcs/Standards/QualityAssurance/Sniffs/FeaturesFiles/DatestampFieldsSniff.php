@@ -31,7 +31,6 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff implements PHP_
             T_ARRAY,
             T_OPEN_SHORT_ARRAY,
         );
-
     }//end register()
 
 
@@ -111,6 +110,5 @@ class QualityAssurance_Sniffs_FeaturesFiles_DatestampFieldsSniff implements PHP_
 
         // If we have checked level one, exit the array.
         return $arrayEnd;
-
     }//end process()
 }//end class

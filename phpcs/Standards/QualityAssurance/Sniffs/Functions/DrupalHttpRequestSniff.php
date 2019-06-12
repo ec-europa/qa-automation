@@ -100,11 +100,11 @@ class QualityAssurance_Sniffs_Functions_DrupalHttpRequestSniff extends Generic_S
         if ($this->patternMatch === true) {
             $count   = 0;
             $pattern = preg_replace(
-              $this->forbiddenFunctionNames,
-              $this->forbiddenFunctionNames,
-              $function,
-              1,
-              $count
+                $this->forbiddenFunctionNames,
+                $this->forbiddenFunctionNames,
+                $function,
+                1,
+                $count
             );
 
             if ($count === 0) {
@@ -120,7 +120,6 @@ class QualityAssurance_Sniffs_Functions_DrupalHttpRequestSniff extends Generic_S
         }//end if
 
         $this->addError($phpcsFile, $stackPtr, $function, $pattern);
-
     }//end process()
 
 
@@ -135,7 +134,7 @@ class QualityAssurance_Sniffs_Functions_DrupalHttpRequestSniff extends Generic_S
      *
      * @return void
      */
-    protected function addError($phpcsFile, $stackPtr, $function, $pattern=null)
+    protected function addError($phpcsFile, $stackPtr, $function, $pattern = null)
     {
         $data  = array($function);
         $error = 'The use of function %s() is ';
@@ -157,7 +156,5 @@ class QualityAssurance_Sniffs_Functions_DrupalHttpRequestSniff extends Generic_S
 
             $phpcsFile->addError($error, $stackPtr, $type, $data);
         }
-
     }//end addError()
-
 }//end class

@@ -32,7 +32,6 @@ abstract class DrupalSecure_Sniffs_General_AbstractObjectProperty implements PHP
         // We do not listen for tokens, but for specific function calls.
         DrupalSecure_Sniffs_General_HelperSniff::registerObjectPropertyListener($this);
         return array();
-
     }//end register()
 
 
@@ -68,8 +67,5 @@ abstract class DrupalSecure_Sniffs_General_AbstractObjectProperty implements PHP
      *
      * @return void
      */
-    public abstract function processObjectProperty(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr);
-
+    abstract public function processObjectProperty(DrupalSecure_Sniffs_General_HelperSniff $sniff, $stackPtr);
 }//end class
-
-?>

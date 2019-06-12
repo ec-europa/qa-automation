@@ -44,9 +44,9 @@ $commands[] = new ScanCommentedCodeCommand();
 $commands[] = new ScanTodosCommand();
 $commands[] = new ScanThemeNameConflict();
 //$commands[] = new CheckStarterkitCommand();
-$commands[] = new ScanPlatformProvidedCommand();
-$commands[] = new DiffUpdateHooksCommand();
-$commands[] = new DiffMakeFilesCommand();
+//$commands[] = new ScanPlatformProvidedCommand();
+//$commands[] = new DiffUpdateHooksCommand();
+//$commands[] = new DiffMakeFilesCommand();
 $application->addCommands($commands);
 
 $application->run();

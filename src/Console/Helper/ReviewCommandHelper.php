@@ -62,7 +62,7 @@ class ReviewCommandHelper
     /**
      * Start a review process.
      */
-    public function startReview($section = FALSE)
+    public function startReview($section = false)
     {
         $failbuild = false;
 
@@ -251,8 +251,7 @@ class ReviewCommandHelper
         // Unset unwanted commands.
         $unwanted = array('help', 'list', 'check:ssk');
         foreach ($commands as $name => $command) {
-            if (
-                in_array($name, $unwanted) ||
+            if (in_array($name, $unwanted) ||
                 strpos($name, 'review:') === 0 ||
                 strpos($name, 'theme:') === 0
             ) {

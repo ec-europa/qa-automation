@@ -23,13 +23,12 @@ class QualityAssurance_Sniffs_Generic_PhpCodeViewSniff implements PHP_CodeSniffe
    *
    * @return array
    */
-  public function register()
-  {
-    return array(
-      T_CONSTANT_ENCAPSED_STRING,
-    );
-
-  }//end register()
+    public function register()
+    {
+        return array(
+        T_CONSTANT_ENCAPSED_STRING,
+        );
+    }//end register()
 
 
   /**
@@ -41,34 +40,32 @@ class QualityAssurance_Sniffs_Generic_PhpCodeViewSniff implements PHP_CodeSniffe
    *
    * @return void
    */
-  public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-  {
-    // Only run this sniff once per views exported file.
-    $end = (count($phpcsFile->getTokens()) + 1);
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        // Only run this sniff once per views exported file.
+        $end = (count($phpcsFile->getTokens()) + 1);
 
-    // If the file extension is diferent from views_default.inc return.
-    $fileName = $phpcsFile->getFilename();
-    $fileExtension = strtolower(substr($fileName, -17));
-    if ($fileExtension !== 'views_default.inc') {
-      return $end;
-    }
+        // If the file extension is diferent from views_default.inc return.
+        $fileName = $phpcsFile->getFilename();
+        $fileExtension = strtolower(substr($fileName, -17));
+        if ($fileExtension !== 'views_default.inc') {
+            return $end;
+        }
 
-    // Check views files for PHP code.
-    $file_content = file_get_contents($phpcsFile->getFilename());
-    // Get our tokens.
-    $tokens = $phpcsFile->getTokens();
-    $token  = $tokens[$stackPtr];
+        // Check views files for PHP code.
+        $file_content = file_get_contents($phpcsFile->getFilename());
+        // Get our tokens.
+        $tokens = $phpcsFile->getTokens();
+        $token  = $tokens[$stackPtr];
 
-    if ((strpos($file_content, 'php') === false && $token['line'] > 1) &&
-      strpos($file_content, 'code') === false) {
-      return $end;
-    }
+        if ((strpos($file_content, 'php') === false && $token['line'] > 1) &&
+        strpos($file_content, 'code') === false) {
+            return $end;
+        }
 
-    if ($token['content'] === "'code'" || $token['content'] === "'php'") {
-        $error = "PHP code is not allowed on views export.";
-        $phpcsFile->addError($error, $stackPtr, 'Views');
-    }
-
-  }//end process()
-
+        if ($token['content'] === "'code'" || $token['content'] === "'php'") {
+            $error = "PHP code is not allowed on views export.";
+            $phpcsFile->addError($error, $stackPtr, 'Views');
+        }
+    }//end process()
 }//end class

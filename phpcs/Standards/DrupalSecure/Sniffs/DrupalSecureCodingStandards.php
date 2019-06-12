@@ -22,4 +22,3 @@ class PHP_CodeSniffer_Standards_DrupalSecure_DrupalSecureCodingStandard extends 
                );
     }
 }
-

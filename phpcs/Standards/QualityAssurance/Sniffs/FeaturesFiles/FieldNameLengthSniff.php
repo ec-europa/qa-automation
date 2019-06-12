@@ -29,7 +29,6 @@ class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_
           T_ARRAY,
           T_OPEN_SHORT_ARRAY,
         );
-
     }//end register()
 
 
@@ -61,10 +60,10 @@ class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_
         }
 
         $lastItem = $phpcsFile->findPrevious(
-          PHP_CodeSniffer_Tokens::$emptyTokens,
-          ($tokens[$stackPtr][$parenthesis_closer] - 1),
-          $stackPtr,
-          true
+            PHP_CodeSniffer_Tokens::$emptyTokens,
+            ($tokens[$stackPtr][$parenthesis_closer] - 1),
+            $stackPtr,
+            true
         );
 
         // Empty array.
@@ -97,7 +96,5 @@ class QualityAssurance_Sniffs_FeaturesFiles_FieldNameLengthSniff implements PHP_
 
         // If we have checked level one, exit the array.
         return $arrayEnd;
-
     }//end process()
-
 }//end class
