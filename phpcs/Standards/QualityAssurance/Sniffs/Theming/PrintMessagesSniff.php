@@ -49,7 +49,7 @@ class QualityAssurance_Sniffs_Theming_PrintMessagesSniff implements PHP_CodeSnif
         $file_content = file_get_contents($phpcsFile->getFilename());
         $end = (count($phpcsFile->getTokens()) + 1);
 
-        if (!preg_match('~^page.*\.tpl\.php$~', $file_name) || $file_name === 'PrintMessagesError.tpl.php') {
+        if (!preg_match('~^page.*\.tpl\.php$~', $file_name) && $file_name !== 'PrintMessagesError.tpl.php') {
             return $end;
         }
 

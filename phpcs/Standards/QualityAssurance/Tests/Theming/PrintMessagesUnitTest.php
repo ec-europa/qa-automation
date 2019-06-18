@@ -13,7 +13,7 @@
     {
       // All the warning-free  files have no errors.
       $errors = [
-        1 => 1,
+        7 => 1,
       ];
        return (strpos($testFile, 'Error') === false) ? [] : $errors;
      }//end getErrorList()
