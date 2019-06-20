@@ -44,7 +44,7 @@
      */
     public function getTestFiles() {
         return array(
-          'WhiteSpaceError.tpl.php' => '',
+          'WhiteSpaceError.tpl.php' => 'WhiteSpaceError.fixed.tpl.php',
         );
     }// end getTestFiles()
 

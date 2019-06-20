@@ -65,14 +65,20 @@ class QualityAssurance_Sniffs_Theming_WhiteSpaceSniff implements PHP_CodeSniffer
         // Check for missing whitespace before closing PHP tag.
         if ($beforeClosePhp['type'] !== 'T_WHITESPACE') {
             $error = "Missing white space before closing php tag.";
-            $phpcsFile->addError($error, $stackPtr, 'MissingWhiteSpace', true);
+            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'MissingWhiteSpace');
+            if ($fix === true) {
+                $phpcsFile->fixer->addContent(($stackPtr -1), ' ');
+            }
         }
         // Check for existent whitespace lenght.
         if ($beforeClosePhp['type'] === 'T_WHITESPACE' &&
         $beforeClosePhp['line'] === $tokens[$tagBeforeWhtsp]['line'] &&
         $beforeClosePhp['length'] > 1) {
             $error = "There should be just one white space before the closing php tag.";
-            $phpcsFile->addError($error, $stackPtr, 'MultipleWhiteSpaces', true);
+            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'MultipleWhiteSpaces');
+            if ($fix === true) {
+                $phpcsFile->fixer->replaceToken(($stackPtr -1), ' ');
+            }
         }
 
         // Check if element 2 positions before closing PHP tag is a colon.
@@ -82,7 +88,10 @@ class QualityAssurance_Sniffs_Theming_WhiteSpaceSniff implements PHP_CodeSniffer
             // Check if element 3 positions before closing PHP tag is a whitespace.
             if ($nonSpace['type'] === 'T_WHITESPACE') {
                 $error = "There shouldn't be any whitespace found before the colon.";
-                $phpcsFile->addError($error, $stackPtr, 'WhiteSpaceFound', true);
+                $fix   = $phpcsFile->addFixableError($error, ($tagClose - 3), 'WhiteSpaceFound');
+                if ($fix === true) {
+                    $phpcsFile->fixer->replaceToken(($tagClose - 3), '');
+                }
             }
         }
     }//end process()
