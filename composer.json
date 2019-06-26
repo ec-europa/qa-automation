@@ -24,6 +24,10 @@
     "require-dev": {
         "phpunit/phpunit": ">=3.7 <6"
     },
+    "extra": {
+        "composer-exit-on-patch-failure": true,
+        "enable-patching": true
+    },
     "scripts": {
         "post-install-cmd": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
         "post-update-cmd" : "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'"
