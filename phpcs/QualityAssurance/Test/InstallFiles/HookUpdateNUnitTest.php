@@ -1,10 +1,10 @@
 <?php
 
-namespace QualityAssurance\Sniffs\NamingConventions;
+namespace QualityAssurance\Sniffs\InstallFiles;
 
 use QualityAssurance\Test\CoderSniffUnitTest;
 
-class ValidVariableNameUnitTest extends CoderSniffUnitTest
+class HookUpdateNUnitTest extends CoderSniffUnitTest
 {
 
 
@@ -18,7 +18,7 @@ class ValidVariableNameUnitTest extends CoderSniffUnitTest
      */
     public function getErrorList()
     {
-        return [3 => 1];
+        return [23 => 1];
 
     }//end getErrorList()
 
@@ -36,6 +36,23 @@ class ValidVariableNameUnitTest extends CoderSniffUnitTest
         return [];
 
     }//end getWarningList()
+
+
+    /**
+     * Returns a list of test files that should be checked.
+     *
+     * @param string $testFileBase The base path that the unit tests files will have.
+     *
+     * @return array The list of test files.
+     */
+    protected function getTestFiles($testFileBase)
+    {
+        return [
+            __DIR__.'/error/HookUpdateNUnitTest.install',
+        ];
+
+    }//end getTestFiles()
+
 
 
 }//end class

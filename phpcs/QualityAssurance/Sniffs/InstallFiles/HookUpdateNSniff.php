@@ -22,7 +22,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class HookUpdateNSniff extends Sniff
+class HookUpdateNSniff implements Sniff
 {
 
 
@@ -57,7 +57,7 @@ class HookUpdateNSniff extends Sniff
         $tokens       = $phpcsFile->getTokens();
         $functionName = $tokens[($stackPtr + 2)]['content'];
         $fileName     = substr(basename($phpcsFile->getFilename()), 0, -8);
-        if (preg_match('/'.$fileName.'_update_7\d{3}$/', $functionName) === false) {
+        if (preg_match('/'.$fileName.'_update_\d{4}$/', $functionName) === false) {
             return;
         }
 
@@ -101,8 +101,8 @@ class HookUpdateNSniff extends Sniff
         }
 
         // Check if hook_update_N implementation doc is formated correctly.
-        if (preg_match('/^[\s]*Implement[^\n]+?hook_update_N[^\n]+/i', $shortContent, $matches) === true) {
-            $phpcsFile->addError('Replace "'.$matches[0].'" with a short description on the hooks functionality.', $short, "UpdateNDescription");
+        if ($shortContent === 'Implements hook_update_N();') {
+            $phpcsFile->addError('Replace "'.$shortContent.'" with a short description on the hooks functionality.', $short, "UpdateNDescription");
         }//end if
 
     }//end process()
