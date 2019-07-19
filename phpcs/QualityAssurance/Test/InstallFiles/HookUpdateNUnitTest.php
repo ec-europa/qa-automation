@@ -54,5 +54,4 @@ class HookUpdateNUnitTest extends CoderSniffUnitTest
     }//end getTestFiles()
 
 
-
 }//end class
