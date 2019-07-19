@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * \QualityAssurance\Sniffs\InstallFiles\HookUpdate0Sniff.
  *
- * Checks the hook_update_N function comment.
+ * Checks the presence of hook_update_X000 functions.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
