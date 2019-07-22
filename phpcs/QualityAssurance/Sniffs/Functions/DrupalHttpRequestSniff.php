@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff;
 /**
  * \QualityAssurance\Sniffs\Functions\DrupalHttpRequestSniff.
  *
- * Discourage the use of functions that have a Drupal wrapper function.
+ * Reject curl functions, they should use \Drupal::httpClient() instead.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
