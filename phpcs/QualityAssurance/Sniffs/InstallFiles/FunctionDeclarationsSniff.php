@@ -68,8 +68,8 @@ class FunctionDeclarationsSniff implements Sniff
             $fileName.'_requirements',
             $fileName.'_update_last_removed',
         ];
-        if (in_array($functionName, $allowedHooks) === false && empty(preg_match('/'.$fileName.'_update_7\d{3}/', $functionName)) === true) {
-            $warning = 'Move the "%s" function declaration in to a file named %s.install.inc and include that file in %s.install.';
+        if (in_array($functionName, $allowedHooks) === false && empty(preg_match('/'.$fileName.'_update_\d{4}/', $functionName)) === true) {
+            $warning = 'Move the "%s" function declaration to a helper class implementing ContainerInjectionInterface. Example can be found at https://git.drupalcode.org/project/drupal/blob/8.7.5/core/profiles/demo_umami/modules/demo_umami_content/demo_umami_content.install';
             $phpcsFile->addError($warning, $stackPtr, 'NonHookFound', [$functionName, $fileName, $fileName]);
         }
 
