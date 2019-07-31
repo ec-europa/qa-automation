@@ -22,7 +22,7 @@ function FunctionDeclarationsUnitTest_disable() {
 /**
  * Enable the privatemsg sub-modules and disable the Media browser plus module.
  */
-function FunctionDeclarationsUnitTest_update_7001() {
+function FunctionDeclarationsUnitTest_update_8001() {
   module_enable(array('pm_block_user',
     'pm_email_notify',
     'privatemsg_filter',
