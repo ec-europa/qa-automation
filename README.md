@@ -153,7 +153,7 @@ Generating autoload files
 |Type|Provided by package|Location in package|Provided Standards|
 |:---|:---|:---|:---|
 |Main|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/Standards/*](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/Standards)|DrupalSecure and QualityAssurance|
-|Sub|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/SubStandards/*](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/SubStandards)|Platform, Subsite and QA|
+|Sub|[ec-europa/qa-automation](https://github.com/ec-europa/qa-automation)|[/phpcs/SubStandards/*](https://github.com/ec-europa/qa-automation/tree/release/3.0/phpcs/SubStandards)|Platform, Subsite, PHP7 and QA|
 |Main|[drupal/coder](https://github.com/klausi/coder)|[/coder_sniffer/*](https://github.com/klausi/coder/tree/master/coder_sniffer)|Drupal and DrupalPractice|
 |Main|[squizlabs/php_codesniffer](https://github.com/squizlabs/PHP_CodeSniffer)|[/src/Standards/*](https://github.com/squizlabs/PHP_CodeSniffer/tree/master/src/Standards)|PHPCS, Zend, PSR2, PSR1, MySource, PEAR and Squiz|
 

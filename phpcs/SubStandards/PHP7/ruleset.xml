@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- PHP_CodeSniffer standard for NextEuropa subsites. -->
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<ruleset name="PHP7">
+
+    <description>PHP 7 Compatibility</description>
+
+    <!-- Drupal Rulesets. -->
+    <config name="installed_paths" value="../../phpcompatibility/php-compatibility" />
+    <rule ref="PHPCompatibility" />
+
+    <!-- Disable false positives. -->
+    <rule ref="PHPCompatibility.FunctionUse.RemovedFunctions.eachDeprecated">
+        <exclude-pattern>**/vendor/guzzlehttp/promises/src/functions.php</exclude-pattern>
+    </rule>
+    
+    <rule ref="PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved">
+        <exclude-pattern>**/modules/ultimate_cron/ultimate_cron.install</exclude-pattern>
+    </rule>
+
+</ruleset>
