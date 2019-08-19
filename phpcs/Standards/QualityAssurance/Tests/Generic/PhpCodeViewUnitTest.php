@@ -16,7 +16,6 @@ class QualityAssurance_Sniffs_Generic_PhpCodeView_PhpCodeViewUnitTest extends Co
       // All the warning-free  files have no errors.
       $errors = [
         747 => 1,
-        748 => 1,
       ];
 
       return (strpos($testFile, 'Error') === false) ? [] : $errors;
