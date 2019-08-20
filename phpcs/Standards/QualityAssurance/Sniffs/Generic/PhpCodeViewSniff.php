@@ -63,9 +63,12 @@ class QualityAssurance_Sniffs_Generic_PhpCodeViewSniff implements PHP_CodeSniffe
             return $end;
         }
 
-        if ($token['content'] === "'code'" || $token['content'] === "'php'") {
-            $error = "PHP code is not allowed on views export.";
-            $phpcsFile->addError($error, $stackPtr, 'Views');
+        if ($token['content'] === "'default_argument_type'") {
+            $php = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $stackPtr + 1);
+            if ($tokens[$php]['content'] === "'php'") {
+                $error = "PHP code is not allowed on views export.";
+                $phpcsFile->addError($error, $stackPtr, 'Views');
+            }
         }
     }//end process()
 }//end class
