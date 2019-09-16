@@ -7,6 +7,10 @@
 
  <arg name="extensions" value="php,module,inc,install,test,profile,theme,css,info,txt,md,yml"/>
 
+ <config name="installed_paths" value="../../../vendor/drupal/coder/coder_sniffer" />
+ <rule ref="DrupalPractice" />
+ <rule ref="Drupal" />
+
  <autoload>autoload.php</autoload>
 
  <rule ref="Internal.NoCodeFound">
