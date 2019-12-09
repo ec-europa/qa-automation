@@ -11,6 +11,7 @@ namespace QualityAssurance\Sniffs\Generic;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -33,9 +34,7 @@ class CredentialsSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_INLINE_HTML,
-        ];
+        return [ T_INLINE_HTML ];
 
     }//end register()
 
@@ -57,27 +56,38 @@ class CredentialsSniff implements Sniff
         if ($fileName !== 'docker-compose.yml') {
             return;
         }
-        $fileContent = file($filePath);
-        $checkEnvVars = ['asda_user', 'asda_pass', 'api_token'];
+
+        $fileContent  = file($filePath);
+        $checkEnvVars = [
+            'asda_user',
+            'asda_pass',
+            'api_token',
+        ];
+        try {
+            $yaml = Yaml::parseFile($filePath);
+        } catch (ParseException $e) {
+            $phpcsFile->addError($e->getMessage(), $stackPtr, 'Yaml');
+            return ($phpcsFile->numTokens + 1);
+        }
+
         // Parse the environment variables.
-        if ($yaml = Yaml::parseFile($filePath)) {
-            if (isset($yaml['services'])) {
-                foreach ($yaml['services'] as $service) {
-                    if (isset($service['environment'])) {
-                        foreach ($service['environment'] as $envVarName => $envVarValue) {
-                            foreach ($checkEnvVars as $checkEnvVar) {
-                                $envVarNameLower = strtolower($envVarName);
-                                if (strpos($envVarNameLower, $checkEnvVar) !== FALSE && $envVarValue !== '') {
-                                    $lines = preg_grep("/($envVarName)/s", $fileContent);
-                                    $message = "Do not commit credentials! $envVarName has a value. It should remain empty.";
-                                    $phpcsFile->addError($message, array_key_first($lines), 'Credentials');
-                                }
+        if (isset($yaml['services']) === true) {
+            foreach ($yaml['services'] as $service) {
+                if (isset($service['environment']) === true) {
+                    foreach ($service['environment'] as $envVarName => $envVarValue) {
+                        foreach ($checkEnvVars as $checkEnvVar) {
+                            $envVarNameLower = strtolower($envVarName);
+                            if (strpos($envVarNameLower, $checkEnvVar) !== false && $envVarValue !== '') {
+                                $lines   = preg_grep("/($envVarName)/s", $fileContent);
+                                $message = "Do not commit credentials! $envVarName has a value. It should remain empty.";
+                                $phpcsFile->addError($message, array_key_first($lines), 'Credentials');
                             }
                         }
                     }
                 }
             }
         }
+
         // Only run this sniff once on the file.
         return ($phpcsFile->numTokens + 1);
 
