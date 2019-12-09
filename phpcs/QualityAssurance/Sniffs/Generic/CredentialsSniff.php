@@ -85,27 +85,6 @@ class CredentialsSniff implements Sniff
                         }
                     }
                 }
-
-                // Check if an env_file is used and check that also for
-                // credentials.
-                if (isset($service['env_file']) === true) {
-                    foreach ($service['env_file'] as $envFile) {
-                        $envFilePath = dirname($filePath).'/'.$envFile;
-                        if (file_exists($envFilePath) === true) {
-                            $fileContent = file($envFilePath);
-                            foreach ($checkEnvVars as $checkEnvVar) {
-                                $lines = preg_grep("/(.*?$checkEnvVar.*?)=(.*?)\\n/si", $fileContent);
-                                if (empty($lines) === false) {
-                                    list($key, $value) = explode('=', reset($lines), 2);
-                                    if (empty($key) === false) {
-                                        $message = "Do not commit credentials in the $envFile file! $key has a value. It should remain empty.";
-                                        $phpcsFile->addError($message, array_key_first($lines), 'Credentials');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }//end foreach
         }//end if
 
