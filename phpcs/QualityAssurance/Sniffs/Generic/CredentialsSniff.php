@@ -51,9 +51,8 @@ class CredentialsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $filePath = $phpcsFile->getFilename();
-        $fileName = strtolower(substr($filePath, -18));
         // Only check the docker-compose.yml file.
-        if ($fileName !== 'docker-compose.yml') {
+        if (strtolower(substr($filePath, -18)) !== 'docker-compose.yml') {
             return;
         }
 
@@ -73,20 +72,42 @@ class CredentialsSniff implements Sniff
         // Parse the environment variables.
         if (isset($yaml['services']) === true) {
             foreach ($yaml['services'] as $service) {
+                // Check if environment variables contain credentials.
                 if (isset($service['environment']) === true) {
                     foreach ($service['environment'] as $envVarName => $envVarValue) {
                         foreach ($checkEnvVars as $checkEnvVar) {
                             $envVarNameLower = strtolower($envVarName);
                             if (strpos($envVarNameLower, $checkEnvVar) !== false && $envVarValue !== '') {
                                 $lines   = preg_grep("/($envVarName)/s", $fileContent);
-                                $message = "Do not commit credentials! $envVarName has a value. It should remain empty.";
+                                $message = "Do not commit credentials in the docker-compose.yml file! $envVarName has a value. It should remain empty.";
                                 $phpcsFile->addError($message, array_key_first($lines), 'Credentials');
                             }
                         }
                     }
                 }
-            }
-        }
+
+                // Check if an env_file is used and check that also for
+                // credentials.
+                if (isset($service['env_file']) === true) {
+                    foreach ($service['env_file'] as $envFile) {
+                        $envFilePath = dirname($filePath).'/'.$envFile;
+                        if (file_exists($envFilePath) === true) {
+                            $fileContent = file($envFilePath);
+                            foreach ($checkEnvVars as $checkEnvVar) {
+                                $lines = preg_grep("/(.*?$checkEnvVar.*?)=(.*?)\\n/si", $fileContent);
+                                if (empty($lines) === false) {
+                                    list($key, $value) = explode('=', reset($lines), 2);
+                                    if (empty($key) === false) {
+                                        $message = "Do not commit credentials in the $envFile file! $key has a value. It should remain empty.";
+                                        $phpcsFile->addError($message, array_key_first($lines), 'Credentials');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }//end foreach
+        }//end if
 
         // Only run this sniff once on the file.
         return ($phpcsFile->numTokens + 1);
