@@ -80,7 +80,7 @@ class CredentialsSniff implements Sniff
                             if (strpos($envVarNameLower, $checkEnvVar) !== false && $envVarValue !== '') {
                                 $lines   = preg_grep("/($envVarName)/s", $fileContent);
                                 $message = "Do not commit credentials in the docker-compose.yml file! $envVarName has a value. It should remain empty.";
-                                $phpcsFile->addError($message, array_key_first($lines), 'Credentials');
+                                $phpcsFile->addError($message, key($lines), 'Credentials');
                             }
                         }
                     }
