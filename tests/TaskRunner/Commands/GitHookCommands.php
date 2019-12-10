@@ -76,6 +76,6 @@ class GitHookCommands extends AbstractCommands
             ],
         ];
         
-        return in_array($hook, $hookLines) ? $hookLines[$hook] : [];
+        return array_key_exists($hook, $hookLines) ? $hookLines[$hook] : [];
     }
 }
