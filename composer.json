@@ -16,20 +16,33 @@
         "openeuropa/code-review": "^1.0@beta",
         "phpcompatibility/php-compatibility": "^9.1"
     },
+    "require-dev": {
+        "openeuropa/task-runner": "^1.0.0-beta6",
+        "phpunit/phpunit": ">=3.7 <6"
+    },
     "autoload": {
         "psr-0": {
             "QualityAssurance\\": "phpcs/QualityAssurance/"
         }
     },
-    "require-dev": {
-        "phpunit/phpunit": ">=3.7 <6"
+    "autoload-dev": {
+        "psr-4": {
+            "EcEuropa\\QaAutomation\\Tests\\": "./tests/"
+        }
     },
     "extra": {
         "composer-exit-on-patch-failure": true,
         "enable-patching": true
     },
     "scripts": {
-        "post-install-cmd": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
-        "post-update-cmd" : "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'"
+        "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
+        "post-install-cmd": [
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'",
+            "./vendor/bin/run qa:update-git-hooks"
+        ],
+        "post-update-cmd" : [
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'",
+            "./vendor/bin/run qa:update-git-hooks"
+        ]
     }
 }
