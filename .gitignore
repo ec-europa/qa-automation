@@ -1,5 +1,5 @@
-vendor
-composer.lock
-bin
-docker-compose.yml
-grumphp.yml
+/vendor
+/composer.lock
+/bin
+/docker-compose.yml
+/grumphp.yml
