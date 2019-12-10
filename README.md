@@ -20,3 +20,25 @@ analysis and/or reviews on Drupal projects.
 ```json
 composer require ec-europa/qa-automation:~4.0
 ```
+
+## 2. Sniff list
+
+<!--- Start snifflist. -->
+
+```
+The QualityAssurance standard contains 9 sniffs
+
+QualityAssurance (9 sniffs)
+---------------------------
+  QualityAssurance.Functions.DrupalHttpRequest
+  QualityAssurance.Functions.DrupalWrappers
+  QualityAssurance.Generic.HardcodedPath
+  QualityAssurance.InfoFiles.Forbidden
+  QualityAssurance.InfoFiles.Required
+  QualityAssurance.InstallFiles.FunctionDeclarations
+  QualityAssurance.InstallFiles.HookUpdate0
+  QualityAssurance.InstallFiles.HookUpdateN
+  QualityAssurance.InstallFiles.InstallUpdateCallbacks
+```
+
+<!--- End snifflist. -->
