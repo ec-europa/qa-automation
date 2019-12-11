@@ -1,5 +1,7 @@
 # QA-Automation
 
+[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/qa-automation/status.svg)](https://drone.fpfis.eu/ec-europa/qa-automation) 
+
 Holds all quality assurance automation tools. It currently consists of 2
 parts. The PHP CodeSniffer sniffs that contain standards regarding the
 FPFIS platform. And a symfony console implementation for running QA
@@ -26,12 +28,13 @@ composer require ec-europa/qa-automation:~4.0
 <!--- Start snifflist. -->
 
 ```
-The QualityAssurance standard contains 9 sniffs
+The QualityAssurance standard contains 10 sniffs
 
-QualityAssurance (9 sniffs)
----------------------------
+QualityAssurance (10 sniffs)
+----------------------------
   QualityAssurance.Functions.DrupalHttpRequest
   QualityAssurance.Functions.DrupalWrappers
+  QualityAssurance.Generic.Credentials
   QualityAssurance.Generic.HardcodedPath
   QualityAssurance.InfoFiles.Forbidden
   QualityAssurance.InfoFiles.Required
