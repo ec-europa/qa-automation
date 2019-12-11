@@ -1,5 +1,10 @@
 # QA Automation change log
 
+## Version 4.0.2
+    * MULTISITE-22649: Create sniff to prevent commit of ASDA credentials
+    * MULTISITE-22670: Automatically update README.md with sniff list
+    * MULTISITE-22652: qa-automation 4.x package should only test on PHP 7.x
+
 ## Version 4.0.1
     * MULTISITE-21554: Port sniff QualityAssurance.Functions.DrupalHttpRequest to D8
     * MULTISITE-21555: Port sniff QualityAssurance.Functions.DrupalWrappers to D8

@@ -8,27 +8,27 @@ workspace:
 
 matrix:
   PHP_VERSION:
-    - 5.6
     - 7.1
+    - 7.2
 
 services:
   web:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     environment:
       - DOCUMENT_ROOT=/test/qa-automation
 
 pipeline:
   composer:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
       - composer install --no-suggest
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
   phpcs:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
       - ./vendor/bin/phpcs -p
   phpunit:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
       - ./vendor/bin/phpunit phpcs/
