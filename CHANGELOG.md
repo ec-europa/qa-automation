@@ -1,5 +1,8 @@
 # QA Automation change log
 
+## Version 4.0.3
+    * MULTISITE-22812: Bugfix on docker-compose.yml sniff
+
 ## Version 4.0.2
     * MULTISITE-22649: Create sniff to prevent commit of ASDA credentials
     * MULTISITE-22670: Automatically update README.md with sniff list
