@@ -77,7 +77,7 @@ class CredentialsSniff implements Sniff
                     foreach ($service['environment'] as $envVarName => $envVarValue) {
                         foreach ($checkEnvVars as $checkEnvVar) {
                             $envVarNameLower = strtolower($envVarName);
-                            if (strpos($envVarNameLower, $checkEnvVar) !== false && $envVarValue !== '') {
+                            if (strpos($envVarNameLower, $checkEnvVar) !== false && $envVarValue !== '' && $envVarValue !== null) {
                                 $lines   = preg_grep("/($envVarName)/s", $fileContent);
                                 $message = "Do not commit credentials in the docker-compose.yml file! $envVarName has a value. It should remain empty.";
                                 $phpcsFile->addError($message, key($lines), 'Credentials');
