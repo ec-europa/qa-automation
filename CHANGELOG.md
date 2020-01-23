@@ -1,5 +1,8 @@
 # QA automation tools change log
 
+### 3.0.14
+  * MULTISITE-22834: Toolkit - PHPcs compatibility with php 7.3
+
 ### 3.0.13
   * MULTISITE-22031: Fix path in PHP Compatibility for ultimate_cron
 
