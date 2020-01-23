@@ -15,7 +15,7 @@
     </rule>
     
     <rule ref="PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved">
-        <exclude-pattern>**/modules/ultimate_cron/ultimate_cron.install</exclude-pattern>
+        <exclude-pattern>**/ultimate_cron/ultimate_cron.install</exclude-pattern>
     </rule>
 
 </ruleset>

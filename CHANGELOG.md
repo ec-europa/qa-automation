@@ -1,5 +1,12 @@
 # QA automation tools change log
 
+### 3.0.13
+  * MULTISITE-22031: Fix path in PHP Compatibility for ultimate_cron
+
+### 3.0.12
+  * MULTISITE-21816: PHPCS False Positive PHP in Views
+  * MULTISITE-21950: Provide PHP Compatiblity Substandard ruleset for false positives
+
 ### 3.0.11
   * MULTISITE-21295: Replace wimg with phpcompatibility package
   * MULTISITE-21251: Remove dependency into master branch of Platform Dev
