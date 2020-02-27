@@ -60,7 +60,7 @@ class HardcodedPathSniff implements Sniff
         }
 
         // If the file extension is equal to '.yml' return.
-        $fileName =      $phpcsFile->getFilename();
+        $fileName      = $phpcsFile->getFilename();
         $fileExtension = strtolower(substr($fileName, -4));
         if ($fileExtension === '.yml') {
             return $end;
