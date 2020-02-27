@@ -52,10 +52,17 @@ class HardcodedPathSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        $end = (count($phpcsFile->getTokens()) + 1);
         // Check whole project for string "sites/".
         $fileContent = file_get_contents($phpcsFile->getFilename());
         if (strpos($fileContent, 'sites') === false) {
-            $end = (count($phpcsFile->getTokens()) + 1);
+            return $end;
+        }
+
+        // If the file extension is equal to '.yml' return.
+        $fileName = $phpcsFile->getFilename();
+        $fileExtension = strtolower(substr($fileName, -4));
+        if ($fileExtension === '.yml') {
             return $end;
         }
 
