@@ -1,5 +1,8 @@
 # QA Automation change log
 
+## Version 4.0.4
+    * MULTISITE-23205: Exclude yml files from phpcs
+
 ## Version 4.0.3
     * MULTISITE-22812: Bugfix on docker-compose.yml sniff
 
