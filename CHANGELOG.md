@@ -1,5 +1,8 @@
 # QA Automation change log
 
+## Version 4.1.0
+    * MULTISITE-23677: Update openeuropa/code-review package (hotfix)
+
 ## Version 4.0.4
     * MULTISITE-23205: Exclude yml files from phpcs
 
