@@ -8,8 +8,8 @@ workspace:
 
 matrix:
   PHP_VERSION:
-    - 7.1
     - 7.2
+    - 7.3
 
 services:
   web:
