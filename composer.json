@@ -13,7 +13,7 @@
         "code review"
     ],
     "require": {
-        "openeuropa/code-review": "^1.0@beta",
+        "openeuropa/code-review": "^1.1.0",
         "phpcompatibility/php-compatibility": "^9.1"
     },
     "require-dev": {
