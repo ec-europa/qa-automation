@@ -115,7 +115,7 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
                     'rename features',
                     'use page manager',
                     'use PHP for label patterns',
-                    'administer ecas',
+                    'administer ecas'
                 );
                 // If it's a risky permission, trow an error.
                 if (in_array(str_replace("'", '', $tokens[$permissionName]['content']), $riskyPermissions)) {
