@@ -93,7 +93,29 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
                     'administer jquery update',
                     'access devel information',
                     'execute php code',
-                    'manage feature nexteuropa_dgt_connector'
+                    'manage feature nexteuropa_dgt_connector',
+                    // MULTISITE-23799 - Risky permissions update.
+                    'access all views',
+                    'administer content types',
+                    'administer entityform types',
+                    'administer fields',
+                    'administer file types',
+                    'administer filters',
+                    'administer om maximenu',
+                    'administer page manager',
+                    'administer permissions',
+                    'administer site configuration',
+                    'administer themes',
+                    'administer users',
+                    'administer views',
+                    'bypass file access',
+                    'bypass node access',
+                    'bypass rules access',
+                    'generate features',
+                    'rename features',
+                    'use page manager',
+                    'use PHP for label patterns',
+                    'administer ecas',
                 );
                 // If it's a risky permission, trow an error.
                 if (in_array(str_replace("'", '', $tokens[$permissionName]['content']), $riskyPermissions)) {
