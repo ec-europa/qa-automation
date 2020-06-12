@@ -1,5 +1,8 @@
 # QA automation tools change log
 
+### 3.1.0
+  * MULTISITE-23799: Add risky permissions in the forbidden permission sniff.
+
 ### 3.0.14
   * MULTISITE-22834: Toolkit - PHPcs compatibility with php 7.3
 
