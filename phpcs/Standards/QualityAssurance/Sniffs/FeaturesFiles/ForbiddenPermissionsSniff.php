@@ -85,15 +85,36 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
             if ($tokens[$arrayStart]['content'] === "'name'") {
                 $permissionName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($arrayStart + 1), ($arrayStart + 5));
                 $riskyPermissions = array(
-                    'administer modules',
-                    'administer software updates',
-                    'administer features',
-                    'manage features',
-                    'administer ckeditor_lite',
-                    'administer jquery update',
+                    'access all views',
                     'access devel information',
+                    'administer ckeditor_lite',
+                    'administer content types',
+                    'administer ecas',
+                    'administer entityform types',
+                    'administer features',
+                    'administer fields',
+                    'administer file types',
+                    'administer filters',
+                    'administer jquery update',
+                    'administer modules',
+                    'administer om maximenu',
+                    'administer page manager',
+                    'administer permissions',
+                    'administer site configuration',
+                    'administer software updates',
+                    'administer themes',
+                    'administer users',
+                    'administer views',
+                    'bypass file access',
+                    'bypass node access',
+                    'bypass rules access',
                     'execute php code',
-                    'manage feature nexteuropa_dgt_connector'
+                    'generate features',
+                    'manage feature nexteuropa_dgt_connector',
+                    'manage features',
+                    'rename features',
+                    'use page manager',
+                    'use PHP for label patterns',
                 );
                 // If it's a risky permission, trow an error.
                 if (in_array(str_replace("'", '', $tokens[$permissionName]['content']), $riskyPermissions)) {
