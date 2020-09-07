@@ -61,11 +61,9 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
         $regexp = 'sites/[^/]+/(files|libraries|modules|themes)';
         // If hardcoded path is found.
         if (preg_match("~$regexp~", $token['content'], $matches)) {
-
             // Check if it's not part of 'variable_get'.
             $findPrevious = $phpcsFile->findPrevious(T_STRING, $stackPtr);
             if ($tokens[$findPrevious]['content'] !== 'variable_get') {
-
                 $error = "Internal hardcoded paths are not allowed. ";
                 switch ($matches[1]) {
                     case 'modules':
@@ -83,7 +81,6 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
                 }
                 $phpcsFile->addError($error, $stackPtr, 'HardcodedPath');
             }
-
         }
     }//end process()
 }//end class
