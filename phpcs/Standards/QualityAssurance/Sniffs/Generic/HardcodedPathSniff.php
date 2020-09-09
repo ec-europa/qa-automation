@@ -62,7 +62,7 @@ class QualityAssurance_Sniffs_Generic_HardcodedPathSniff implements PHP_CodeSnif
         // If hardcoded path is found.
         if (preg_match("~$regexp~", $token['content'], $matches)) {
             // Check if it's not part of 'variable_get'.
-            $findPrevious = $phpcsFile->findPrevious(T_STRING, $stackPtr);
+            $findPrevious = $phpcsFile->findPrevious(T_STRING, $stackPtr, $stackPtr-5);
             if ($tokens[$findPrevious]['content'] !== 'variable_get') {
                 $error = "Internal hardcoded paths are not allowed. ";
                 switch ($matches[1]) {
