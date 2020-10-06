@@ -25,6 +25,11 @@
             "QualityAssurance\\": "phpcs/QualityAssurance/"
         }
     },
+    "patches": {
+        "phpro/grumphp": {
+            "Large amount of files issue": "patches/grumphp_large_amount_of_files.patch"
+        }
+    }
     "autoload-dev": {
         "psr-4": {
             "EcEuropa\\QaAutomation\\Tests\\": "./tests/"
