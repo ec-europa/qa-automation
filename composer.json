@@ -25,6 +25,11 @@
             "QualityAssurance\\": "phpcs/QualityAssurance/"
         }
     },
+    "patches": {
+        "phpro/grumphp": {
+            "MULTISITE-24256: Apply patch for grumphp issue - Large amount of files.": "./patches/grumphp_large_amount_of_files.patch"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
             "EcEuropa\\QaAutomation\\Tests\\": "./tests/"
