@@ -62,7 +62,10 @@ class RequiredSniff implements Sniff
             return ($phpcsFile->numTokens + 1);
         }
 
-        if (isset($info['php']) === false || empty($info['php']) === true) {
+        if (isset($info['type']) === true
+            && (isset($info['php']) === false
+            || empty($info['php']) === true)
+        ) {
             $error = '"php" property is missing in the info file';
             $phpcsFile->addError($error, $stackPtr, 'PHP');
         }
