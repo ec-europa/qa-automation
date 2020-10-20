@@ -52,23 +52,22 @@ class HardcodedPathSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $end = (count($phpcsFile->getTokens()) + 1);
+        $tokens   = $phpcsFile->getTokens();
+        $end      = (count($tokens) + 1);
+        $fileName = $phpcsFile->getFilename();
+
+        // Do not parse yml files.
+        if (strtolower(substr($fileName, -4)) === '.yml') {
+            return $end;
+        }
+
         // Check whole project for string "sites/".
-        $fileContent = file_get_contents($phpcsFile->getFilename());
+        $fileContent = file_get_contents($fileName);
         if (strpos($fileContent, 'sites') === false) {
             return $end;
         }
 
-        // If the file extension is equal to '.yml' return.
-        $fileName      = $phpcsFile->getFilename();
-        $fileExtension = strtolower(substr($fileName, -4));
-        if ($fileExtension === '.yml') {
-            return $end;
-        }
-
-        // Get our tokens.
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
+        $token = $tokens[$stackPtr];
         // Path regular expression.
         $regexp = 'sites/[^/]+/(files|libraries|modules|themes)';
         // If hardcoded path is found.
