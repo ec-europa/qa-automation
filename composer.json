@@ -13,7 +13,7 @@
         "code review"
     ],
     "require": {
-        "openeuropa/code-review": "^1.0@beta",
+        "openeuropa/code-review": "^1.1.0",
         "phpcompatibility/php-compatibility": "^9.1"
     },
     "require-dev": {
@@ -23,6 +23,11 @@
     "autoload": {
         "psr-0": {
             "QualityAssurance\\": "phpcs/QualityAssurance/"
+        }
+    },
+    "patches": {
+        "phpro/grumphp": {
+            "MULTISITE-24256: Apply patch for grumphp issue - Large amount of files.": "./patches/grumphp_large_amount_of_files.patch"
         }
     },
     "autoload-dev": {
