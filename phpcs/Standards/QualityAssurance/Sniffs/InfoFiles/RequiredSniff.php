@@ -56,7 +56,9 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
         $contents = file_get_contents($phpcsFile->getFilename());
         $info     = QualityAssurance_Sniffs_InfoFiles_HelperClass::drupalParseInfoFormat($contents);
 
-        if (!isset($info['php']) || empty($info['php'])) {
+        // Exclude from check .info files from features modules.
+        if (!isset($info['features']['features_api']) &&
+            (!isset($info['php']) || empty($info['php']))) {
             $error = '"php" property is missing in the info file';
             $phpcsFile->addError($error, $stackPtr, 'PHP');
         }
