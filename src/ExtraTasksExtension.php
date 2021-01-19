@@ -13,7 +13,7 @@ class ExtraTasksExtension implements ExtensionInterface
 {
     /**
      * {@inheritdoc}
-     * 
+     *
      * @param $container
      * Load container.
      */
@@ -25,9 +25,11 @@ class ExtraTasksExtension implements ExtensionInterface
                 if (array_key_exists($name, $tasks)) {
                     throw new RuntimeException("Cannot override already defined task '{$name}' in 'extra_tasks'.");
                 }
+
                 $tasks[$name] = $value;
             }
+
             $container->setParameter('tasks', $tasks);
         }
     }
-}
+}//end
