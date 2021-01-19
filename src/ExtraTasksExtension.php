@@ -24,6 +24,8 @@ class ExtraTasksExtension implements ExtensionInterface
      *
      * @param ContainerBuilder $container
      *   Build container.
+     * 
+     * @return var
      */
     public function load(ContainerBuilder $container)
     {
