@@ -33,4 +33,5 @@ class ExtraTasksExtension implements ExtensionInterface
         }
 
     }
+
 }//end ExtraTasksExtension()
