@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file src/ExtraTasksExtension.php.
+ */
+ 
 namespace EcEuropa\QaAutomation;
 
 use GrumPHP\Extension\ExtensionInterface;
@@ -34,7 +38,7 @@ class ExtraTasksExtension implements ExtensionInterface
             $container->setParameter('tasks', $tasks);
         }
 
-    }
+    }//end load()
 
 
-}//end ExtraTasksExtension()
+}//end ExtraTasksExtension
