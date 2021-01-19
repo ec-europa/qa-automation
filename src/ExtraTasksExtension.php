@@ -29,7 +29,7 @@ class ExtraTasksExtension implements ExtensionInterface
      */
     public function load(ContainerBuilder $container)
     {
-        if ($container->hasParameter('extra_tasks') === true {
+        if ($container->hasParameter('extra_tasks') === true) {
             $tasks = $container->getParameter('tasks');
             foreach ($container->getParameter('extra_tasks') as $name => $value) {
                 if (array_key_exists($name, $tasks) === true) {
