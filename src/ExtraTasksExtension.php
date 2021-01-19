@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file src/ExtraTasksExtension.php.
- * 
  * Implements ExtensionInterface from GrumPHP.
+ * 
+ * Defines extra tasks.
  */
  
 namespace EcEuropa\QaAutomation;
