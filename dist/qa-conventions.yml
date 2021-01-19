@@ -1,7 +1,61 @@
 imports:
-  - { resource: ../../../../vendor/openeuropa/code-review/dist/drupal-conventions.yml }
+  - { resource: ../../../../vendor/ec-europa/qa-automation/dist/drupal-conventions.yml }
 parameters:
   tasks.phpcs.standard:
     - ./vendor/drupal/coder/coder_sniffer/Drupal
     - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
     - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+    - ./vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml
+  tasks.phpcs.warning_severity: 0
+
+  # PHP Code Sniffer parameters.
+  tasks.phpcs.ignore_patterns:
+    - vendor/
+    - node_modules/
+  tasks.phpcs.triggered_by:
+    - php
+  tasks.phpcs.whitelist_patterns: []
+
+  # PHP Mess Detector parameters
+  tasks.phpmd.exclude:
+    - vendor/
+  tasks.phpmd.ruleset:
+    - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
+  tasks.phpmd.triggered_by:
+    - php
+
+  # Commit message parameters.
+  tasks.git_commit_message.matchers:
+    - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
+
+grumphp:
+  ascii:
+    failed: ~
+    succeeded: ~
+  # Tasks.
+  tasks:
+
+    # PHP Code Sniffer.
+    phpcs:
+      standard: '%tasks.phpcs.standard%'
+      ignore_patterns: '%tasks.phpcs.ignore_patterns%'
+      triggered_by: '%tasks.phpcs.triggered_by%'
+      whitelist_patterns: '%tasks.phpcs.whitelist_patterns%'
+      warning_severity: '%tasks.phpcs.warning_severity%'
+      metadata:
+        priority: 300
+
+    # PHP Mess Detector.
+    phpmd:
+      exclude: '%tasks.phpmd.exclude%'
+      ruleset: '%tasks.phpmd.ruleset%'
+      triggered_by: '%tasks.phpmd.triggered_by%'
+
+    # Commit message format.
+    git_commit_message:
+      matchers: '%tasks.git_commit_message.matchers%'
+      case_insensitive: false
+      enforce_no_subject_trailing_period: false
+      multiline: false
+      max_body_width: 0
+      max_subject_width: 0
