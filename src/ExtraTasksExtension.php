@@ -32,6 +32,5 @@ class ExtraTasksExtension implements ExtensionInterface
             $container->setParameter('tasks', $tasks);
         }
 
-
     }
 }
