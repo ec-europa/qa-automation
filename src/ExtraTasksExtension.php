@@ -13,6 +13,9 @@ class ExtraTasksExtension implements ExtensionInterface
 {
     /**
      * {@inheritdoc}
+     * 
+     * @param $container
+     * Load container.
      */
     public function load(ContainerBuilder $container)
     {
