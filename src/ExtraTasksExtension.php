@@ -29,10 +29,10 @@ class ExtraTasksExtension implements ExtensionInterface
      */
     public function load(ContainerBuilder $container)
     {
-        if ($container->hasParameter('extra_tasks') === TRUE) {
+        if ($container->hasParameter('extra_tasks') === true {
             $tasks = $container->getParameter('tasks');
             foreach ($container->getParameter('extra_tasks') as $name => $value) {
-                if (array_key_exists($name, $tasks) === TRUE) {
+                if (array_key_exists($name, $tasks) === true) {
                     throw new RuntimeException("Cannot override already defined task '{$name}' in 'extra_tasks'.");
                 }
 
@@ -45,4 +45,4 @@ class ExtraTasksExtension implements ExtensionInterface
     }//end load()
 
 
-}//end ExtraTasksExtension
+}//end class
