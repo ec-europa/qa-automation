@@ -2,10 +2,10 @@
 
 /**
  * Implements ExtensionInterface from GrumPHP.
- * 
+ *
  * Defines extra tasks.
  */
- 
+
 namespace EcEuropa\QaAutomation;
 
 use GrumPHP\Extension\ExtensionInterface;
@@ -22,8 +22,8 @@ class ExtraTasksExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      *
-     * @param $container
-     * Load container.
+     * @param ContainerBuilder $container
+     *   Build container.
      */
     public function load(ContainerBuilder $container)
     {
