@@ -9,7 +9,8 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 /**
  * Extension that allows to define extra tasks on local grumphp.yml.dist.
  */
-class ExtraTasksExtension implements ExtensionInterface {
+class ExtraTasksExtension implements ExtensionInterface
+{
 
 
     /**
