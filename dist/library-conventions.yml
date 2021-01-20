@@ -32,3 +32,6 @@ grumphp:
       multiline: false
       max_body_width: 0
       max_subject_width: 0
+
+  extensions:
+   - EcEuropa\QaAutomation\ExtraTasksExtension
