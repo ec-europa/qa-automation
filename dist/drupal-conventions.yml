@@ -1,19 +1,9 @@
 imports:
   - { resource: qa-conventions.yml }
 
-parameters:
-  tasks.phpcs.standard: ./vendor/drupal/coder/coder_sniffer/Drupal
-  tasks.phpcs.triggered_by:
-    - php
-    - module
-    - inc
-    - theme
-  tasks.phpmd.triggered_by:
-    - php
-    - module
-    - inc
-    - theme
+grumphp:
 
+  # Tasks.
   tasks:
 
     # PHP Code Sniffer.
@@ -29,10 +19,10 @@ parameters:
         priority: 300
 
     # PHP Mess Detector.
-    phpmd:
-      exclude: '%tasks.phpmd.exclude%'
-      ruleset: '%tasks.phpmd.ruleset%'
-      triggered_by: '%tasks.phpmd.triggered_by%'
+    # phpmd:
+    #   exclude: '%tasks.phpmd.exclude%'
+    #   ruleset: '%tasks.phpmd.ruleset%'
+    #   triggered_by: '%tasks.phpmd.triggered_by%'
 
     # Commit message format.
     git_commit_message:

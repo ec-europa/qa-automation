@@ -9,7 +9,6 @@ parameters:
     - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
     - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
     - ./vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml
-
   tasks.phpcs.warning_severity: 0
 
   # PHP Code Sniffer parameters.
@@ -18,15 +17,21 @@ parameters:
     - node_modules/
   tasks.phpcs.triggered_by:
     - php
+    - module
+    - inc
+    - theme
   tasks.phpcs.whitelist_patterns: []
 
   # PHP Mess Detector parameters
-  tasks.phpmd.exclude:
-    - vendor/
-  tasks.phpmd.ruleset:
-    - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
-  tasks.phpmd.triggered_by:
-    - php
+  # tasks.phpmd.exclude:
+  #   - vendor/
+  # tasks.phpmd.ruleset:
+  #   - ./resources/phpmd-ruleset.xml
+  # tasks.phpmd.triggered_by:
+  #   - php
+  #   - module
+  #   - inc
+  #   - therme
 
   # Commit message parameters.
   tasks.git_commit_message.matchers:
