@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- PHP_CodeSniffer standard for Ec-europa PHP libraries. -->
 <!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
-<ruleset name="Ec-europa PHP library">uropa
-    <description>Coding standard for OpenEuropa PHP libraries.</description>
+<ruleset name="Ec-europa PHP library">
+    <description>Coding standard for Ec-europa PHP libraries.</description>
 
     <rule ref="./vendor/squizlabs/php_codesniffer/src/Standards/PSR2" />
 
