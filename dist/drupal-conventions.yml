@@ -19,10 +19,10 @@ grumphp:
         priority: 300
 
     # PHP Mess Detector.
-    # phpmd:
-    #   exclude: '%tasks.phpmd.exclude%'
-    #   ruleset: '%tasks.phpmd.ruleset%'
-    #   triggered_by: '%tasks.phpmd.triggered_by%'
+    phpmd:
+      exclude: '%tasks.phpmd.exclude%'
+      ruleset: '%tasks.phpmd.ruleset%'
+      triggered_by: '%tasks.phpmd.triggered_by%'
 
     # Commit message format.
     git_commit_message:
@@ -32,6 +32,3 @@ grumphp:
       multiline: false
       max_body_width: 0
       max_subject_width: 0
-
-  extensions:
-   - EcEuropa\QaAutomation\ExtraTasksExtension

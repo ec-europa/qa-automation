@@ -17,15 +17,15 @@ parameters:
   tasks.phpcs.whitelist_patterns: []
 
   # PHP Mess Detector parameters
-  # tasks.phpmd.exclude:
-  #   - vendor/
-  # tasks.phpmd.ruleset:
-  #   - ./resources/phpmd-ruleset.xml
-  # tasks.phpmd.triggered_by:
-  #   - php
-  #   - module
-  #   - inc
-  #   - therme
+  tasks.phpmd.exclude:
+    - vendor/
+  tasks.phpmd.ruleset:
+    - ./resources/phpmd-ruleset.xml
+  tasks.phpmd.triggered_by:
+    - php
+    - module
+    - inc
+    - therme
 
   # Commit message parameters.
   tasks.git_commit_message.matchers:
