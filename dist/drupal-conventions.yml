@@ -1,5 +1,5 @@
 imports:
-  - { resource: qa-conventions.yml }
+  - { resource: drupal-parameters.yml }
 
 grumphp:
 
