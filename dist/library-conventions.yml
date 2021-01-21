@@ -18,12 +18,6 @@ grumphp:
       metadata:
         priority: 300
 
-    # PHP Mess Detector.
-    phpmd:
-      exclude: '%tasks.phpmd.exclude%'
-      ruleset: '%tasks.phpmd.ruleset%'
-      triggered_by: '%tasks.phpmd.triggered_by%'
-
     # Commit message format.
     git_commit_message:
       matchers: '%tasks.git_commit_message.matchers%'
