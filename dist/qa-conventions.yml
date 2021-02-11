@@ -1,5 +1,5 @@
 imports:
-  - { resource: dist/drupal-conventions.yml }
+  - { resource: drupal-conventions.yml }
 parameters:
   ascii:
     failed: ~
