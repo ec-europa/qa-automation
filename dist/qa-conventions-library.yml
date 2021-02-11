@@ -8,6 +8,7 @@ grumphp:
     - ./vendor/drupal/coder/coder_sniffer/Drupal
     - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
     - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+    - resources/library-phpcs-ruleset.xml
 
   tasks.phpcs.ignore_patterns:
     - vendor/
@@ -28,3 +29,8 @@ grumphp:
   # Commit message parameters.
   tasks.git_commit_message.matchers:
     - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
+  tasks.phpcs.standard: resources/library-phpcs-ruleset.xml
+  tasks.phpcs.warning_severity: 0
+  
+  tasks.phpcs.standard: resources/library-phpcs-ruleset.xml
+  tasks.phpcs.warning_severity: 0
