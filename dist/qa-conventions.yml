@@ -1,5 +1,3 @@
-imports:
-  - { resource: drupal-conventions.yml }
 parameters:
   ascii:
     failed: ~
