@@ -1,7 +1,7 @@
 imports:
   - { resource: qa-conventions.yml }
 
-parameters:
+grumphp:
   tasks.phpcs.standard: resources/library-phpcs-ruleset.xml
   tasks.phpcs.warning_severity: 0
 

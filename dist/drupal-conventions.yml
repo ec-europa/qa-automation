@@ -1,7 +1,7 @@
 imports:
   - { resource: qa-conventions.yml }
 
-parameters:
+grumphp:
   tasks.phpcs.standard: ./vendor/drupal/coder/coder_sniffer/Drupal
   tasks.phpcs.triggered_by:
     - php
