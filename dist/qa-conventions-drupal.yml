@@ -35,8 +35,3 @@ grumphp:
   # Commit message parameters.
   tasks.git_commit_message.matchers:
     - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
-  tasks.phpcs.standard: resources/library-phpcs-ruleset.xml
-  tasks.phpcs.warning_severity: 0
-  
-  tasks.phpcs.standard: resources/library-phpcs-ruleset.xml
-  tasks.phpcs.warning_severity: 0
