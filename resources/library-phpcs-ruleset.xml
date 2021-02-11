@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- PHP_CodeSniffer standard for OpenEuropa PHP libraries. -->
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<ruleset name="OpenEuropa PHP library">
+    <description>Coding standard for OpenEuropa PHP libraries.</description>
+
+    <rule ref="./vendor/squizlabs/php_codesniffer/src/Standards/PSR2" />
+
+    <!-- Comments and multi-line statements should be indented with 4 spaces. -->
+    <rule ref="Generic.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="ignoreIndentationTokens" type="array" value="" />
+            <property name="exact" value="true" />
+        </properties>
+    </rule>
+
+    <!-- Arrays that span multiple lines should be indented with 4 spaces. -->
+    <rule ref="Generic.Arrays.ArrayIndent" />
+
+    <!-- Chained method calls should be indented with 4 spaces. -->
+    <rule ref="PEAR.WhiteSpace.ObjectOperatorIndent" />
+</ruleset>
