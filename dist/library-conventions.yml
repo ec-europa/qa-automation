@@ -30,3 +30,7 @@ grumphp:
       multiline: false
       max_body_width: 0
       max_subject_width: 0
+
+parameters:
+  tasks.phpcs.standard: ./vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml
+  tasks.phpcs.warning_severity: 0

@@ -25,7 +25,7 @@ grumphp:
   tasks.phpmd.exclude:
     - vendor/
   tasks.phpmd.ruleset:
-    - resources/phpmd-ruleset.xml
+    - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
   tasks.phpmd.triggered_by:
     - php
     - module
