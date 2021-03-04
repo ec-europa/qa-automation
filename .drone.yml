@@ -7,28 +7,33 @@ workspace:
   path: qa-automation
 
 matrix:
+  COMPOSER_VERSION:
+    - 1
+    - 2
+  COMPOSER_BOUNDARY:
+    - lowest
+    - highest
   PHP_VERSION:
     - 7.3
     - 7.4
 
-services:
-  web:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
-    environment:
-      - DOCUMENT_ROOT=/test/qa-automation
-
 pipeline:
-  composer:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+  composer-install:
+    image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
     commands:
-      - composer install --no-suggest
+      - composer self-update --${COMPOSER_VERSION=1}
+      - composer install --ansi --no-suggest --no-progress
+      - composer update --prefer-${COMPOSER_BOUNDARY=lowest} --prefer-stable --ansi --no-suggest --no-progress
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
   phpcs:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+    image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
     commands:
+      - composer self-update --${COMPOSER_VERSION=1}
       - ./vendor/bin/phpcs -p
   phpunit:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+    image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
     commands:
+      - composer self-update --${COMPOSER_VERSION=1}
       - ./vendor/bin/phpunit phpcs/
