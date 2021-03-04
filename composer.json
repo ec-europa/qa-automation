@@ -21,7 +21,7 @@
         "composer/xdebug-handler": "^1.4"
     },
     "require-dev": {
-        "consolidation/robo": "^3.0",
+        "openeuropa/task-runner": "^1.0.0-beta6",
         "phpunit/phpunit": ">=3.7 <6"
     },
     "autoload": {
