@@ -21,6 +21,7 @@ pipeline:
   composer-install:
     image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
     commands:
+      - composer --version
       - composer self-update --${COMPOSER_VERSION=1}
       - composer install --ansi --no-suggest --no-progress
       - composer update --prefer-${COMPOSER_BOUNDARY=lowest} --prefer-stable --ansi --no-suggest --no-progress
@@ -32,6 +33,7 @@ pipeline:
     commands:
       - composer self-update --${COMPOSER_VERSION=1}
       - ./vendor/bin/phpcs -p
+
   phpunit:
     image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
     commands:
