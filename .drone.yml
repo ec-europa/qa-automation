@@ -24,6 +24,7 @@ pipeline:
     commands:
       - composer --version
       - composer self-update --${COMPOSER_VERSION=1}
+      - composer --version
       - composer install --ansi --no-suggest --no-progress
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
@@ -37,6 +38,7 @@ pipeline:
     commands:
       - composer --version
       - composer self-update --${COMPOSER_VERSION=1}
+      - composer --version
       - composer install --ansi --no-suggest --no-progress
       - composer update --prefer-${COMPOSER_BOUNDARY=lowest} --prefer-stable --ansi --no-suggest --no-progress
     volumes:
