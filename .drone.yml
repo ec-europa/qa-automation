@@ -19,7 +19,21 @@ matrix:
 
 pipeline:
   composer-install:
-    image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
+    group: init
+    image: fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    commands:
+      - composer --version
+      - composer self-update --${COMPOSER_VERSION=1}
+      - composer install --ansi --no-suggest --no-progress
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      matrix:
+        COMPOSER_BOUNDARY: highest
+
+  composer-install-lowest:
+    group: init
+    image: fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     commands:
       - composer --version
       - composer self-update --${COMPOSER_VERSION=1}
@@ -27,15 +41,12 @@ pipeline:
       - composer update --prefer-${COMPOSER_BOUNDARY=lowest} --prefer-stable --ansi --no-suggest --no-progress
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      matrix:
+        COMPOSER_BOUNDARY: lowest
 
-  phpcs:
-    image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
+  grumphp:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
-      - composer self-update --${COMPOSER_VERSION=1}
-      - ./vendor/bin/phpcs -p
-
-  phpunit:
-    image: fpfis/httpd-php:${PHP_VERSION=7.1}-ci
-    commands:
-      - composer self-update --${COMPOSER_VERSION=1}
-      - ./vendor/bin/phpunit phpcs/
+      - ./vendor/bin/grumphp run
