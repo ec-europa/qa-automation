@@ -1,40 +1,29 @@
 imports:
   - { resource: base-conventions.yml }
 
-parameters:
-  tasks.phpcs.standard: ./vendor/drupal/coder/coder_sniffer/Drupal
-  tasks.phpcs.triggered_by:
-    - php
-    - module
-    - inc
-    - theme
-  tasks.phpmd.triggered_by:
-    - php
-    - module
-    - inc
-    - theme
-
   tasks:
-
-    # PHP Code Sniffer.
     phpcs:
       standard: '%tasks.phpcs.standard%'
       ignore_patterns: '%tasks.phpcs.ignore_patterns%'
-      triggered_by: '%tasks.phpcs.triggered_by%'
+      triggered_by:
+          - php
+          - module
+          - inc
+          - theme
       whitelist_patterns: '%tasks.phpcs.whitelist_patterns%'
       warning_severity: '%tasks.phpcs.warning_severity%'
       exclude:
         - 'Drupal.Commenting.Deprecated'
       metadata:
         priority: 300
-
-    # PHP Mess Detector.
     phpmd:
       exclude: '%tasks.phpmd.exclude%'
       ruleset: '%tasks.phpmd.ruleset%'
-      triggered_by: '%tasks.phpmd.triggered_by%'
-
-    # Commit message format.
+      triggered_by:
+        - php
+        - module
+        - inc
+        - theme
     git_commit_message:
       matchers: '%tasks.git_commit_message.matchers%'
       case_insensitive: false

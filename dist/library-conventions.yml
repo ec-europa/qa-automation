@@ -1,30 +1,21 @@
 imports:
   - { resource: base-conventions.yml }
 
-parameters:
-  tasks.phpcs.standard: ./vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml
-  tasks.phpcs.warning_severity: 0
-
-  # Tasks.
+grumphp:
   tasks:
-
     # PHP Code Sniffer.
     phpcs:
-      standard: '%tasks.phpcs.standard%'
+      standard: './vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml'
       ignore_patterns: '%tasks.phpcs.ignore_patterns%'
       triggered_by: '%tasks.phpcs.triggered_by%'
       whitelist_patterns: '%tasks.phpcs.whitelist_patterns%'
-      warning_severity: '%tasks.phpcs.warning_severity%'
+      warning_severity: 0
       metadata:
         priority: 300
-
-    # PHP Mess Detector.
     phpmd:
       exclude: '%tasks.phpmd.exclude%'
       ruleset: '%tasks.phpmd.ruleset%'
       triggered_by: '%tasks.phpmd.triggered_by%'
-
-    # Commit message format.
     git_commit_message:
       matchers: '%tasks.git_commit_message.matchers%'
       case_insensitive: false
