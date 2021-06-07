@@ -29,7 +29,7 @@ grumphp:
         - theme
     git_commit_message:
       matchers: 
-        - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
+        - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
       case_insensitive: false
       enforce_no_subject_trailing_period: false
       multiline: false
