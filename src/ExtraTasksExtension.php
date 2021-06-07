@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EcEuropa\QaAutomation;
 
 use GrumPHP\Extension\ExtensionInterface;
@@ -14,7 +16,7 @@ class ExtraTasksExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function load(ContainerBuilder $container)
+    public function load(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
     {
         if ($container->hasParameter('extra_tasks')) {
             $tasks = $container->getParameter('tasks');
