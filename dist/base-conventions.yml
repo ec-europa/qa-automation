@@ -1,0 +1,26 @@
+parameters:
+  ascii:
+    failed: ~
+    succeeded: ~
+
+  # PHP Code Sniffer parameters.
+  tasks.phpcs.ignore_patterns:
+    - vendor/
+    - node_modules/
+  tasks.phpcs.triggered_by:
+    - php
+  tasks.phpcs.whitelist_patterns: []
+  tasks.phpcs.standard: ~
+  tasks.phpcs.warning_severity: ~
+
+  # PHP Mess Detector parameters
+  tasks.phpmd.exclude:
+    - vendor/
+  tasks.phpmd.ruleset:
+    - ./vendor/openeuropa/code-review/resources/phpmd-ruleset.xml
+  tasks.phpmd.triggered_by:
+    - php
+
+  # Commit message parameters.
+  tasks.git_commit_message.matchers:
+    - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
