@@ -2,7 +2,7 @@ imports:
   - { resource: base-conventions.yml }
 
 parameters:
-  tasks.phpcs.standard: ./vendor/openeuropa/code-review/resources/library-phpcs-ruleset.xml
+  tasks.phpcs.standard: ./vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml
   tasks.phpcs.warning_severity: 0
 
   # Tasks.
