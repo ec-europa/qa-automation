@@ -32,7 +32,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EcEuropa\\QaAutomation\\Tests\\": "./tests/"
+            "EcEuropa\\QaAutomation\\Tests\\": "./tests/",
+            "EcEuropa\\QaAutomation\\": "./src/"
         }
     },
     "extra": {
