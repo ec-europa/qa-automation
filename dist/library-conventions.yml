@@ -1,23 +1,27 @@
-imports:
-  - { resource: base-conventions.yml }
-
 grumphp:
   tasks:
     # PHP Code Sniffer.
     phpcs:
       standard: './vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml'
-      ignore_patterns: '%tasks.phpcs.ignore_patterns%'
-      triggered_by: '%tasks.phpcs.triggered_by%'
-      whitelist_patterns: '%tasks.phpcs.whitelist_patterns%'
+      ignore_patterns:
+        - vendor/
+        - node_modules/
+      triggered_by:
+        - php
+      whitelist_patterns: []
       warning_severity: 0
       metadata:
         priority: 300
     phpmd:
-      exclude: '%tasks.phpmd.exclude%'
-      ruleset: '%tasks.phpmd.ruleset%'
-      triggered_by: '%tasks.phpmd.triggered_by%'
+      exclude:
+        - vendor/
+      ruleset:
+        - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
+      triggered_by:
+        - php
     git_commit_message:
-      matchers: '%tasks.git_commit_message.matchers%'
+      matchers:
+        - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
       case_insensitive: false
       enforce_no_subject_trailing_period: false
       multiline: false

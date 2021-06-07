@@ -1,31 +1,35 @@
-imports:
-  - { resource: base-conventions.yml }
-
+grumphp:
   tasks:
     phpcs:
-      standard: '%tasks.phpcs.standard%'
-      ignore_patterns: '%tasks.phpcs.ignore_patterns%'
+      standard:
+        - QualityAssurance
+      ignore_patterns:
+        - vendor/
+        - node_modules/
       triggered_by:
           - php
           - module
           - inc
           - theme
-      whitelist_patterns: '%tasks.phpcs.whitelist_patterns%'
-      warning_severity: '%tasks.phpcs.warning_severity%'
+      whitelist_patterns: []
+      warning_severity: ~
       exclude:
         - 'Drupal.Commenting.Deprecated'
       metadata:
         priority: 300
     phpmd:
-      exclude: '%tasks.phpmd.exclude%'
-      ruleset: '%tasks.phpmd.ruleset%'
+      exclude:
+        - vendor/
+      ruleset:
+        - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
       triggered_by:
         - php
         - module
         - inc
         - theme
     git_commit_message:
-      matchers: '%tasks.git_commit_message.matchers%'
+      matchers: 
+        - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
       case_insensitive: false
       enforce_no_subject_trailing_period: false
       multiline: false
