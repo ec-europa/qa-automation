@@ -37,7 +37,6 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTest ex
             33 => 1,
             34 => 1,
             35 => 1,
-            36 => 1,
         );
 
     }//end getErrorList()
