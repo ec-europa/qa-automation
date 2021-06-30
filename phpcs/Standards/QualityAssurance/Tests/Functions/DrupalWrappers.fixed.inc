@@ -14,7 +14,6 @@ function _example_fail_forbidden_functions() {
   $chmod = drupal_chmod('string');
   $dirname = drupal_dirname('string');
   $http_build_query = drupal_http_build_query('string');
-  $json_decode = drupal_json_decode('string');
   $json_encode = drupal_json_encode('string');
   $mkdir = drupal_mkdir('string');
   $move_uploaded_file = drupal_move_uploaded_file('string');

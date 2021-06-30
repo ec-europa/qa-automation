@@ -1,6 +1,6 @@
 <?php
 /**
- * QualityAssurance_Sniffs_Functions_DrupalWrappersSniff.
+ * QualityAssurance_Sniffs_Functions_JsonDecodeSniff.
  *
  * PHP version 5
  *
@@ -10,13 +10,13 @@
  */
 
 /**
- * Enforce the use of Drupal Wrappers.
+ * Allow the use of 'json_decode' if the second parameter is set to FALSE.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Sniffs_PHP_ForbiddenFunctionsSniff
+class QualityAssurance_Sniffs_Functions_JsonDecodeSniff extends Generic_Sniffs_PHP_ForbiddenFunctionsSniff
 {
 
     /**
@@ -28,29 +28,7 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
      * @var array(string => string|null)
      */
     public $forbiddenFunctions = array(
-        'basename' => 'drupal_basename',
-        'chmod' => 'drupal_chmod',
-        'dirname' => 'drupal_dirname',
-        'http_build_query' => 'drupal_http_build_query',
-        'json_encode' => 'drupal_json_encode',
-        'mkdir' => 'drupal_mkdir',
-        'move_uploaded_file' => 'drupal_move_uploaded_file',
-        'parse_url' => 'drupal_parse_url',
-        'realpath' => 'drupal_realpath',
-        'register_shutdown_function' => 'drupal_register_shutdown_function',
-        'rmdir' => 'drupal_rmdir',
-        'session_regenerate' => 'drupal_session_regenerate',
-        'session_start' => 'drupal_session_start',
-        'set_time_limit' => 'drupal_set_time_limit',
-        'strlen' => 'drupal_strlen',
-        'strtolower' => 'drupal_strtolower',
-        'strtoupper' => 'drupal_strtoupper',
-        'substr' => 'drupal_substr',
-        'tempnam' => 'drupal_tempnam',
-        'ucfirst' => 'drupal_ucfirst',
-        'unlink' => 'drupal_unlink',
-        'xml_parser_create' => 'drupal_xml_parser_create',
-        'eval' => 'php_eval',
+        'json_decode' => 'drupal_json_decode',
     );
 
     /**
@@ -111,6 +89,13 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
             return;
         }
 
+        $checkParameter = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 4), null, true);
+        if ($tokens[$checkParameter]['code'] === T_FALSE) {
+            // Allow to use if the second parameter is set to 'FALSE'.
+            return;
+        }
+        
+        
         if ($tokens[$stackPtr]['code'] === T_STRING && $tokens[$nextToken]['code'] !== T_OPEN_PARENTHESIS) {
             // Not a call to a PHP function.
             return;
@@ -163,9 +148,6 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
         if ($this->error === true) {
             $type   = 'Found';
             $error .= 'forbidden';
-        } else {
-            $type   = 'Discouraged';
-            $error .= 'discouraged';
         }
 
         if ($pattern === null) {
@@ -177,18 +159,9 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
         ) {
             $type  .= 'WithAlternative';
             $data[] = $this->forbiddenFunctions[$pattern];
-            $error .= '; use %s() instead';
-        }
+            $error .= '; As alternative set the second parameter to FALSE and JSON objects will be returned as objects.';
 
-        if ($this->error === true) {
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, $type, $data);
-        } else {
-            $fix = $phpcsFile->addFixableWarning($error, $stackPtr, $type, $data);
-        }
-        if ($fix) {
-            $phpcsFile->fixer->beginChangeset();
-            $phpcsFile->fixer->replaceToken($stackPtr, $this->forbiddenFunctions[$pattern]);
-            $phpcsFile->fixer->endChangeset();
+            $phpcsFile->addError($error, $stackPtr, $type, $data);
         }
     }//end addError()
 }//end class

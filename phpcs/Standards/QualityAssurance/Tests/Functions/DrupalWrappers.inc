@@ -14,7 +14,6 @@ function _example_fail_forbidden_functions() {
   $chmod = chmod('string');
   $dirname = dirname('string');
   $http_build_query = http_build_query('string');
-  $json_decode = json_decode('string');
   $json_encode = json_encode('string');
   $mkdir = mkdir('string');
   $move_uploaded_file = move_uploaded_file('string');
