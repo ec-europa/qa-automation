@@ -47,7 +47,7 @@ class QualityAssurance_Sniffs_Functions_JsonDecode_JsonDecodeUnitTest extends Co
      */
     public function getTestFiles() {
         return array(
-            'JsonDecode.inc' => 'JsonDecode.fixed.inc',
+            'JsonDecode.inc' => '',
         );
     }// end getTestFiles()
 
