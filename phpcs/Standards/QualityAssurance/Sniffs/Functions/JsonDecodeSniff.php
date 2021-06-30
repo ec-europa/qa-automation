@@ -76,7 +76,6 @@ class QualityAssurance_Sniffs_Functions_JsonDecodeSniff extends Generic_Sniffs_P
                 // Not in the global namespace.
                 return;
             }
-
         }
 
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
