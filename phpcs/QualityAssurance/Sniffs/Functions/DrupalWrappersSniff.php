@@ -41,7 +41,6 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'dirname'                    => 'FileSystemInterface::dirname',
         'mkdir'                      => 'FileSystemInterface::mkdir',
         'move_uploaded_file'         => 'FileSystemInterface::mkdir',
-        'realpath'                   => 'FileSystemInterface::realpath',
         'rmdir'                      => 'FileSystemInterface::rmdir',
         'tempnam'                    => 'FileSystemInterface::tempnam',
         'unlink'                     => 'FileSystemInterface::unlink',
