@@ -53,7 +53,7 @@ class QualityAssurance_Sniffs_Generic_ComposerLockSniff implements PHP_CodeSniff
             return;
         }
 
-        $root = $_SERVER['PWD'];
+        $root = getcwd();
         // Check if the current file is the root composer.json file.
         if (strtolower($phpcsFile->getFilename()) !== strtolower($root) . '/composer.json') {
             return;
