@@ -19,7 +19,6 @@
     <exclude-pattern>*\.min\.js</exclude-pattern>
 
     <!-- Exclude files that do not contain PHP, Javascript or CSS code. -->
-    <exclude-pattern>*\.json</exclude-pattern>
     <exclude-pattern>*\.sh</exclude-pattern>
     <exclude-pattern>*\.xml</exclude-pattern>
     <exclude-pattern>*\.yml</exclude-pattern>
