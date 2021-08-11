@@ -1,6 +1,6 @@
 <?php
 
-class QualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTest extends CoderSniffUnitTest
+class QualityAssurance_Sniffs_Functions_JsonDecode_JsonDecodeUnitTest extends CoderSniffUnitTest
 {
 
     /**
@@ -15,28 +15,6 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTest ex
     {
         return array(
             13 => 1,
-            14 => 1,
-            15 => 1,
-            16 => 1,
-            17 => 1,
-            18 => 1,
-            19 => 1,
-            20 => 1,
-            21 => 1,
-            22 => 1,
-            23 => 1,
-            24 => 1,
-            25 => 1,
-            26 => 1,
-            27 => 1,
-            28 => 1,
-            29 => 1,
-            30 => 1,
-            31 => 1,
-            32 => 1,
-            33 => 1,
-            34 => 1,
-            35 => 1,
         );
 
     }//end getErrorList()
@@ -69,7 +47,7 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappers_DrupalWrappersUnitTest ex
      */
     public function getTestFiles() {
         return array(
-            'DrupalWrappers.inc' => 'DrupalWrappers.fixed.inc',
+            'JsonDecode.inc' => '',
         );
     }// end getTestFiles()
 
