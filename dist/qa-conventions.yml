@@ -11,6 +11,8 @@ parameters:
     - module
     - inc
     - theme
+  tasks.phpcs.files.extra:
+    - composer.lock
   tasks.phpcs.whitelist_patterns: []
   tasks.phpcs.warning_severity: ~
   tasks.phpcs.exclude:
