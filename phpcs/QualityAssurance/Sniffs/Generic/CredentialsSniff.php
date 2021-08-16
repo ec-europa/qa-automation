@@ -25,8 +25,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class CredentialsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -35,9 +33,7 @@ class CredentialsSniff implements Sniff
     public function register()
     {
         return [ T_INLINE_HTML ];
-
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -50,13 +46,15 @@ class CredentialsSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        $end = (count($phpcsFile->getTokens()) + 1);
         $filePath = $phpcsFile->getFilename();
-        // Only check the docker-compose.yml file.
-        if (strtolower(substr($filePath, -18)) !== 'docker-compose.yml') {
-            return;
+        $fileName = basename($filePath);
+
+        if (!preg_match('/docker-compose*/', strtolower($fileName))) {
+            return $end;
         }
 
-        $fileContent  = file($filePath);
+        $fileContent = file($filePath);
         $checkEnvVars = [
             'asda_user',
             'asda_pass',
@@ -64,9 +62,10 @@ class CredentialsSniff implements Sniff
         ];
         try {
             $yaml = Yaml::parseFile($filePath);
-        } catch (ParseException $e) {
+        }
+        catch (ParseException $e) {
             $phpcsFile->addError($e->getMessage(), $stackPtr, 'Yaml');
-            return ($phpcsFile->numTokens + 1);
+            return $end;
         }
 
         // Parse the environment variables.
@@ -78,8 +77,8 @@ class CredentialsSniff implements Sniff
                         foreach ($checkEnvVars as $checkEnvVar) {
                             $envVarNameLower = strtolower($envVarName);
                             if (strpos($envVarNameLower, $checkEnvVar) !== false && $envVarValue !== '' && $envVarValue !== null) {
-                                $lines   = preg_grep("/($envVarName)/s", $fileContent);
-                                $message = "Do not commit credentials in the docker-compose.yml file! $envVarName has a value. It should remain empty.";
+                                $lines = preg_grep("/($envVarName)/s", $fileContent);
+                                $message = "Do not commit credentials in the '$fileName' file! '$envVarName' has a value. It should remain empty.";
                                 $phpcsFile->addError($message, key($lines), 'Credentials');
                             }
                         }
@@ -89,9 +88,7 @@ class CredentialsSniff implements Sniff
         }//end if
 
         // Only run this sniff once on the file.
-        return ($phpcsFile->numTokens + 1);
-
+        return $end;
     }//end process()
-
 
 }//end class
