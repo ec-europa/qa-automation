@@ -4,10 +4,8 @@ parameters:
     - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
     - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
   tasks.phpcs.ignore_patterns:
-    - web/
     - vendor/
     - node_modules/
-    - config/sync/
   tasks.phpcs.triggered_by:
     - php
     - module
