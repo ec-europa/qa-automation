@@ -11,6 +11,7 @@ parameters:
     - module
     - inc
     - theme
+    - yml
   tasks.phpcs.whitelist_patterns: []
   tasks.phpcs.warning_severity: ~
   tasks.phpcs.exclude:
