@@ -30,7 +30,7 @@ class DrupalHttpRequestSniff extends ForbiddenFunctionsSniff
      * The value is NULL if no alternative exists, i.e., the function should
      * just not be used.
      *
-     * @var array|null)
+     * @var array|null
      */
     public $forbiddenFunctions = ['curl_init' => '\Drupal::httpClient'];
 
