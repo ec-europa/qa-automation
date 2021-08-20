@@ -1,6 +1,6 @@
 <?php
 /**
- * \QualityAssurance\Sniffs\Generic\DrupalDeprecatedConstantsSniff.
+ * \QualityAssurance\Sniffs\Generic\DeprecatedConstantsSniff.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
@@ -13,7 +13,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
- * \QualityAssurance\Sniffs\Generic\DrupalDeprecatedConstantsSniff.
+ * \QualityAssurance\Sniffs\Generic\DeprecatedConstantsSniff.
  *
  * Discourage the use of deprecated constants.
  *
@@ -21,11 +21,11 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class DrupalDeprecatedConstantsSniff implements Sniff
+class DeprecatedConstantsSniff implements Sniff
 {
 
     /**
-     * A list of forbidden constants with their alternatives incase it exists.
+     * A list of forbidden constants with their alternatives.
      *
      * The value is NULL if no alternative exists, i.e., the constant should
      * just not be used.
@@ -64,7 +64,7 @@ class DrupalDeprecatedConstantsSniff implements Sniff
             return;
         }
         $data = [$const];
-        $error = "The constant %s is deprecated";
+        $error = 'The constant %s is deprecated';
         if (!empty($this->deprecatedConstants[$const])) {
             $data[] = $this->deprecatedConstants[$const];
             $error .= '; use %s instead';

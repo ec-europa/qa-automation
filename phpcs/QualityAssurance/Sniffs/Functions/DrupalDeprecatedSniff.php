@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DeprecatedFunctionsSniff;
 /**
  * \QualityAssurance\Sniffs\Functions\DrupalDeprecatedSniff.
  *
- * Discourage the use of functions that have a Drupal wrapper function.
+ * Discourage the use of functions that are marked as deprecated.
  *
  * @category PHP
  * @package  PHP_CodeSniffer
@@ -61,7 +61,8 @@ class DrupalDeprecatedSniff extends DeprecatedFunctionsSniff
         $type  = 'Deprecated';
 
         if (!empty($this->forbiddenFunctions[$function])) {
-            $error .= '; use ' . $this->forbiddenFunctions[$function] . '() instead';
+            $data[] = $this->forbiddenFunctions[$function];
+            $error .= '; use %s() instead';
         }
 
         if ($this->error === true) {
