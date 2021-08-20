@@ -30,7 +30,7 @@ class DeprecatedConstantsSniff implements Sniff
      * The value is NULL if no alternative exists, i.e., the constant should
      * just not be used.
      *
-     * @var array|null)
+     * @var array|null
      */
     public $deprecatedConstants = [
         'REQUEST_TIME' => 'Drupal::time()->getRequestTime()',
