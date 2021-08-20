@@ -40,7 +40,7 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'chmod'                      => 'FileSystemInterface::chmod',
         'dirname'                    => 'FileSystemInterface::dirname',
         'mkdir'                      => 'FileSystemInterface::mkdir',
-        'move_uploaded_file'         => 'FileSystemInterface::mkdir',
+        'move_uploaded_file'         => 'FileSystemInterface::moveUploadedFile',
         'rmdir'                      => 'FileSystemInterface::rmdir',
         'tempnam'                    => 'FileSystemInterface::tempnam',
         'unlink'                     => 'FileSystemInterface::unlink',
@@ -48,6 +48,13 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'ucwords'                    => 'Unicode::ucwords',
         'http_build_query'           => 'UrlHelper::buildQuery',
         'parse_url'                  => 'UrlHelper::parse',
+
+        'ucfirst'                    => 'Unicode::ucfirst',
+        'copy'                       => 'FileSystemInterface::copy',
+        'rename'                     => 'FileSystemInterface::move',
+        'substr'                     => 'mb_substr',
+        'strtolower'                 => 'mb_strtolower',
+        'strtoupper'                 => 'mb_strtoupper',
     ];
 
     /**
