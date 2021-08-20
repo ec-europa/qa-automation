@@ -55,7 +55,6 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'substr'                     => 'mb_substr',
         'strtolower'                 => 'mb_strtolower',
         'strtoupper'                 => 'mb_strtoupper',
-        'rawurlencode'               => 'UrlHelper::encodePath'
     ];
 
     /**
