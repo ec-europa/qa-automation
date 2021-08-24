@@ -64,5 +64,4 @@ class QualityAssurance_Sniffs_Generic_ComposerLockSniff implements PHP_CodeSniff
             $phpcsFile->addError('Composer lock file is required.', 0);
         }
     }//end process()
-
 }//end class
