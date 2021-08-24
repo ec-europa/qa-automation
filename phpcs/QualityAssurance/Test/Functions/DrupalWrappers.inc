@@ -18,7 +18,6 @@ function _example_fail_forbidden_functions() {
   $dirname = dirname('string');
   $mkdir = mkdir('string');
   $move_uploaded_file = move_uploaded_file('string');
-  $realpath = realpath('string');
   $rmdir = rmdir('string');
   $tempnam = tempnam('string', 'string');
   $unlink = unlink('string');
