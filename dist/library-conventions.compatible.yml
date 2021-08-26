@@ -35,7 +35,8 @@ grumphp:
       ruleset: '%tasks.phpmd.ruleset%'
       triggered_by: '%tasks.phpmd.triggered_by%'
     git_commit_message:
-      matchers: '%tasks.git_commit_message.matchers%'
+      matchers:
+        - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
       case_insensitive: false
       enforce_no_subject_trailing_period: false
       multiline: false
