@@ -28,13 +28,15 @@ composer require ec-europa/qa-automation:~4.0
 <!--- Start snifflist. -->
 
 ```
-The QualityAssurance standard contains 10 sniffs
+The QualityAssurance standard contains 12 sniffs
 
-QualityAssurance (10 sniffs)
+QualityAssurance (12 sniffs)
 ----------------------------
+  QualityAssurance.Functions.DrupalDeprecated
   QualityAssurance.Functions.DrupalHttpRequest
   QualityAssurance.Functions.DrupalWrappers
   QualityAssurance.Generic.Credentials
+  QualityAssurance.Generic.DeprecatedConstants
   QualityAssurance.Generic.HardcodedPath
   QualityAssurance.InfoFiles.Forbidden
   QualityAssurance.InfoFiles.Required
