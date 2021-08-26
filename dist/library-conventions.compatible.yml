@@ -1,0 +1,43 @@
+parameters:
+  tasks.phpcs.standard:
+    - './vendor/ec-europa/qa-automation/resources/library-phpcs-ruleset.xml'
+  tasks.phpcs.ignore_patterns:
+    - vendor/
+    - node_modules/
+  tasks.phpcs.triggered_by:
+    - php
+  tasks.phpcs.whitelist_patterns: []
+  tasks.phpcs.warning_severity: 0
+  tasks.phpcs.exclude:
+    - 'Drupal.Commenting.Deprecated'
+  tasks.phpmd.exclude:
+    - vendor/
+  tasks.phpmd.ruleset:
+    - ./vendor/ec-europa/qa-automation/resources/phpmd-ruleset.xml
+  tasks.phpmd.triggered_by:
+    - php
+  tasks.git_commit_message.matchers:
+    - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
+grumphp:
+  tasks:
+    # PHP Code Sniffer.
+    phpcs:
+      standard: '%tasks.phpcs.standard%'
+      ignore_patterns: '%tasks.phpcs.ignore_patterns%'
+      triggered_by: '%tasks.phpcs.triggered_by%'
+      whitelist_patterns: '%tasks.phpcs.whitelist_patterns%'
+      warning_severity: '%tasks.phpcs.warning_severity%'
+      exclude: '%tasks.phpcs.exclude%'
+      metadata:
+        priority: 300
+    phpmd:
+      exclude: '%tasks.phpmd.exclude%'
+      ruleset: '%tasks.phpmd.ruleset%'
+      triggered_by: '%tasks.phpmd.triggered_by%'
+    git_commit_message:
+      matchers: '%tasks.git_commit_message.matchers%'
+      case_insensitive: false
+      enforce_no_subject_trailing_period: false
+      multiline: false
+      max_body_width: 0
+      max_subject_width: 0
