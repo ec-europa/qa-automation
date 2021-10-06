@@ -27,6 +27,10 @@ parameters:
     - theme
   tasks.git_commit_message.matchers:
     - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
+  tasks.yamllint.whitelist_patterns: [ ]
+  tasks.yamllint.ignore_patterns:
+    - vendor/
+    - node_modules/
 grumphp:
   tasks:
     phpcs:
@@ -49,3 +53,10 @@ grumphp:
       multiline: false
       max_body_width: 0
       max_subject_width: 0
+    yamllint:
+      whitelist_patterns: '%tasks.yamllint.whitelist_patterns%'
+      ignore_patterns: '%tasks.yamllint.ignore_patterns%'
+      object_support: false
+      exception_on_invalid_type: false
+      parse_constant: false
+      parse_custom_tags: false
