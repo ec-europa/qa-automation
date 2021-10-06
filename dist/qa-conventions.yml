@@ -5,3 +5,16 @@ parameters:
     - ./vendor/drupal/coder/coder_sniffer/Drupal
     - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
     - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+  tasks.yamllint.whitelist_patterns: [ ]
+  tasks.yamllint.ignore_patterns:
+    - vendor/
+    - node_modules/
+grumphp:
+  tasks:
+    yamllint:
+      whitelist_patterns: '%tasks.yamllint.whitelist_patterns%'
+      ignore_patterns: '%tasks.yamllint.ignore_patterns%'
+      object_support: false
+      exception_on_invalid_type: false
+      parse_constant: false
+      parse_custom_tags: false
