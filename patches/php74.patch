@@ -1,142 +1,18 @@
-diff --git a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc
-index e9a77cff6..9c5df4b91 100644
---- a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc
-+++ b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc
-@@ -257,7 +257,7 @@ switch ($foo) {
-     case 1:
-         switch ($bar) {
-             default:
--                echo $string{1};
-+                echo $string[1];
-         }
-     break;
- }
-@@ -278,7 +278,7 @@ switch ($foo) {
-         switch ($bar) {
-         default:
-             if ($something) {
--                echo $string{1};
-+                echo $string[1];
-             } else if ($else) {
-                 switch ($else) {
-                 default:
-@@ -613,7 +613,7 @@ switch ($arg) {
+diff --git a/CodeSniffer/CLI.php b/CodeSniffer/CLI.php
+index 29403cf..ee3d44b 100644
+--- a/CodeSniffer/CLI.php
++++ b/CodeSniffer/CLI.php
+@@ -456,7 +456,7 @@ class PHP_CodeSniffer_CLI
+                     continue;
+                 }
  
- if ($tokens[$stackPtr]['content']{0} === '#') {
- } else if ($tokens[$stackPtr]['content']{0} === '/'
--    && $tokens[$stackPtr]['content']{1} === '/'
-+    && $tokens[$stackPtr]['content'][1] === '/'
- ) {
- }
- 
-diff --git a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc.fixed b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc.fixed
-index fce985318..3af243a85 100644
---- a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc.fixed
-+++ b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.1.inc.fixed
-@@ -257,7 +257,7 @@ switch ($foo) {
-     case 1:
-         switch ($bar) {
-             default:
--                echo $string{1};
-+                echo $string[1];
-         }
-     break;
- }
-@@ -278,7 +278,7 @@ switch ($foo) {
-         switch ($bar) {
-             default:
-                 if ($something) {
--                    echo $string{1};
-+                    echo $string[1];
-                 } else if ($else) {
-                     switch ($else) {
-                         default:
-@@ -613,7 +613,7 @@ switch ($arg) {
- 
- if ($tokens[$stackPtr]['content']{0} === '#') {
- } else if ($tokens[$stackPtr]['content']{0} === '/'
--    && $tokens[$stackPtr]['content']{1} === '/'
-+    && $tokens[$stackPtr]['content'][1] === '/'
- ) {
- }
- 
-diff --git a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc
-index 68529d6bb..069f32cdf 100644
---- a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc
-+++ b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc
-@@ -257,7 +257,7 @@ switch ($foo) {
- 	case 1:
- 		switch ($bar) {
- 			default:
--				echo $string{1};
-+				echo $string[1];
- 		}
- 	break;
- }
-@@ -278,7 +278,7 @@ switch ($foo) {
- 		switch ($bar) {
- 		default:
- 			if ($something) {
--				echo $string{1};
-+				echo $string[1];
- 			} else if ($else) {
- 				switch ($else) {
- 				default:
-@@ -613,7 +613,7 @@ switch ($arg) {
- 
- if ($tokens[$stackPtr]['content']{0} === '#') {
- } else if ($tokens[$stackPtr]['content']{0} === '/'
--	&& $tokens[$stackPtr]['content']{1} === '/'
-+	&& $tokens[$stackPtr]['content'][1] === '/'
- ) {
- }
- 
-diff --git a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc.fixed b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc.fixed
-index aba35ba3c..b6d80b3f4 100644
---- a/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc.fixed
-+++ b/CodeSniffer/Standards/Generic/Tests/WhiteSpace/ScopeIndentUnitTest.2.inc.fixed
-@@ -257,7 +257,7 @@ switch ($foo) {
- 	case 1:
- 		switch ($bar) {
- 			default:
--				echo $string{1};
-+				echo $string[1];
- 		}
- 	break;
- }
-@@ -278,7 +278,7 @@ switch ($foo) {
- 		switch ($bar) {
- 			default:
- 				if ($something) {
--					echo $string{1};
-+					echo $string[1];
- 				} else if ($else) {
- 					switch ($else) {
- 						default:
-@@ -613,7 +613,7 @@ switch ($arg) {
- 
- if ($tokens[$stackPtr]['content']{0} === '#') {
- } else if ($tokens[$stackPtr]['content']{0} === '/'
--	&& $tokens[$stackPtr]['content']{1} === '/'
-+	&& $tokens[$stackPtr]['content'][1] === '/'
- ) {
- }
- 
-diff --git a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php
-index 502e432de..0d6bfa306 100644
---- a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php
-+++ b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php
-@@ -496,7 +496,7 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
- 
-             $content = $tokens[($tag + 2)]['content'];
-             $matches = array();
--            if (preg_match('/^([0-9]{4})((.{1})([0-9]{4}))? (.+)$/', $content, $matches) !== 0) {
-+            if (preg_match('/^([0-9]{4})((.[1])([0-9]{4}))? (.+)$/', $content, $matches) !== 0) {
-                 // Check earliest-latest year order.
-                 if ($matches[3] !== '' && $matches[3] !== null) {
-                     if ($matches[3] !== '-') {
+-                if ($arg{1} === '-') {
++                if ($arg[1] === '-') {
+                     $this->processLongArgument(substr($arg, 2), $i);
+                 } else {
+                     $switches = str_split($arg);
 diff --git a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php
-index fcc1d7a08..41df703af 100644
+index fcc1d7a..41df703 100644
 --- a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php
 +++ b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php
 @@ -68,11 +68,11 @@ class PEAR_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Sniff
@@ -153,56 +29,8 @@ index fcc1d7a08..41df703af 100644
          ) {
              $phpcsFile->recordMetric($stackPtr, 'Inline comment style', '/* ... */');
          }
-diff --git a/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc b/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc
-index 61e31314c..0f14d1b5c 100644
---- a/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc
-+++ b/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc
-@@ -50,7 +50,7 @@ case 1:
-     switch ($bar) {
-     default:
-         if ($something) {
--            echo $string{1};
-+            echo $string[1];
-         } else if ($else) {
-             switch ($else) {
-             case 1:
-diff --git a/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc.fixed b/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc.fixed
-index 916339628..12da5e780 100644
---- a/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc.fixed
-+++ b/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeClosingBraceUnitTest.inc.fixed
-@@ -52,7 +52,7 @@ case 1:
-     switch ($bar) {
-     default:
-         if ($something) {
--            echo $string{1};
-+            echo $string[1];
-         } else if ($else) {
-             switch ($else) {
-             case 1:
-diff --git a/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeIndentUnitTest.inc b/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeIndentUnitTest.inc
-index 3cc328dfc..107fad454 100644
---- a/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeIndentUnitTest.inc
-+++ b/CodeSniffer/Standards/PEAR/Tests/WhiteSpace/ScopeIndentUnitTest.inc
-@@ -257,7 +257,7 @@ switch ($foo) {
- case 1:
-     switch ($bar) {
-     default:
--        echo $string{1};
-+        echo $string[1];
-     }
-     break;
- }
-@@ -278,7 +278,7 @@ case 1:
-     switch ($bar) {
-         default:
-         if ($something) {
--            echo $string{1};
-+            echo $string[1];
-         } else if ($else) {
-             switch ($else) {
-                 default:
 diff --git a/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php b/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php
-index 85849ca0a..cd91f14ca 100644
+index 85849ca..a2436d3 100644
 --- a/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php
 +++ b/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php
 @@ -81,8 +81,8 @@ class Squiz_Sniffs_CSS_ColourDefinitionSniff implements PHP_CodeSniffer_Sniff
@@ -211,8 +39,8 @@ index 85849ca0a..cd91f14ca 100644
  
 -        if ($colour{1} === $colour{2} && $colour{3} === $colour{4} && $colour{5} === $colour{6}) {
 -            $expected = '#'.$colour{1}.$colour{3}.$colour{5};
-+        if ($colour[1] === $colour{2} && $colour{3} === $colour{4} && $colour{5} === $colour{6}) {
-+            $expected = '#'.$colour[1].$colour{3}.$colour{5};
++        if ($colour[1] === $colour[2] && $colour[3] === $colour[4] && $colour[5] === $colour[6]) {
++            $expected = '#'.$colour[1].$colour[3].$colour[5];
              $error    = 'CSS colours must use shorthand if available; expected %s but found %s';
              $data     = array(
                           $expected,
