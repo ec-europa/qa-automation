@@ -36,6 +36,9 @@
         "patches": {
             "squizlabs/php_codesniffer": [
                 "./patches/php74.patch"
+            ],
+            "drupal/coder": [
+                "./patches/php74_coder.patch"
             ]
         }
     }
