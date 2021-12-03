@@ -35,7 +35,7 @@
         "enable-patching": true,
         "patches": {
             "squizlabs/php_codesniffer": [
-                "/home/jonhy81/Projects/Toolkit/qa-automation3x/patches/php74.patch"
+                "./patches/php74.patch"
             ]
         }
     }
