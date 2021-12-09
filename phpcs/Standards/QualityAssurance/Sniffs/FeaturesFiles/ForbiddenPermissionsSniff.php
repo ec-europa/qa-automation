@@ -118,8 +118,14 @@ class QualityAssurance_Sniffs_FeaturesFiles_ForbiddenPermissionsSniff implements
                 );
                 // If it's a risky permission, trow an error.
                 if (in_array(str_replace("'", '', $tokens[$permissionName]['content']), $riskyPermissions)) {
-                    $error = 'The use of permission ' . str_replace("'", '"', $tokens[$permissionName]['content']) . ' is forbidden.';
-                    $phpcsFile->addError($error, $permissionName, 'Permissions');
+                    // Make sure the array 'roles' is not empty.
+                    $permissionRoles = $phpcsFile->findNext(T_ARRAY, ($permissionName + 6), ($permissionName + 10));
+                    if ($permissionRoles && $tokens[$permissionRoles -4]['content'] === "'roles'") {
+                        if ($tokens[$permissionRoles + 1]['type'] === 'T_OPEN_PARENTHESIS' && $tokens[$permissionRoles + 2]['type'] !== 'T_CLOSE_PARENTHESIS') {
+                            $error = 'The use of permission ' . str_replace("'", '"', $tokens[$permissionName]['content']) . ' is forbidden.';
+                            $phpcsFile->addError($error, $permissionName, 'Permissions');
+                        }
+                    }
                 }
                 // Exit array.
                 return $arrayEnd;
