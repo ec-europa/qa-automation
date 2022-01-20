@@ -38,10 +38,9 @@ class DrupalSecure_Sniffs_XSS_NodeTitleSniff extends DrupalSecure_Sniffs_General
                 if ($sniff->isBeingPrinted($nextPtr) && !$sniff->isBeingSanitized($nextPtr)) {
                     $error = 'Printing unsanitized input from node %s';
                     $sniff->phpcsFile->addError($error, $nextPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content'])));
-                } //elseif ($sniff->isBeingReturned($nextPtr)) {// && ($definitionPtr = $sniff->isWithinFunction($nextPtr)) !== false) {
-                elseif ($sniff->isBeingReturned($nextPtr)) {// && ($definitionPtr = $sniff->isWithinFunction($nextPtr)) !== false) {
+                } elseif ($sniff->isBeingReturned($nextPtr)) {
                     $error = 'Returning unsanitized input from node title in %s';
-                    $sniff->phpcsFile->addWarning($error, $nextPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content'])));//, trim($sniff->tokens[$definitionPtr]['content'])));
+                    $sniff->phpcsFile->addWarning($error, $nextPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content'])));
                 }
             }
         } elseif ($sniff->isBeingReturned($stackPtr) && ($definitionPtr = $sniff->isWithinFunction($stackPtr)) !== false) {

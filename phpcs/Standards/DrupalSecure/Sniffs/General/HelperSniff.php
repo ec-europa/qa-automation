@@ -688,18 +688,16 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
         print 'Getting assignment for variable ' . $variable . "\n";
         $found = false;
         while ($found !== true) {
-                $pos = $this->phpcsFile->findPrevious(T_VARIABLE, $stackPtr - 1, null, false, $variable);
-                //print_r($this->tokens[$pos]). "\n";
+            $pos = $this->phpcsFile->findPrevious(T_VARIABLE, $stackPtr - 1, null, false, $variable);
             if ($pos !== false) {
                 $nextPos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $pos + 1, null, true);
-                //print_r($this->tokens[$nextPos]). "\n";
                 if ($this->tokens[$nextPos]['code'] === T_OPEN_SQUARE_BRACKET) {
                     if (isset($element) && $element == $nextPos) {
                         // Find where array element was set.
                     }
-                } // @todo method operator
-                elseif ($this->tokens[$nextPos]['code'] !== T_EQUAL) {
-                  // not assigning the variable
+                } elseif ($this->tokens[$nextPos]['code'] !== T_EQUAL) {
+                    // @todo method operator
+                    // not assigning the variable
                     return;///continue;
                 } elseif ($this->tokens[$nextPos]['code'] === T_CLOSE_PARENTHESIS) {
                     if ($this->isFunctionArgument($nextPos)) {
@@ -707,7 +705,6 @@ class DrupalSecure_Sniffs_General_HelperSniff implements PHP_CodeSniffer_Sniff
                     }
                 }
                 $pos = $this->phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $nextPos + 1, null, true);
-                //print_r($this->tokens[$pos]). "\n";
                 return $pos;
             } else {
                 // Hit the stack beginning, don't continue.
