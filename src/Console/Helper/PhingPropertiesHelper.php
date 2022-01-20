@@ -65,8 +65,8 @@ class PhingPropertiesHelper
                     __LINE__
                 );
             }
-        } // If found return absolute path.
-        else {
+        } else {
+            // If found return absolute path.
             return "$path/build.xml";
         }
     }

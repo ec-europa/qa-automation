@@ -84,7 +84,7 @@ class DrupalInfoFormatHelper
     /**
      * Converts array into Drupal's .info format.
      *
-     * @param array $info
+     * @param mixed $info
      *   An array or single value to put in an .info file.
      * @param array $parents
      *   Array of parent keys (internal use only).
@@ -96,14 +96,14 @@ class DrupalInfoFormatHelper
             foreach ($info as $k => $v) {
                 $child = $parents;
                 $child[] = $k;
-                $output .= SELF::transformArrayIntoInfoFormat($v, $child);
+                $output .= self::transformArrayIntoInfoFormat($v, $child);
             }
         } elseif (!empty($info) && count($parents)) {
             $line = array_shift($parents);
             foreach ($parents as $key) {
                 $line .= is_numeric($key) ? "[]" : "[{$key}]";
             }
-            $line .=  " = {$info}\n";
+            $line .=  " = $info\n";
             return $line;
         }
         return $output;

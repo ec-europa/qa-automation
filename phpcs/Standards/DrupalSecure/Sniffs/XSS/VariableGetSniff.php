@@ -35,8 +35,7 @@ class DrupalSecure_Sniffs_XSS_VariableGetSniff extends DrupalSecure_Sniffs_Gener
                 if ($sniff->isBeingPrinted($nextPtr) && !$sniff->isBeingSanitized($nextPtr)) {
                     $error = 'Printing unsanitized input from %s';
                     $sniff->phpcsFile->addError($error, $nextPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content'])));
-                } //elseif ($sniff->isBeingReturned($nextPtr)) {// && ($definitionPtr = $sniff->isWithinFunction($nextPtr)) !== false) {
-                elseif ($sniff->isBeingReturned($nextPtr)) {// && ($definitionPtr = $sniff->isWithinFunction($nextPtr)) !== false) {
+                } elseif ($sniff->isBeingReturned($nextPtr)) {
                     $error = 'Returning unsanitized input from %s set from %s';
                     $sniff->phpcsFile->addWarning($error, $nextPtr, 'DangerousUserInput', array(trim($sniff->tokens[$nextPtr]['content']), trim($sniff->tokens[$stackPtr]['content'])));
                 }
