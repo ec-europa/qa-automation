@@ -34,12 +34,12 @@
         "composer-exit-on-patch-failure": true,
         "enable-patching": true,
         "patches": {
-            "squizlabs/php_codesniffer": [
-                "./patches/php74.patch"
-            ],
-            "drupal/coder": [
-                "./patches/php74_coder.patch"
-            ]
+            "squizlabs/php_codesniffer": {
+                "PHP7.4 Compatibility, deprecated curly braces syntax.": "https://raw.githubusercontent.com/ec-europa/qa-automation/release/3.x/patches/php74.patch"
+            },
+            "drupal/coder": {
+                "PHP7.4 Compatibility, deprecated curly braces syntax.": "https://raw.githubusercontent.com/ec-europa/qa-automation/release/3.x/patches/php74_coder.patch"
+            }
         }
     }
 }
