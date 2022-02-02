@@ -13,9 +13,10 @@
         "code review"
     ],
     "require": {
+        "php": ">=7.3",
         "phpcompatibility/php-compatibility": "^9.1",
         "squizlabs/php_codesniffer": "^3.6",
-        "phpro/grumphp": "^1",
+        "phpro/grumphp": "^1.5",
         "drupal/coder": "^8.3",
         "cweagans/composer-patches": "^1.7",
         "composer/xdebug-handler": "^1.4",
@@ -45,12 +46,17 @@
     "scripts": {
         "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
         "post-install-cmd": [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'",
-            "./vendor/bin/run qa:update-git-hooks"
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'"
         ],
         "post-update-cmd" : [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'",
-            "./vendor/bin/run qa:update-git-hooks"
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpro/grumphp": true
+        }
     }
 }
