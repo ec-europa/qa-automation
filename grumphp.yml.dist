@@ -1,4 +1,6 @@
 grumphp:
-    tasks:
-      phpunit: ~
+  parallel:
+    enabled: false
+  tasks:
+    phpunit: ~
 
