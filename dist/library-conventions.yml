@@ -19,6 +19,8 @@ parameters:
   tasks.git_commit_message.matchers:
     - '/^([A-Z0-9]+\-\d+|Issue #\d+): [A-Z].+\./'
 grumphp:
+  parallel:
+    enabled: false
   tasks:
     # PHP Code Sniffer.
     phpcs:
