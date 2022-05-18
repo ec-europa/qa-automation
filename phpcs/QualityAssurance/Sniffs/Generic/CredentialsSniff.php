@@ -25,6 +25,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class CredentialsSniff implements Sniff
 {
+
+
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -33,7 +35,9 @@ class CredentialsSniff implements Sniff
     public function register()
     {
         return [ T_INLINE_HTML ];
+
     }//end register()
+
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -50,7 +54,7 @@ class CredentialsSniff implements Sniff
         $filePath = $phpcsFile->getFilename();
         $fileName = basename($filePath);
 
-        if (!preg_match('/docker-compose*/', strtolower($fileName))) {
+        if (preg_match('/docker-compose*/', strtolower($fileName)) === false) {
             return $end;
         }
 
@@ -62,8 +66,7 @@ class CredentialsSniff implements Sniff
         ];
         try {
             $yaml = Yaml::parseFile($filePath);
-        }
-        catch (ParseException $e) {
+        } catch (ParseException $e) {
             $phpcsFile->addError($e->getMessage(), $stackPtr, 'Yaml');
             return $end;
         }
@@ -89,6 +92,8 @@ class CredentialsSniff implements Sniff
 
         // Only run this sniff once on the file.
         return $end;
+
     }//end process()
+
 
 }//end class

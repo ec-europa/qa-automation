@@ -152,4 +152,8 @@
         <exclude-pattern>phpcs/QualityAssurance/Test</exclude-pattern>
     </rule>
 
+    <rule ref="Generic.Formatting.MultipleStatementAlignment">
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
+    </rule>
+
 </ruleset>

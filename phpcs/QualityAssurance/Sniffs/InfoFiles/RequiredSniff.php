@@ -62,15 +62,17 @@ class RequiredSniff implements Sniff
             return ($phpcsFile->numTokens + 1);
         }
 
-        if (!isset($info['name'])) {
+        if (isset($info['name']) === false) {
             $error = "The key 'name' is missing in the info file";
             $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
-        if (!isset($info['type'])) {
+
+        if (isset($info['type']) === false) {
             $error = "The key 'type' is missing in the info file";
             $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
-        if (!isset($info['core'])) {
+
+        if (isset($info['core']) === false) {
             $error = "The key 'core' is missing in the info file";
             $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
