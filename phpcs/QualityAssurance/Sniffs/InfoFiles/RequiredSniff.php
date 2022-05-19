@@ -77,6 +77,11 @@ class RequiredSniff implements Sniff
             $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
 
+        if (isset($info['core_version_requirement']) === false) {
+            $error = "The key 'core_version_requirement' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
+        }
+
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
