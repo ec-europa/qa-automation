@@ -1,3 +1,5 @@
+## THIS BRANCH IS DEPRECATED AND WILL BE REMOVED
+
 # QA-Automation
 
 [![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/qa-automation/status.svg)](https://drone.fpfis.eu/ec-europa/qa-automation) 
