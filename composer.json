@@ -19,12 +19,12 @@
         "phpro/grumphp": "^1.5",
         "drupal/coder": "^8.3",
         "cweagans/composer-patches": "^1.7",
-        "composer/xdebug-handler": "^1.4",
+        "composer/xdebug-handler": "^3.0",
         "phpmd/phpmd": "^2.10"
     },
     "require-dev": {
         "openeuropa/task-runner": "^1.0.0-beta6",
-        "phpunit/phpunit": ">=3.7 <6"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-0": {
