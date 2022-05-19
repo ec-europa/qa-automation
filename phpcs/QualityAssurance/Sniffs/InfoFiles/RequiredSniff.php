@@ -43,6 +43,8 @@ class RequiredSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int  $stackPtr  The position of the current token
      *                        in the stack passed in $tokens.
+     *
+     * @return int
      */
     public function process(File $phpcsFile, $stackPtr)
     {
