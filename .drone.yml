@@ -44,3 +44,17 @@ pipeline:
     when:
       matrix:
         COMPOSER_BOUNDARY: lowest
+
+  phpcs:
+    image: fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    commands:
+      - ./vendor/bin/phpcs -p
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+
+  phpunit:
+    image: fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    commands:
+      - ./vendor/bin/phpunit phpcs/
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache

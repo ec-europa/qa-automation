@@ -32,9 +32,8 @@ class DeprecatedConstantsSniff implements Sniff
      *
      * @var array|null
      */
-    public $deprecatedConstants = [
-        'REQUEST_TIME' => 'Drupal::time()->getRequestTime()',
-    ];
+    public $deprecatedConstants = ['REQUEST_TIME' => 'Drupal::time()->getRequestTime()'];
+
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -44,7 +43,9 @@ class DeprecatedConstantsSniff implements Sniff
     public function register()
     {
         return [ T_STRING ];
+
     }//end register()
+
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -60,16 +61,20 @@ class DeprecatedConstantsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $const = $tokens[$stackPtr]['content'];
-        if (!array_key_exists($const, $this->deprecatedConstants)) {
+        if (array_key_exists($const, $this->deprecatedConstants) === false) {
             return;
         }
+
         $data = [$const];
         $error = 'The constant %s is deprecated';
-        if (!empty($this->deprecatedConstants[$const])) {
+        if (empty($this->deprecatedConstants[$const]) === false) {
             $data[] = $this->deprecatedConstants[$const];
             $error .= '; use %s instead';
         }
+
         $phpcsFile->addError($error, $stackPtr, 'Found', $data);
+
     }//end process()
+
 
 }//end class

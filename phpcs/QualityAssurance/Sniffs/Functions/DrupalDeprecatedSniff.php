@@ -32,9 +32,7 @@ class DrupalDeprecatedSniff extends DeprecatedFunctionsSniff
      *
      * @var array|null
      */
-    public $forbiddenFunctions = [
-        'debug' => 'dump',
-    ];
+    public $forbiddenFunctions = ['debug' => 'dump'];
 
     /**
      * If true, an error will be thrown; otherwise a warning.
@@ -42,6 +40,7 @@ class DrupalDeprecatedSniff extends DeprecatedFunctionsSniff
      * @var boolean
      */
     public $error = true;
+
 
     /**
      * Generates the error or warning for this sniff.
@@ -60,18 +59,18 @@ class DrupalDeprecatedSniff extends DeprecatedFunctionsSniff
         $error = 'Function %s() has been deprecated';
         $type  = 'Deprecated';
 
-        if (!empty($this->forbiddenFunctions[$function])) {
+        if (empty($this->forbiddenFunctions[$function]) === false) {
             $data[] = $this->forbiddenFunctions[$function];
             $error .= '; use %s() instead';
         }
 
         if ($this->error === true) {
             $phpcsFile->addError($error, $stackPtr, $type, $data);
-        }
-        else {
+        } else {
             $phpcsFile->addWarning($error, $stackPtr, $type, $data);
         }
 
     }//end addError()
+
 
 }//end class

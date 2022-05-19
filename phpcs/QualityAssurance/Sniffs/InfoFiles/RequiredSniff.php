@@ -44,7 +44,7 @@ class RequiredSniff implements Sniff
      * @param int  $stackPtr  The position of the current token
      *                        in the stack passed in $tokens.
      *
-     * @return void
+     * @return int
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -62,12 +62,29 @@ class RequiredSniff implements Sniff
             return ($phpcsFile->numTokens + 1);
         }
 
-        if (isset($info['type']) === true
-            && (isset($info['php']) === false
-            || empty($info['php']) === true)
-        ) {
-            $error = '"php" property is missing in the info file';
-            $phpcsFile->addError($error, $stackPtr, 'PHP');
+        if (isset($info['name']) === false) {
+            $error = "The key 'name' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
+        }
+
+        if (isset($info['description']) === false) {
+            $error = "The key 'description' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
+        }
+
+        if (isset($info['type']) === false) {
+            $error = "The key 'type' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
+        }
+
+        if (isset($info['core']) === false) {
+            $error = "The key 'core' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
+        }
+
+        if (isset($info['core_version_requirement']) === false) {
+            $error = "The key 'core_version_requirement' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
 
         return ($phpcsFile->numTokens + 1);
