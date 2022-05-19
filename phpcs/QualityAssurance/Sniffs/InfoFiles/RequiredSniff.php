@@ -43,8 +43,6 @@ class RequiredSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int  $stackPtr  The position of the current token
      *                        in the stack passed in $tokens.
-     *
-     * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -64,6 +62,11 @@ class RequiredSniff implements Sniff
 
         if (isset($info['name']) === false) {
             $error = "The key 'name' is missing in the info file";
+            $phpcsFile->addError($error, $stackPtr, 'INFO');
+        }
+
+        if (isset($info['description']) === false) {
+            $error = "The key 'description' is missing in the info file";
             $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
 
