@@ -19,7 +19,7 @@
         "phpro/grumphp": "^1.5",
         "drupal/coder": "^8.3",
         "cweagans/composer-patches": "^1.7",
-        "composer/xdebug-handler": "^1.4",
+        "composer/xdebug-handler": "^3.0",
         "phpmd/phpmd": "^2.10"
     },
     "require-dev": {
