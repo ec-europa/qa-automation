@@ -39,7 +39,7 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
      * @param int                  $stackPtr  The position of the current token in the
      *                                        stack passed in $tokens.
      *
-     * @return void
+     * @return int
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -63,7 +63,7 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
             $phpcsFile->addError($error, $stackPtr, 'PHP');
         }
 
-        if (!isset($info['multisite_version']) || empty($info['multisite_version'])) {
+        if (empty($info['multisite_version'])) {
             $error = '"multisite_version" property is missing in the info file';
             $phpcsFile->addError($error, $stackPtr, 'MultisiteVersion');
         } elseif ($info['multisite_version'] === '2.2'
@@ -73,6 +73,11 @@ class QualityAssurance_Sniffs_InfoFiles_RequiredSniff implements PHP_CodeSniffer
             $error = 'Multisite version 2.2 minimal requirement is PHP 5.2';
             $ptr   = Drupal_Sniffs_InfoFiles_ClassFilesSniff::getPtr('php', $info['php'], $phpcsFile);
             $phpcsFile->addError($error, $ptr, 'MultisitePHPVersion');
+        }
+
+        if (empty($info['description'])) {
+            $error = '"description" property is missing in the info file';
+            $phpcsFile->addError($error, $stackPtr, 'MultisiteDescription');
         }
 
         return $end;
