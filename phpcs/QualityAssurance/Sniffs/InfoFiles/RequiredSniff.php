@@ -11,6 +11,8 @@ namespace QualityAssurance\Sniffs\InfoFiles;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * \QualityAssurance\Sniffs\InfoFiles\RequiredSniff.
@@ -48,27 +50,28 @@ class RequiredSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Only run this sniff once per info file.
-        if (preg_match('/\.info\.yml$/', $phpcsFile->getFilename()) === 1) {
-            // Drupal 8 style info.yml file.
-            $contents = file_get_contents($phpcsFile->getFilename());
-            try {
-                $info = \Symfony\Component\Yaml\Yaml::parse($contents);
-            } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
-                // If the YAML is invalid we ignore this file.
-                return ($phpcsFile->numTokens + 1);
-            }
-        } else {
+        $filename      = $phpcsFile->getFilename();
+        $fileExtension = strtolower(substr($filename, -9));
+        if ($fileExtension !== '.info.yml') {
+            return ($phpcsFile->numTokens + 1);
+        }
+
+        // Exclude config files which might contain the info.yml extension.
+        $filenameWithoutExtension = substr($filename, 0, -9);
+        if (strpos($filenameWithoutExtension, '.') !== false) {
+            return ($phpcsFile->numTokens + 1);
+        }
+
+        $contents = file_get_contents($phpcsFile->getFilename());
+        try {
+            $info = Yaml::parse($contents);
+        } catch (ParseException $e) {
+            // If the YAML is invalid we ignore this file.
             return ($phpcsFile->numTokens + 1);
         }
 
         if (isset($info['name']) === false) {
             $error = "The key 'name' is missing in the info file";
-            $phpcsFile->addError($error, $stackPtr, 'INFO');
-        }
-
-        if (isset($info['description']) === false) {
-            $error = "The key 'description' is missing in the info file";
             $phpcsFile->addError($error, $stackPtr, 'INFO');
         }
 
