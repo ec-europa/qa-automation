@@ -34,8 +34,8 @@ class DrupalForbiddenHooksSniff implements Sniff
      */
     public $forbiddenHooks = [
         'hook_form_alter' => 'hook_form_FORM_ID_alter() or hook_form_BASE_FORM_ID_alter()',
-        'hook_chart_definition_alter' => '',
     ];
+
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -63,7 +63,7 @@ class DrupalForbiddenHooksSniff implements Sniff
         $fileName      = basename($phpcsFile->getFilename());
         $fileExtension = explode('.', $fileName);
         $fileExtension = end($fileExtension);
-        if (!in_array($fileExtension, ['module', 'theme', 'inc'])) {
+        if (false === in_array($fileExtension, ['module', 'theme', 'inc'])) {
             return;
         }
 
@@ -72,7 +72,7 @@ class DrupalForbiddenHooksSniff implements Sniff
         $moduleName   = substr($fileName, 0, -(strlen($fileExtension) + 1));
 
         foreach ($this->forbiddenHooks as $hook => $replacement) {
-            if ($functionName === str_replace('hook', $moduleName, $hook)) {
+            if (true === ($functionName === str_replace('hook', $moduleName, $hook))) {
                 $warning = 'The usage of the hook %s() is forbidden';
                 $data = [$hook];
                 if (!empty($replacement)) {
@@ -81,6 +81,7 @@ class DrupalForbiddenHooksSniff implements Sniff
                 } else {
                     $warning .= '.';
                 }
+
                 $phpcsFile->addError($warning, $stackPtr, 'ForbiddenHook', $data);
             }
         }
