@@ -32,9 +32,7 @@ class DrupalForbiddenHooksSniff implements Sniff
      *
      * @var array|null
      */
-    public $forbiddenHooks = [
-        'hook_form_alter' => 'hook_form_FORM_ID_alter() or hook_form_BASE_FORM_ID_alter()',
-    ];
+    public $forbiddenHooks = ['hook_form_alter' => 'hook_form_FORM_ID_alter() or hook_form_BASE_FORM_ID_alter()'];
 
 
     /**
@@ -75,7 +73,7 @@ class DrupalForbiddenHooksSniff implements Sniff
             if (true === ($functionName === str_replace('hook', $moduleName, $hook))) {
                 $warning = 'The usage of the hook %s() is forbidden';
                 $data = [$hook];
-                if (!empty($replacement)) {
+                if (false === empty($replacement)) {
                     $warning .= ', instead use %s.';
                     $data[] = $replacement;
                 } else {
