@@ -30,10 +30,7 @@ class QualityAssurance_Sniffs_Functions_DrupalForbiddenHooksSniff implements PHP
     public $forbiddenHooks = ['hook_form_alter' => 'hook_form_FORM_ID_alter() or hook_form_BASE_FORM_ID_alter()'];
 
     /**
-     * A list of forbidden hooks with their alternatives.
-     *
-     * The value is empty string if no alternative exists, i.e. the hook should
-     * just not be used.
+     * A list of file extensions to check.
      *
      * @var array
      */
