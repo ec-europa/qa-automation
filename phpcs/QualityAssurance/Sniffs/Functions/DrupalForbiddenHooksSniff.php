@@ -34,6 +34,20 @@ class DrupalForbiddenHooksSniff implements Sniff
      */
     public $forbiddenHooks = ['hook_form_alter' => 'hook_form_FORM_ID_alter() or hook_form_BASE_FORM_ID_alter()'];
 
+    /**
+     * A list of forbidden hooks with their alternatives.
+     *
+     * The value is empty string if no alternative exists, i.e. the hook should
+     * just not be used.
+     *
+     * @var array
+     */
+    public $extensions = [
+        'inc',
+        'module',
+        'theme',
+    ];
+
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -58,19 +72,18 @@ class DrupalForbiddenHooksSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $fileName      = basename($phpcsFile->getFilename());
-        $fileExtension = explode('.', $fileName);
-        $fileExtension = end($fileExtension);
-        if (false === in_array($fileExtension, ['module', 'theme', 'inc'])) {
+        $filename  = basename($phpcsFile->getFilename());
+        $exploded  = explode('.', $filename);
+        $extension = end($exploded);
+        if (false === in_array($extension, $this->extensions)) {
             return;
         }
 
-        $tokens       = $phpcsFile->getTokens();
-        $functionName = $tokens[($stackPtr + 2)]['content'];
-        $moduleName   = substr($fileName, 0, -(strlen($fileExtension) + 1));
-
+        $module   = $exploded[0];
+        $tokens   = $phpcsFile->getTokens();
+        $function = $tokens[($stackPtr + 2)]['content'];
         foreach ($this->forbiddenHooks as $hook => $replacement) {
-            if (true === ($functionName === str_replace('hook', $moduleName, $hook))) {
+            if (true === ($function === str_replace('hook', $module, $hook))) {
                 $warning = 'The usage of the hook %s() is forbidden';
                 $data = [$hook];
                 if (false === empty($replacement)) {
