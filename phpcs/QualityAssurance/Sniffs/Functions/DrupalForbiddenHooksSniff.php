@@ -25,9 +25,9 @@ class DrupalForbiddenHooksSniff implements Sniff
 {
 
     /**
-     * A list of forbidden functions with their alternatives.
+     * A list of forbidden hooks with their alternatives.
      *
-     * The value is NULL if no alternative exists, i.e., the function should
+     * The value is empty string if no alternative exists, i.e. the hook should
      * just not be used.
      *
      * @var array|null
@@ -35,10 +35,7 @@ class DrupalForbiddenHooksSniff implements Sniff
     public $forbiddenHooks = ['hook_form_alter' => 'hook_form_FORM_ID_alter() or hook_form_BASE_FORM_ID_alter()'];
 
     /**
-     * A list of forbidden hooks with their alternatives.
-     *
-     * The value is empty string if no alternative exists, i.e. the hook should
-     * just not be used.
+     * A list of file extensions to check.
      *
      * @var array
      */
