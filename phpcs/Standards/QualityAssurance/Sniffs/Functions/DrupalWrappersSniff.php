@@ -51,6 +51,7 @@ class QualityAssurance_Sniffs_Functions_DrupalWrappersSniff extends Generic_Snif
         'unlink' => 'drupal_unlink',
         'xml_parser_create' => 'drupal_xml_parser_create',
         'eval' => 'php_eval',
+        'date' => 'format_date'
     );
 
     /**
