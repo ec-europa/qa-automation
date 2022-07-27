@@ -9,7 +9,6 @@
 
 namespace QualityAssurance\Sniffs\Functions;
 
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff;
 
 /**
@@ -55,6 +54,7 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'substr'                     => 'mb_substr',
         'strtolower'                 => 'mb_strtolower',
         'strtoupper'                 => 'mb_strtoupper',
+        'date'                       => 'Drupal::service("date.formatter")->format',
     ];
 
     /**
