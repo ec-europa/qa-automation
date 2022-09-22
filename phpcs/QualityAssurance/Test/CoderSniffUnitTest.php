@@ -55,8 +55,6 @@ abstract class CoderSniffUnitTest extends TestCase
      */
     protected function setUp(): void
     {
-        $class = get_class($this);
-
         $this->rootDir      = __DIR__.'/../../';
         $this->testsDir     = __DIR__.'/';
         $this->standardsDir = __DIR__.'/../';
@@ -135,12 +133,12 @@ abstract class CoderSniffUnitTest extends TestCase
         }
 
         $sniffCode = Common::getSniffCode(get_class($this));
-        [$standardName, $categoryName, $sniffName] = explode('.', $sniffCode);
+        list($standardName, $categoryName, $sniffName) = explode('.', $sniffCode);
 
         // In the case where we are running all the sniffs, the standard will
         // be the root class name.
         if ($this->allSniffCodes() !== false) {
-            [$standardName] = explode('\\', get_class($this));
+            list($standardName) = explode('\\', get_class($this));
         }
 
         $testFileBase = $this->rootDir.$standardName.DIRECTORY_SEPARATOR.'Test'.DIRECTORY_SEPARATOR.$categoryName.DIRECTORY_SEPARATOR.$sniffName.'UnitTest.';

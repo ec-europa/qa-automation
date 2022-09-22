@@ -3,3 +3,4 @@
 /composer.lock
 /bin
 /docker-compose.yml
+/.phpunit.result.cache
