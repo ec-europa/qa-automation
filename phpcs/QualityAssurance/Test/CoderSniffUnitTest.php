@@ -14,14 +14,14 @@
 namespace QualityAssurance\Test;
 
 use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Files\LocalFile;
+use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\RuntimeException;
 use PHP_CodeSniffer\Util\Common;
-use PHP_CodeSniffer\Autoload;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPUnit\Framework\TestCase;
 
-abstract class CoderSniffUnitTest extends \PHPUnit_Framework_TestCase
+abstract class CoderSniffUnitTest extends TestCase
 {
 
     /**
@@ -53,7 +53,7 @@ abstract class CoderSniffUnitTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $class = get_class($this);
 
@@ -135,12 +135,12 @@ abstract class CoderSniffUnitTest extends \PHPUnit_Framework_TestCase
         }
 
         $sniffCode = Common::getSniffCode(get_class($this));
-        list($standardName, $categoryName, $sniffName) = explode('.', $sniffCode);
+        [$standardName, $categoryName, $sniffName] = explode('.', $sniffCode);
 
         // In the case where we are running all the sniffs, the standard will
         // be the root class name.
         if ($this->allSniffCodes() !== false) {
-            list($standardName) = explode('\\', get_class($this));
+            [$standardName] = explode('\\', get_class($this));
         }
 
         $testFileBase = $this->rootDir.$standardName.DIRECTORY_SEPARATOR.'Test'.DIRECTORY_SEPARATOR.$categoryName.DIRECTORY_SEPARATOR.$sniffName.'UnitTest.';
