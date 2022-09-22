@@ -19,7 +19,9 @@
         "drupal/coder": "^8.3",
         "cweagans/composer-patches": "^1.7",
         "composer/xdebug-handler": "^3.0",
-        "phpmd/phpmd": "^2.10"
+        "phpmd/phpmd": "^2.10",
+        "symfony/yaml": "^4.4",
+        "phpunit/phpunit": "^5.7"
     },
     "require-dev": {
         "openeuropa/task-runner": "^1.0.0-beta6",
