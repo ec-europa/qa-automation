@@ -37,7 +37,7 @@ pipeline:
       - composer self-update --${COMPOSER_VERSION=1}
       - composer update --prefer-${COMPOSER_BOUNDARY=lowest} --prefer-stable --ansi --no-suggest --no-progress
     volumes:
-      - /cache/${DRONE_REPO_NAME}/update:/cache
+      - /cache/${DRONE_REPO_NAME}:/cache
     when:
       matrix:
         COMPOSER_BOUNDARY: lowest
