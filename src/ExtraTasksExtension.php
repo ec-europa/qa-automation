@@ -13,10 +13,12 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
  */
 class ExtraTasksExtension implements ExtensionInterface
 {
+
+
     /**
      * {@inheritdoc}
      */
-    public function load(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
+    public function load(ContainerBuilder $container): void
     {
         if ($container->hasParameter('extra_tasks')) {
             $tasks = $container->getParameter('tasks');
@@ -24,9 +26,14 @@ class ExtraTasksExtension implements ExtensionInterface
                 if (array_key_exists($name, $tasks)) {
                     throw new RuntimeException("Cannot override already defined task '{$name}' in 'extra_tasks'.");
                 }
+
                 $tasks[$name] = $value;
             }
+
             $container->setParameter('tasks', $tasks);
         }
-    }
-}
+
+    }//end load()
+
+
+}//end class

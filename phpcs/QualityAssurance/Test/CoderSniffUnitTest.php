@@ -14,14 +14,14 @@
 namespace QualityAssurance\Test;
 
 use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Files\LocalFile;
+use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\RuntimeException;
 use PHP_CodeSniffer\Util\Common;
-use PHP_CodeSniffer\Autoload;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPUnit\Framework\TestCase;
 
-abstract class CoderSniffUnitTest extends \PHPUnit_Framework_TestCase
+abstract class CoderSniffUnitTest extends TestCase
 {
 
     /**
@@ -53,10 +53,8 @@ abstract class CoderSniffUnitTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $class = get_class($this);
-
         $this->rootDir      = __DIR__.'/../../';
         $this->testsDir     = __DIR__.'/';
         $this->standardsDir = __DIR__.'/../';

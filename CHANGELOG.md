@@ -1,35 +1,69 @@
 # QA Automation change log
 
-## Version 4.2.1
-    * MULTISITE-22897: Improve performance and coding standards on sniff
+## Version 8.2.0
+DQA-4440: Drop dependency on grumphp.
 
-## Version 4.2.0
-    * MULTISITE-23659: Sniffing all .info.yml files for php version
+## Version 8.1.8
+DQA-4479: [8.x] Add date() to the forbidden functions.
 
-## Version 4.1.0
-    * MULTISITE-23677: Update openeuropa/code-review package (hotfix)
+## Version 8.1.7
+DQA-3678: [8.x] Sniff to check form_alter() usage.
 
-## Version 4.0.4
-    * MULTISITE-23205: Exclude yml files from phpcs
+## Version 8.1.6
+Automate the detection of unauthorized hook_form_alter
+- DO NOT USE THIS RELEASE!
 
-## Version 4.0.3
-    * MULTISITE-22812: Bugfix on docker-compose.yml sniff
+## Version 8.1.5
+Exclude config folder from verification
 
-## Version 4.0.2
-    * MULTISITE-22649: Create sniff to prevent commit of ASDA credentials
-    * MULTISITE-22670: Automatically update README.md with sniff list
-    * MULTISITE-22652: qa-automation 4.x package should only test on PHP 7.x
+## Version 8.1.4
+Fix issue with core and core_version_requirement detection as they cannot be used together.
 
-## Version 4.0.1
-    * MULTISITE-21554: Port sniff QualityAssurance.Functions.DrupalHttpRequest to D8
-    * MULTISITE-21555: Port sniff QualityAssurance.Functions.DrupalWrappers to D8
-    * MULTISITE-21556: Port sniff QualityAssurance.Generic.HardcodedPath to D8
-    * MULTISITE-21557: Port sniff QualityAssurance.InfoFiles.Forbidden to D8
-    * MULTISITE-21558: Port sniff QualityAssurance.InfoFiles.Required to D8
-    * MULTISITE-21559: Port sniff QualityAssurance.InstallFiles.FunctionDeclarations to D8
-    * MULTISITE-21560: Port sniff QualityAssurance.InstallFiles.HookUpdateN to D8
-    * MULTISITE-21561: Port sniff QualityAssurance.InstallFiles.InstallUpdateCallbacks to D8
-    * MULTISITE-21562: Port sniff QualityAssurance.InstallFiles.Update7000 to D8
+## Version 8.1.3
+Regular maintenance (modules dependencies and tests)
+Remove check of PHP version in the .info.yml files;
+Check the presence of required props: name, description, type, core and core_version_requirement;
 
-## Version 4.0.0
-    * MULTISITE-21603: Replace code-review by QA Automation.
+## Version 8.1.2
+DQA-3473: Remove composer update.
+
+## Version 8.1.1
+Set the minimum version of GRUMPHP to 1.5
+
+## Version 8.1.0
+DQA-2680: Update minimum grumphp version.
+
+## Version 8.0.9
+DQA-0: Test severity level
+
+## Version 8.0.8
+DQA-0: Revert some config.
+
+## Version 8.0.7
+DQA-2421: Fix syntax in *-conventions.compatible.yml.
+
+## Version 8.0.6
+DQA-0: Run phpunit for QA Automation.
+
+## Version 8.0.5
+DQA-0: Run phpunit for QA Automation.
+
+## Version 8.0.4
+DQA-0: Run phpunit for QA Automation.
+
+## Version 8.0.3
+DQA-0: Run phpunit for QA Automation.
+
+## Version 8.0.2
+DQA-0: Allow old version of GRUMPHP.
+
+## Version 8.0.1
+DQA-0: Lower  grumphp version
+
+## Version 8.0.0
+Composer 2 compatible
+Update PHP squizlabs/php_codesniffer from 3.5.6 to 3.6.0
+Update drupal/coder from 8.3.9 to 8.3.13
+Update phpro/grumphp from v0.15.2 to v1.3.3
+Update phpmd/phpmd from 2.9.1 to 2.10.1
+Remove dependency on openeuropa/code-review

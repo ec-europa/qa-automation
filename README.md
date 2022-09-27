@@ -15,12 +15,13 @@ analysis and/or reviews on Drupal projects.
 {
   "require-dev": {
     "ec-europa/qa-automation": "~4.0"
+  }
 }
 ```
 
 ### 1.2 Install with composer command
-```json
-composer require ec-europa/qa-automation:~4.0
+```
+composer require --dev ec-europa/qa-automation:~4.0
 ```
 
 ## 2. Sniff list
@@ -28,11 +29,12 @@ composer require ec-europa/qa-automation:~4.0
 <!--- Start snifflist. -->
 
 ```
-The QualityAssurance standard contains 12 sniffs
+The QualityAssurance standard contains 13 sniffs
 
-QualityAssurance (12 sniffs)
+QualityAssurance (13 sniffs)
 ----------------------------
   QualityAssurance.Functions.DrupalDeprecated
+  QualityAssurance.Functions.DrupalForbiddenHooks
   QualityAssurance.Functions.DrupalHttpRequest
   QualityAssurance.Functions.DrupalWrappers
   QualityAssurance.Generic.Credentials

@@ -3,4 +3,4 @@
 /composer.lock
 /bin
 /docker-compose.yml
-/grumphp.yml
+/.phpunit.result.cache
