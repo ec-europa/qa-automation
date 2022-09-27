@@ -1,6 +1,6 @@
 # QA Automation change log
 
-## Version 8.2.0
+## Version 9.0.0
 DQA-4440: Drop dependency on grumphp.
 
 ## Version 8.1.8
