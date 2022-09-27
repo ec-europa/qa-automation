@@ -24,7 +24,7 @@
     },
     "require-dev": {
         "openeuropa/task-runner": "^1.0.0-beta6",
-        "phpunit/phpunit": "^5.7 | ^8.5.23 | ^9.0"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-0": {
