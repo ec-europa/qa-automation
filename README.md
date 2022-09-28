@@ -14,19 +14,17 @@ analysis and/or reviews on Drupal projects.
 ```json
 {
   "require-dev": {
-    "ec-europa/qa-automation": "~4.0"
+    "ec-europa/qa-automation": "^9.0"
   }
 }
 ```
 
 ### 1.2 Install with composer command
 ```
-composer require --dev ec-europa/qa-automation:~4.0
+composer require --dev ec-europa/qa-automation:^9.0
 ```
 
 ## 2. Sniff list
-
-<!--- Start snifflist. -->
 
 ```
 The QualityAssurance standard contains 13 sniffs
@@ -48,4 +46,7 @@ QualityAssurance (13 sniffs)
   QualityAssurance.InstallFiles.InstallUpdateCallbacks
 ```
 
-<!--- End snifflist. -->
+To update this list run:
+```shell
+./vendor/bin/phpcs -e --standard=QualityAssurance
+```

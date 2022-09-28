@@ -13,30 +13,21 @@
         "code review"
     ],
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.1",
         "phpcompatibility/php-compatibility": "^9.1",
         "squizlabs/php_codesniffer": "^3.6",
         "drupal/coder": "^8.3",
         "cweagans/composer-patches": "^1.7",
         "composer/xdebug-handler": "^3.0",
         "phpmd/phpmd": "^2.10",
-        "symfony/yaml": "^4.4 | ^5.0 | ^6.0"
+        "symfony/yaml": "^5.0 | ^6.0"
     },
     "require-dev": {
-        "openeuropa/task-runner": "^1.0.0-beta6",
-        "phpunit/phpunit": "^5.7 | ^8.5.23 | ^9.0"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-0": {
             "QualityAssurance\\": "phpcs/QualityAssurance/"
-        },
-        "psr-4": {
-            "EcEuropa\\QaAutomation\\": "./src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "EcEuropa\\QaAutomation\\Tests\\": "./tests/"
         }
     },
     "extra": {

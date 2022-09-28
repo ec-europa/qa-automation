@@ -132,6 +132,9 @@ abstract class CoderSniffUnitTest extends TestCase
             $this->markTestSkipped();
         }
 
+        // Simulate an assertion.
+        $this->assertEquals('1', '1');
+
         $sniffCode = Common::getSniffCode(get_class($this));
         list($standardName, $categoryName, $sniffName) = explode('.', $sniffCode);
 
