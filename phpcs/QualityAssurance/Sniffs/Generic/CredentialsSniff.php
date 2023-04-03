@@ -46,7 +46,7 @@ class CredentialsSniff implements Sniff
      * @param int  $stackPtr  The position of the current token
      *                        in the stack passed in $tokens.
      *
-     * @return void
+     * @return int
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -54,7 +54,7 @@ class CredentialsSniff implements Sniff
         $filePath = $phpcsFile->getFilename();
         $fileName = basename($filePath);
 
-        if (preg_match('/docker-compose*/', strtolower($fileName)) === false) {
+        if (preg_match('/docker-compose*/', strtolower($fileName)) !== 1) {
             return $end;
         }
 
