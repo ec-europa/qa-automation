@@ -4,3 +4,4 @@
 /bin
 /docker-compose.yml
 /.phpunit.result.cache
+/grumphp.yml

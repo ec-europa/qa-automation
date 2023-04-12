@@ -20,7 +20,8 @@
         "cweagans/composer-patches": "^1.7",
         "composer/xdebug-handler": "^3.0",
         "phpmd/phpmd": "^2.10",
-        "symfony/yaml": "^4.4 | ^5.0 | ^6.0"
+        "symfony/yaml": "^4.4 | ^5.0 | ^6.0",
+        "phpro/grumphp": "^1.5"
     },
     "require-dev": {
         "openeuropa/task-runner": "^1.0.0-beta6",
@@ -55,7 +56,8 @@
     "config": {
         "allow-plugins": {
             "cweagans/composer-patches": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpro/grumphp": true
         }
     }
 }
