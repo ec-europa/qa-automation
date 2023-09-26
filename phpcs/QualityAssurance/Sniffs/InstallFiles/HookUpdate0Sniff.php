@@ -57,8 +57,9 @@ class HookUpdate0Sniff implements Sniff
         $tokens       = $phpcsFile->getTokens();
         $functionName = $tokens[($stackPtr + 2)]['content'];
         $fileName     = substr(basename($phpcsFile->getFilename()), 0, -8);
-        if (empty(preg_match('/'.$fileName.'_update_(\d000)/', $functionName, $match)) === false) {
-            $phpcsFile->addError('Update schema '.$match[1].' is reserved for upgrading.', $stackPtr, "Update".$match[1]."NotAllowed");
+        if (str_starts_with($functionName, "{$fileName}_update_") === true && str_ends_with($functionName, '000') === true) {
+            $number = preg_replace('/[^0-9]/', '', $functionName);
+            $phpcsFile->addError("Update schema $number is reserved for upgrading.", $stackPtr, "Update{$number}NotAllowed");
         }
 
     }//end process()
