@@ -67,6 +67,7 @@ class FunctionDeclarationsSniff implements Sniff
             $fileName.'_field_schema',
             $fileName.'_requirements',
             $fileName.'_update_last_removed',
+            $fileName.'_update_dependencies',            
         ];
         if (in_array($functionName, $allowedHooks) === false && empty(preg_match('/'.$fileName.'_update_\d{4}/', $functionName)) === true) {
             $warning = 'Move the "%s" function declaration to a helper class implementing ContainerInjectionInterface. Example can be found at https://git.drupalcode.org/project/drupal/blob/8.7.5/core/profiles/demo_umami/modules/demo_umami_content/demo_umami_content.install';
