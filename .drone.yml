@@ -14,7 +14,7 @@ matrix:
 pipeline:
   composer-install:
     group: init
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:8.1-ci
     commands:
       - composer self-update --2
       - composer install --ansi --no-suggest --no-progress
@@ -26,7 +26,7 @@ pipeline:
 
   composer-install-lowest:
     group: init
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:8.1-ci
     commands:
       - composer self-update --2
       - composer update --prefer-${COMPOSER_BOUNDARY=lowest} --prefer-stable --ansi --no-suggest --no-progress
@@ -37,14 +37,14 @@ pipeline:
         COMPOSER_BOUNDARY: lowest
 
   phpcs:
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:8.1-ci
     commands:
       - ./vendor/bin/phpcs -p
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   phpunit:
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:8.1-ci
     commands:
       - ./vendor/bin/phpunit
     volumes:
