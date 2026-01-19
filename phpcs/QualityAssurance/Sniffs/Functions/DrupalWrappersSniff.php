@@ -35,7 +35,6 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'register_shutdown_function' => 'drupal_register_shutdown_function',
         'set_time_limit'             => 'drupal_set_time_limit',
         'xml_parser_create'          => 'drupal_xml_parser_create',
-        'basename'                   => 'FileSystemInterface::basename',
         'chmod'                      => 'FileSystemInterface::chmod',
         'dirname'                    => 'FileSystemInterface::dirname',
         'mkdir'                      => 'FileSystemInterface::mkdir',
